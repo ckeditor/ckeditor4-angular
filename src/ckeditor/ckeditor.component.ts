@@ -116,6 +116,8 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	 */
 	onTouched?: () => void;
 
+	private _data: string;
+
 	/**
 	 * Keeps track of the editor's data.
 	 *
@@ -123,7 +125,15 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	 *
 	 * See https://angular.io/api/forms/NgModel to learn more.
 	 */
-	@Input() data: string;
+	@Input() set data( data: string ) {
+		this.updateData( data );
+	};
+
+	@Output() dataChange: EventEmitter<CKEditor4.EventInfo> = new EventEmitter<CKEditor4.EventInfo>();
+
+	get data(): string {
+		return this._data;
+	}
 
 	/**
 	 * When set `true`, the editor becomes read-only.
@@ -147,7 +157,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		return this.initialDisabled;
 	}
 
-	constructor( private elementRef: ElementRef<HTMLElement>, private ngZone: NgZone ) { }
+	constructor( private elementRef: ElementRef<HTMLElement>, private ngZone: NgZone ) {}
 
 	ngAfterViewInit() {
 		this.ngZone.runOutsideAngular( this.createEditor.bind( this ) );
@@ -223,10 +233,17 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		if ( this.instance ) {
 			this.instance.setData( value );
 			// Data may be changed by ACF.
-			this.data = this.instance.getData();
+			this._data = this.instance.getData();
 		} else {
-			this.data = value;
+			this._data = value;
 		}
+	}
+
+	private getData() {
+		if ( this.instance ) {
+			return this.instance.getData();
+		}
+		return this.data;
 	}
 
 	private subscribe( editor: any ) {
@@ -254,12 +271,13 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 				// Make sure that data really changed due to `editor#change`
 				// (https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-change)
 				// event limitation which may be called even when data didn't change.
-				if ( this.onChange && this.data !== newData ) {
+				if ( this.onChange && this._data !== newData ) {
 					this.onChange( newData );
 				}
 
-				this.data = newData;
+				this._data = newData;
 				this.change.emit( evt );
+				this.dataChange.emit( newData );
 			} );
 		} );
 	}
