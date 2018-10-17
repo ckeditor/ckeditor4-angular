@@ -1,0 +1,15 @@
+<ng-container>
+	<h1>Welcome to the playground!</h1>
+	<h2>Classic editor:</h2>
+	<ckeditor
+		[(ngModel)]="myModel"
+		#classic></ckeditor>
+	<h3>Model Preview:</h3>
+	<textarea style="width:300px; height:150px;"
+		[(ngModel)]="myModel"></textarea>
+
+	<h2>Inline editor:</h2>
+	<ckeditor
+		#inline
+		type="inline"></ckeditor>
+</ng-container>
