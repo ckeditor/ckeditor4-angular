@@ -123,7 +123,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	 *
 	 * See https://angular.io/api/forms/NgModel to learn more.
 	 */
-	@Input() data: string = '';
+	@Input() data: string;
 
 	/**
 	 * When set `true`, the editor becomes read-only.
@@ -187,16 +187,16 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	private createEditor() {
 		if ( typeof CKEDITOR === 'undefined' ) {
 			console.error( 'CKEditor4 library could not be found.' +
-				' See https://ckeditor.com/docs/ckeditor4/latest/guide/dev_installation.html for installation options.' )
+				' See https://ckeditor.com/docs/ckeditor4/latest/guide/dev_installation.html for installation options.' );
 
 			return;
 		}
 
-		let element = document.createElement( this.tagName );
+		const element = document.createElement( this.tagName );
 
 		this.elementRef.nativeElement.appendChild( element );
 
-		let instance = this.type === CKEditor4.EditorType.INLINE ?
+		const instance = this.type === CKEditor4.EditorType.INLINE ?
 			CKEDITOR.inline( element, this.config )
 			: CKEDITOR.replace( element, this.config );
 
@@ -248,7 +248,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		} );
 
 		editor.on( 'change', evt => {
-			let newData = editor.getData();
+			const newData = editor.getData();
 
 			this.ngZone.run( () => {
 				// Make sure that data really changed due to `editor#change`

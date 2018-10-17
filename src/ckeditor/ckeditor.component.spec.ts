@@ -34,7 +34,7 @@ describe( 'CKEditorComponent', () => {
 
 	describe( 'invalid initialization', () => {
 		it( 'should result in error logged to the console', () => {
-			let saved = CKEDITOR,
+			const saved = CKEDITOR,
 				spy = spyOn( console, 'error', );
 
 			CKEDITOR = undefined;
@@ -122,7 +122,7 @@ describe( 'CKEditorComponent', () => {
 
 	describe( 'emitters', () => {
 		it( 'ready', () => {
-			let spy = jasmine.createSpy();
+			const spy = jasmine.createSpy();
 			component.ready.subscribe( spy );
 
 			fixture.detectChanges();
@@ -136,7 +136,7 @@ describe( 'CKEditorComponent', () => {
 			fixture.detectChanges();
 
 			return whenReady( component ).then( () => {
-				let spy = jasmine.createSpy();
+				const spy = jasmine.createSpy();
 				component.change.subscribe( spy );
 
 				component.instance.fire( 'change' );
@@ -149,7 +149,7 @@ describe( 'CKEditorComponent', () => {
 			fixture.detectChanges();
 
 			return whenReady( component ).then( () => {
-				let spy = jasmine.createSpy();
+				const spy = jasmine.createSpy();
 				component.focus.subscribe( spy );
 
 				component.instance.fire( 'focus' );
@@ -162,7 +162,7 @@ describe( 'CKEditorComponent', () => {
 			fixture.detectChanges();
 
 			return whenReady( component ).then( () => {
-				let spy = jasmine.createSpy();
+				const spy = jasmine.createSpy();
 				component.blur.subscribe( spy );
 
 				component.instance.fire( 'blur' );
@@ -177,7 +177,7 @@ describe( 'CKEditorComponent', () => {
 			fixture.detectChanges();
 
 			return whenReady( component ).then( () => {
-				let spy = jasmine.createSpy();
+				const spy = jasmine.createSpy();
 
 				component.registerOnTouched( spy );
 
@@ -191,7 +191,7 @@ describe( 'CKEditorComponent', () => {
 			fixture.detectChanges();
 
 			return whenReady( component ).then( () => {
-				let spy = jasmine.createSpy();
+				const spy = jasmine.createSpy();
 				component.registerOnChange( spy );
 
 				component.data = 'initial';
