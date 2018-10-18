@@ -53,7 +53,7 @@ describe( 'DemoFormComponent', () => {
 		const debugElement = fixture.debugElement.query( By.directive( CKEditorComponent ) );
 		const ckeditorComponent: CKEditorComponent = debugElement.componentInstance;
 
-		setTimeout( () => {
+		fixture.whenStable().then ( () => {
 			ckeditorComponent.instance.setData( '<p>An unidentified person</p>' );
 
 			fixture.detectChanges();
@@ -65,7 +65,7 @@ describe( 'DemoFormComponent', () => {
 	} );
 
 	it( 'should reset form after clicking the reset button', ( done: Function ) => {
-		setTimeout( () => {
+		fixture.whenStable().then( () => {
 			const resetButton: HTMLButtonElement = fixture.debugElement.query( By.css( 'button[type=reset]' ) ).nativeElement;
 			resetButton.click();
 
