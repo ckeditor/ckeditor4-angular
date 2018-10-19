@@ -49,6 +49,7 @@ describe( 'DemoFormComponent', () => {
 		] ) );
 	} );
 
+	// This test passes when run solo or testes as first, but throws a type error when run after other tests.
 	it( 'should show form data preview after change', ( done: Function ) => {
 		const debugElement = fixture.debugElement.query( By.directive( CKEditorComponent ) ),
 			ckeditorComponent: CKEditorComponent = debugElement.componentInstance;
