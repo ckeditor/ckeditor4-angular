@@ -14,7 +14,7 @@ export class PlaygroundComponent implements OnInit {
 	public myModel: any;
 
 	constructor() {
-		window.component = this;
+		(<any>window).component = this;
 	}
 
 	ngOnInit() {
