@@ -213,6 +213,8 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 
 		const element = document.createElement( this.tagName );
 
+		element.innerHTML = this.data || '';
+
 		this.elementRef.nativeElement.appendChild( element );
 
 		const instance = this.type === CKEditor4.EditorType.INLINE ?
@@ -226,9 +228,6 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 			if ( this.initialDisabled !== null ) {
 				this.disabled = this.initialDisabled;
 			}
-
-			// Initialize editor's data.
-			this.updateData( this.data );
 
 			this.subscribe( this.instance );
 
