@@ -50,17 +50,18 @@ describe( 'DemoFormComponent', () => {
 	} );
 
 	it( 'should show form data preview after change', ( done: Function ) => {
-		const debugElement = fixture.debugElement.query( By.directive( CKEditorComponent ) );
-		const ckeditorComponent: CKEditorComponent = debugElement.componentInstance;
+		const debugElement = fixture.debugElement.query( By.directive( CKEditorComponent ) ),
+			ckeditorComponent: CKEditorComponent = debugElement.componentInstance;
 
-		fixture.whenStable().then ( () => {
+		evtSubscribe( 'ready', ckeditorComponent ).then( () => {
+			evtSubscribe( 'change', ckeditorComponent ).then( () => {
+				fixture.detectChanges();
+				expect( component.formDataPreview ).toEqual( '{"name":"John","surname":"Doe","description":"<p>An unidentified person</p>"}' );
+				done();
+			} );
+
 			ckeditorComponent.instance.setData( '<p>An unidentified person</p>' );
 
-			fixture.detectChanges();
-
-			expect( component.formDataPreview ).toEqual( '{"name":"John","surname":"Doe","description":"<p>An unidentified person</p>"}' );
-
-			done();
 		} );
 	} );
 
@@ -77,3 +78,9 @@ describe( 'DemoFormComponent', () => {
 		} );
 	} );
 } );
+
+function evtSubscribe( evt, component ) {
+	return new Promise( res => {
+		component[ evt ].subscribe( res );
+	} );
+}
