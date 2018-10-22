@@ -130,14 +130,13 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	 */
 	@Input() set data( data: string ) {
 		this.updateData( data );
-	};
+	}
 
 	/**
 	 * Emit `dataChange` event to allow `[data]` binding and two way `[(data)]` binding.
 	 *
 	 * See more: https://angular.io/guide/template-syntax#two-way-binding---
 	 */
-
 	@Output() dataChange: EventEmitter<CKEditor4.EventInfo> = new EventEmitter<CKEditor4.EventInfo>();
 
 	get data(): string {
@@ -184,11 +183,13 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	writeValue( value: string | null ): void {
 		// This method is called with the `null` value when the form resets.
 		// A component's responsibility is to restore it to the initial state.
+		// Known issue, that writeValue is fired twice, first with empty data,
+		// then with actual initial data: https://github.com/angular/angular/issues/14988
 		if ( value === null ) {
 			value = '';
 		}
 
-		this.updateData( value );
+		this.data = value;
 	}
 
 	registerOnChange( callback: ( data: string ) => void ): void {
@@ -213,26 +214,32 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 
 		const element = document.createElement( this.tagName );
 
-		element.innerHTML = this.data || '';
+		// Param `data` is correctly set before `ngAfterViewInit`, so we can create editor with initial data.
+		// However ControlValueAccessor with ngModel value, calls `writeValue` asynchronously after `ngAfterViewInit`.
+		// Delay editor creation, so it's always invoked with initial data.
+		setTimeout( () => {
 
-		this.elementRef.nativeElement.appendChild( element );
+			element.innerHTML = this.data || '';
 
-		const instance = this.type === CKEditor4.EditorType.INLINE ?
-			CKEDITOR.inline( element, this.config )
-			: CKEDITOR.replace( element, this.config );
+			this.elementRef.nativeElement.appendChild( element );
 
-		instance.once( 'instanceReady', evt => {
-			this.instance = instance;
+			const instance = this.type === CKEditor4.EditorType.INLINE ?
+				CKEDITOR.inline( element, this.config )
+				: CKEDITOR.replace( element, this.config );
 
-			// Read only state may change during instance initialization, restore it here.
-			if ( this.initialDisabled !== null ) {
-				this.disabled = this.initialDisabled;
-			}
+			instance.once( 'instanceReady', evt => {
+				this.instance = instance;
 
-			this.subscribe( this.instance );
+				// Read only state may change during instance initialization, restore it here.
+				if ( this.initialDisabled !== null ) {
+					this.disabled = this.initialDisabled;
+				}
 
-			this.ngZone.run( () => {
-				this.ready.emit( evt );
+				this.subscribe( this.instance );
+
+				this.ngZone.run( () => {
+					this.ready.emit( evt );
+				} );
 			} );
 		} );
 	}
