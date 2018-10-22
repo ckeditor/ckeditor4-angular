@@ -20,16 +20,23 @@ describe( 'SimpleUsageComponent', () => {
 			.compileComponents();
 	} ) );
 
-	beforeEach( () => {
+	beforeEach( ( done ) => {
 		fixture = TestBed.createComponent( SimpleUsageComponent );
 		component = fixture.componentInstance;
 		debugElement = fixture.debugElement.query( By.directive( CKEditorComponent ) );
 		ckeditorComponent = debugElement.componentInstance;
 
 		fixture.detectChanges();
+
+		evtSubscribe( 'ready', ckeditorComponent ).then( () => {
+			done();
+		} );
 	} );
 
-	afterEach( () => {
+	afterEach( ( done ) => {
+		if ( ckeditorComponent.instance ) {
+			ckeditorComponent.instance.once( 'destroy', done );
+		}
 		fixture.destroy();
 	} );
 
@@ -98,3 +105,9 @@ describe( 'SimpleUsageComponent', () => {
 		} );
 	} );
 } );
+
+function evtSubscribe( evt, component ) {
+	return new Promise( res => {
+		component[ evt ].subscribe( res );
+	} );
+}
