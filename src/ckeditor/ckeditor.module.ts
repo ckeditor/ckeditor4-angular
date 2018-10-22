@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CKEditorComponent } from './ckeditor.component';
 
-@NgModule({
+@NgModule( {
 	imports: [ FormsModule, CommonModule ],
 	declarations: [ CKEditorComponent ],
 	exports: [ CKEditorComponent ]
 } )
-export class CKEditorModule { }
+export class CKEditorModule {
+}

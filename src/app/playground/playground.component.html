@@ -10,13 +10,13 @@
 
 	<h2>Inline editor:</h2>
 	<div style="border: solid 1px black;">
-	<ckeditor
-		*ngIf="!remove"
-		[hidden]="hide"
-		[(data)]="data"
-		[disabled]="disabled"
-		#inline
-		type="inline"></ckeditor>
+		<ckeditor
+			*ngIf="!remove"
+			[hidden]="hide"
+			[(data)]="data"
+			[disabled]="disabled"
+			#inline
+			type="inline"></ckeditor>
 	</div>
 	<p>
 		<label><input type="checkbox" [(ngModel)]="hide">Hide editor with '[hidden]' directive.</label>
@@ -33,5 +33,5 @@
 	<h3>Model Preview:</h3>
 	<p>You can paste here, but typing might throw some errors.</p>
 	<textarea style="width:300px; height:150px;"
-		[(ngModel)]="data"></textarea>
+			  [(ngModel)]="data"></textarea>
 </ng-container>

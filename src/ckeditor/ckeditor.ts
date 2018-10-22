@@ -34,7 +34,9 @@ export namespace CKEditor4 {
 		readonly sender: object;
 
 		cancel(): void;
+
 		removeListener(): void;
+
 		stop(): void;
 	}
 }

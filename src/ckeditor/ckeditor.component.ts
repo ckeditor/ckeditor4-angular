@@ -165,7 +165,8 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		return this.initialDisabled;
 	}
 
-	constructor( private elementRef: ElementRef<HTMLElement>, private ngZone: NgZone ) {}
+	constructor( private elementRef: ElementRef<HTMLElement>, private ngZone: NgZone ) {
+	}
 
 	ngAfterViewInit() {
 		this.ngZone.runOutsideAngular( this.createEditor.bind( this ) );
