@@ -33,9 +33,7 @@ describe( 'DemoFormComponent', () => {
 
 		fixture.detectChanges();
 
-		whenEvent( 'ready', ckeditorComponent ).then( () => {
-			done();
-		} );
+		whenEvent( 'ready', ckeditorComponent ).then( done );
 	} );
 
 	afterEach( ( done ) => {

@@ -32,9 +32,7 @@ describe( 'SimpleUsageComponent', () => {
 
 		fixture.detectChanges();
 
-		whenEvent( 'ready', ckeditorComponent ).then( () => {
-			done();
-		} );
+		whenEvent( 'ready', ckeditorComponent ).then( done );
 	} );
 
 	afterEach( ( done ) => {
