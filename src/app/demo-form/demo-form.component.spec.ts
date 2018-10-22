@@ -7,11 +7,15 @@ import { By } from '@angular/platform-browser';
 import { CKEditorComponent } from '../../ckeditor/ckeditor.component';
 import { DebugElement } from '@angular/core';
 
+import { TestTools } from '../../test.tools';
+
+const whenEvent = TestTools.whenEvent;
+
 describe( 'DemoFormComponent', () => {
-	let component: DemoFormComponent;
-	let fixture: ComponentFixture<DemoFormComponent>;
-	let ckeditorComponent: CKEditorComponent;
-	let debugElement: DebugElement;
+	let component: DemoFormComponent,
+		fixture: ComponentFixture<DemoFormComponent>,
+		ckeditorComponent: CKEditorComponent,
+		debugElement: DebugElement;
 
 	beforeEach( async( () => {
 		TestBed.configureTestingModule( {
@@ -29,7 +33,7 @@ describe( 'DemoFormComponent', () => {
 
 		fixture.detectChanges();
 
-		evtSubscribe( 'ready', ckeditorComponent ).then( () => {
+		whenEvent( 'ready', ckeditorComponent ).then( () => {
 			done();
 		} );
 	} );
@@ -64,7 +68,7 @@ describe( 'DemoFormComponent', () => {
 
 	// This test passes when run solo or testes as first, but throws a type error when run after other tests.
 	it( 'should show form data preview after change', ( done: Function ) => {
-		evtSubscribe( 'change', ckeditorComponent ).then( () => {
+		whenEvent( 'change', ckeditorComponent ).then( () => {
 			fixture.detectChanges();
 			expect( component.formDataPreview ).toEqual( '{"name":"John","surname":"Doe","description":"<p>An unidentified person</p>"}' );
 			done();
@@ -87,9 +91,3 @@ describe( 'DemoFormComponent', () => {
 		} );
 	} );
 } );
-
-function evtSubscribe( evt, component ) {
-	return new Promise( res => {
-		component[ evt ].subscribe( res );
-	} );
-}

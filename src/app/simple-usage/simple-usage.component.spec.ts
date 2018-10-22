@@ -6,11 +6,15 @@ import { By } from '@angular/platform-browser';
 import { CKEditorComponent } from '../../ckeditor/ckeditor.component';
 import { DebugElement } from '@angular/core';
 
+import { TestTools } from '../../test.tools';
+
+const whenEvent = TestTools.whenEvent;
+
 describe( 'SimpleUsageComponent', () => {
-	let component: SimpleUsageComponent;
-	let fixture: ComponentFixture<SimpleUsageComponent>;
-	let ckeditorComponent: CKEditorComponent;
-	let debugElement: DebugElement;
+	let component: SimpleUsageComponent,
+		fixture: ComponentFixture<SimpleUsageComponent>,
+		ckeditorComponent: CKEditorComponent,
+		debugElement: DebugElement;
 
 	beforeEach( async( () => {
 		TestBed.configureTestingModule( {
@@ -28,7 +32,7 @@ describe( 'SimpleUsageComponent', () => {
 
 		fixture.detectChanges();
 
-		evtSubscribe( 'ready', ckeditorComponent ).then( () => {
+		whenEvent( 'ready', ckeditorComponent ).then( () => {
 			done();
 		} );
 	} );
@@ -105,9 +109,3 @@ describe( 'SimpleUsageComponent', () => {
 		} );
 	} );
 } );
-
-function evtSubscribe( evt, component ) {
-	return new Promise( res => {
-		component[ evt ].subscribe( res );
-	} );
-}
