@@ -217,6 +217,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		// Param `data` is correctly set before `ngAfterViewInit`, so we can create editor with initial data.
 		// However ControlValueAccessor with ngModel value, calls `writeValue` asynchronously after `ngAfterViewInit`.
 		// Delay editor creation, so it's always invoked with initial data.
+		// See https://github.com/angular/angular/issues/13568
 		setTimeout( () => {
 
 			element.innerHTML = this.data || '';
