@@ -5,10 +5,13 @@ import { CKEditorModule } from '../../ckeditor/ckeditor.module';
 import { DemoFormComponent } from './demo-form.component';
 import { By } from '@angular/platform-browser';
 import { CKEditorComponent } from '../../ckeditor/ckeditor.component';
+import { DebugElement } from '@angular/core';
 
 describe( 'DemoFormComponent', () => {
 	let component: DemoFormComponent;
 	let fixture: ComponentFixture<DemoFormComponent>;
+	let ckeditorComponent: CKEditorComponent;
+	let debugElement: DebugElement;
 
 	beforeEach( async( () => {
 		TestBed.configureTestingModule( {
@@ -18,13 +21,23 @@ describe( 'DemoFormComponent', () => {
 			.compileComponents();
 	} ) );
 
-	beforeEach( () => {
+	beforeEach( ( done ) => {
 		fixture = TestBed.createComponent( DemoFormComponent );
 		component = fixture.componentInstance;
+		debugElement = fixture.debugElement.query( By.directive( CKEditorComponent ) );
+		ckeditorComponent = debugElement.componentInstance;
+
 		fixture.detectChanges();
+
+		evtSubscribe( 'ready', ckeditorComponent ).then( () => {
+			done();
+		} );
 	} );
 
-	afterEach( () => {
+	afterEach( ( done ) => {
+		if ( ckeditorComponent.instance ) {
+			ckeditorComponent.instance.once( 'destroy', done );
+		}
 		fixture.destroy();
 	} );
 
@@ -51,19 +64,14 @@ describe( 'DemoFormComponent', () => {
 
 	// This test passes when run solo or testes as first, but throws a type error when run after other tests.
 	it( 'should show form data preview after change', ( done: Function ) => {
-		const debugElement = fixture.debugElement.query( By.directive( CKEditorComponent ) ),
-			ckeditorComponent: CKEditorComponent = debugElement.componentInstance;
-
-		evtSubscribe( 'ready', ckeditorComponent ).then( () => {
-			evtSubscribe( 'change', ckeditorComponent ).then( () => {
-				fixture.detectChanges();
-				expect( component.formDataPreview ).toEqual( '{"name":"John","surname":"Doe","description":"<p>An unidentified person</p>"}' );
-				done();
-			} );
-
-			ckeditorComponent.instance.setData( '<p>An unidentified person</p>' );
-
+		evtSubscribe( 'change', ckeditorComponent ).then( () => {
+			fixture.detectChanges();
+			expect( component.formDataPreview ).toEqual( '{"name":"John","surname":"Doe","description":"<p>An unidentified person</p>"}' );
+			done();
 		} );
+
+		ckeditorComponent.instance.setData( '<p>An unidentified person</p>' );
+
 	} );
 
 	it( 'should reset form after clicking the reset button', ( done: Function ) => {
