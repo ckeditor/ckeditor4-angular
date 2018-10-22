@@ -2,14 +2,36 @@
 	<h1>Welcome to the playground!</h1>
 	<h2>Classic editor:</h2>
 	<ckeditor
-		[(ngModel)]="myModel"
+		*ngIf="!remove"
+		[hidden]="hide"
+		[(ngModel)]="data"
+		[disabled]="disabled"
 		#classic></ckeditor>
-	<h3>Model Preview:</h3>
-	<textarea style="width:300px; height:150px;"
-		[(ngModel)]="myModel"></textarea>
 
 	<h2>Inline editor:</h2>
+	<div style="border: solid 1px black;">
 	<ckeditor
+		*ngIf="!remove"
+		[hidden]="hide"
+		[(data)]="data"
+		[disabled]="disabled"
 		#inline
 		type="inline"></ckeditor>
+	</div>
+	<p>
+		<label><input type="checkbox" [(ngModel)]="hide">Hide editor with '[hidden]' directive.</label>
+	</p>
+	<p>
+		<label><input type="checkbox" [(ngModel)]="remove">Remove editor from DOM with '*ngIf' directive.</label>
+	</p>
+	<p>
+		<label><input type="checkbox" [(ngModel)]="disabled">Make editor read only.</label>
+	</p>
+	<p>
+		<button (click)="destroy()">Destroy 💀💀💀</button>
+	</p>
+	<h3>Model Preview:</h3>
+	<p>You can paste here, but typing might throw some errors.</p>
+	<textarea style="width:300px; height:150px;"
+		[(ngModel)]="data"></textarea>
 </ng-container>

@@ -1,23 +1,27 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
 @Component( {
 	selector: 'app-playground',
 	templateUrl: './playground.component.html',
 	styleUrls: [ './playground.component.css' ]
 } )
-export class PlaygroundComponent implements OnInit {
+export class PlaygroundComponent {
 
 	@ViewChild( 'classic' ) classic;
 
 	@ViewChild( 'inline' ) inline;
 
-	public myModel: any;
+	data = '<h1>This is <strong>CKEditor 4</strong> Angular Integration Sample!</h1>';
+	hide = false;
+	remove = false;
+	disabled = false;
+
+	destroy() {
+		this.classic.ngOnDestroy();
+		this.inline.ngOnDestroy();
+	}
 
 	constructor() {
-		(<any>window).component = this;
+		( <any>window ).component = this;
 	}
-
-	ngOnInit() {
-	}
-
 }
