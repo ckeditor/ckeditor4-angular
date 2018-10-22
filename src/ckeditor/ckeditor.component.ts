@@ -255,6 +255,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		}
 	}
 
+	// Todo: should we remove it, as there is getter for data?
 	private getData() {
 		if ( this.instance ) {
 			return this.instance.getData();
