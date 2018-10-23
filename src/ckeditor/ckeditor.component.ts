@@ -118,6 +118,8 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 
 	private _data: string;
 
+	private forceChange: boolean;
+
 	/**
 	 * Keeps track of the editor's data.
 	 *
@@ -129,6 +131,10 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	 * See https://angular.io/api/forms/NgModel to learn more.
 	 */
 	@Input() set data( data: string ) {
+		data = data || '';
+		if ( this.onChange && this.instance && this.data !== data ) {
+			this.forceChange = true;
+		}
 		this.updateData( data );
 	}
 
@@ -166,6 +172,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	}
 
 	constructor( private elementRef: ElementRef<HTMLElement>, private ngZone: NgZone ) {
+		this._data = '';
 	}
 
 	ngAfterViewInit() {
@@ -289,8 +296,10 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 				// Make sure that data really changed due to `editor#change`
 				// (https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-change)
 				// event limitation which may be called even when data didn't change.
-				if ( this.onChange && this._data !== newData ) {
+				// Also consider direct change of components 'data' attribute.
+				if ( this.onChange && ( this._data !== newData || this.forceChange ) ) {
 					this.onChange( newData );
+					this.forceChange = false;
 				}
 
 				this._data = newData;
