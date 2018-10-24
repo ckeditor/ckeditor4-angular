@@ -118,8 +118,6 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 
 	private _data: string;
 
-	private forceChange: boolean;
-
 	/**
 	 * Keeps track of the editor's data.
 	 *
@@ -132,10 +130,14 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	 */
 	@Input() set data( data: string ) {
 		data = data || '';
-		if ( this.onChange && this.instance && this.data !== data ) {
-			this.forceChange = true;
+
+		if ( this.instance ) {
+			this.instance.setData( data );
+			// Data may be changed by ACF.
+			this._data = this.instance.getData();
+		} else {
+			this._data = data;
 		}
-		this.updateData( data );
 	}
 
 	/**
@@ -189,14 +191,6 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	}
 
 	writeValue( value: string | null ): void {
-		// This method is called with the `null` value when the form resets.
-		// A component's responsibility is to restore it to the initial state.
-		// Known issue, that writeValue is fired twice, first with empty data,
-		// then with actual initial data: https://github.com/angular/angular/issues/14988
-		if ( value === null ) {
-			value = '';
-		}
-
 		this.data = value;
 	}
 
@@ -222,53 +216,30 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 
 		const element = document.createElement( this.tagName );
 
-		// Param `data` is correctly set before `ngAfterViewInit`, so we can create editor with initial data.
-		// However ControlValueAccessor with ngModel value, calls `writeValue` asynchronously after `ngAfterViewInit`.
-		// Delay editor creation, so it's always invoked with initial data.
-		// See https://github.com/angular/angular/issues/13568
-		setTimeout( () => {
+		this.elementRef.nativeElement.appendChild( element );
 
-			element.innerHTML = this.data || '';
+		const instance = this.type === CKEditor4.EditorType.INLINE ?
+			CKEDITOR.inline( element, this.config )
+			: CKEDITOR.replace( element, this.config );
 
-			this.elementRef.nativeElement.appendChild( element );
+		instance.once( 'instanceReady', evt => {
+			this.instance = instance;
 
-			const instance = this.type === CKEditor4.EditorType.INLINE ?
-				CKEDITOR.inline( element, this.config )
-				: CKEDITOR.replace( element, this.config );
+			if ( this.data !== this.instance.getData() ) {
+				this.instance.setData( this.data );
+			}
 
-			instance.once( 'instanceReady', evt => {
-				this.instance = instance;
+			// Read only state may change during instance initialization, restore it here.
+			if ( this.initialDisabled !== null ) {
+				this.disabled = this.initialDisabled;
+			}
 
-				// Read only state may change during instance initialization, restore it here.
-				if ( this.initialDisabled !== null ) {
-					this.disabled = this.initialDisabled;
-				}
+			this.subscribe( this.instance );
 
-				this.subscribe( this.instance );
-
-				this.ngZone.run( () => {
-					this.ready.emit( evt );
-				} );
+			this.ngZone.run( () => {
+				this.ready.emit( evt );
 			} );
 		} );
-	}
-
-	private updateData( value ) {
-		if ( this.instance ) {
-			this.instance.setData( value );
-			// Data may be changed by ACF.
-			this._data = this.instance.getData();
-		} else {
-			this._data = value;
-		}
-	}
-
-	// Todo: should we remove it, as there is getter for data?
-	private getData() {
-		if ( this.instance ) {
-			return this.instance.getData();
-		}
-		return this.data;
 	}
 
 	private subscribe( editor: any ) {
@@ -290,21 +261,22 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		} );
 
 		editor.on( 'change', evt => {
-			const newData = editor.getData();
 
 			this.ngZone.run( () => {
-				// Make sure that data really changed due to `editor#change`
-				// (https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-change)
-				// event limitation which may be called even when data didn't change.
-				// Also consider direct change of components 'data' attribute.
-				if ( this.onChange && ( this._data !== newData || this.forceChange ) ) {
-					this.onChange( newData );
-					this.forceChange = false;
+				const newData = editor.getData();
+
+				this.change.emit( evt );
+
+				if ( newData === this.data ) {
+					return;
 				}
 
 				this._data = newData;
-				this.change.emit( evt );
 				this.dataChange.emit( newData );
+
+				if ( this.onChange ) {
+					this.onChange( newData );
+				}
 			} );
 		} );
 	}
