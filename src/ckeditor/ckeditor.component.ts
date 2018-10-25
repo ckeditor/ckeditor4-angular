@@ -123,9 +123,6 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	 *
 	 * It's also decorated as an input which is useful when not using the ngModel.
 	 *
-	 * Store actual data in private _data property and use setter to update data,
-	 * to allow `(data)` binding.
-	 *
 	 * See https://angular.io/api/forms/NgModel to learn more.
 	 */
 	@Input() set data( data: string ) {
@@ -142,16 +139,16 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		}
 	}
 
+	get data(): string {
+		return this._data;
+	}
+
 	/**
 	 * Emit `dataChange` event to allow `[data]` binding and two way `[(data)]` binding.
 	 *
 	 * See more: https://angular.io/guide/template-syntax#two-way-binding---
 	 */
 	@Output() dataChange: EventEmitter<CKEditor4.EventInfo> = new EventEmitter<CKEditor4.EventInfo>();
-
-	get data(): string {
-		return this._data;
-	}
 
 	/**
 	 * When set `true`, the editor becomes read-only.
@@ -190,6 +187,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 			} );
 		}
 	}
+
 
 	writeValue( value: string | null ): void {
 		this.data = value;
