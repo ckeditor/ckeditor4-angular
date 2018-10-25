@@ -119,7 +119,7 @@ describe( 'CKEditorComponent', () => {
 			it( 'initial data should be empty', () => {
 				fixture.detectChanges();
 
-				expect( component.data ).toEqual( '' );
+				expect( component.data ).toEqual( null );
 				expect( component.instance.getData() ).toEqual( '' );
 			} );
 
