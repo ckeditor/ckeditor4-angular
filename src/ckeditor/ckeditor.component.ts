@@ -116,7 +116,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	 */
 	onTouched?: () => void;
 
-	private _data: string;
+	private _data: string = null;
 
 	/**
 	 * Keeps track of the editor's data.
@@ -129,8 +129,6 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	 * See https://angular.io/api/forms/NgModel to learn more.
 	 */
 	@Input() set data( data: string ) {
-		data = data || '';
-
 		if ( this.instance ) {
 			this.instance.setData( data );
 			// Data may be changed by ACF.
@@ -174,7 +172,6 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	}
 
 	constructor( private elementRef: ElementRef<HTMLElement>, private ngZone: NgZone ) {
-		this._data = '';
 	}
 
 	ngAfterViewInit() {
@@ -225,20 +222,28 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		instance.once( 'instanceReady', evt => {
 			this.instance = instance;
 
-			if ( this.data !== this.instance.getData() ) {
+			if ( this.data !== null ) {
+				this.instance.on( 'dataReady', () => {
+					this.whenDataReady( evt );
+				} );
 				this.instance.setData( this.data );
+			} else {
+				this.whenDataReady( evt );
 			}
 
-			// Read only state may change during instance initialization, restore it here.
-			if ( this.initialDisabled !== null ) {
-				this.disabled = this.initialDisabled;
-			}
+		}, null, null, -999 );
+	}
 
-			this.subscribe( this.instance );
+	private whenDataReady( evt ) {
+		// Read only state may change during instance initialization, restore it here.
+		if ( this.initialDisabled !== null ) {
+			this.disabled = this.initialDisabled;
+		}
 
-			this.ngZone.run( () => {
-				this.ready.emit( evt );
-			} );
+		this.subscribe( this.instance );
+
+		this.ngZone.run( () => {
+			this.ready.emit( evt );
 		} );
 	}
 
