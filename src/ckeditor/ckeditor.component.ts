@@ -129,6 +129,10 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	 * See https://angular.io/api/forms/NgModel to learn more.
 	 */
 	@Input() set data( data: string ) {
+		if ( data === this._data ) {
+			return;
+		}
+
 		if ( this.instance ) {
 			this.instance.setData( data );
 			// Data may be changed by ACF.
