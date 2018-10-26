@@ -118,6 +118,9 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 
 	private _data: string = null;
 
+	private frame: any;
+	private frameParent: any;
+
 	/**
 	 * Keeps track of the editor's data.
 	 *
@@ -180,14 +183,20 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	}
 
 	ngOnDestroy() {
-		if ( this.instance ) {
-			setTimeout( () => {
-				this.instance.destroy();
-				this.instance = null;
-			} );
-		}
+		this.ngZone.runOutsideAngular( () => {
+			if ( this.instance ) {
+				// Restore reference to the CKEditors iframe element when native element is removed.
+				if ( this.frame ) {
+					this.frame.getParent = () => this.frameParent;
+					this.instance.window.getFrame = () => this.frame;
+				}
+				setTimeout( () => {
+					this.instance.destroy();
+					this.instance = null;
+				} );
+			}
+		} );
 	}
-
 
 	writeValue( value: string | null ): void {
 		this.data = value;
@@ -241,6 +250,9 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		if ( this.initialDisabled !== null ) {
 			this.disabled = this.initialDisabled;
 		}
+
+		this.frame = this.instance.window.getFrame();
+		this.frameParent = this.frame && this.frame.getParent();
 
 		this.subscribe( this.instance );
 
