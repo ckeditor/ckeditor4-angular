@@ -64,9 +64,7 @@ describe( 'CKEditorComponent', () => {
 
 			fixture.detectChanges();
 
-			whenEvent( 'ready', component ).then( () => {
-				done();
-			} );
+			whenEvent( 'ready', component ).then( done );
 		} );
 
 		afterEach( ( done ) => {
@@ -197,10 +195,11 @@ describe( 'CKEditorComponent', () => {
 				const spy = jasmine.createSpy();
 				component.registerOnChange( spy );
 
-				component.data = 'initial';
-				component.instance.fire( 'change' );
+				component.instance.once( 'dataReady', () => {
+					expect( spy ).toHaveBeenCalledTimes( 1 );
+				} );
 
-				expect( spy ).toHaveBeenCalledTimes( 1 );
+				component.instance.setData( 'initial' );
 			} );
 		} );
 	} );

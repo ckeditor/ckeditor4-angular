@@ -54,14 +54,14 @@ describe( 'DemoFormComponent', () => {
 		submitButton.click();
 
 		expect( spy ).toHaveBeenCalledTimes( 1 );
-		expect( spy.calls.first().args ).toEqual( jasmine.arrayContaining( [
+		expect( spy.calls.first().args ).toEqual( [
 			'Form submit, model',
-			jasmine.objectContaining( {
+			{
 				name: 'John',
 				surname: 'Doe',
-				description: '<p>A <b>really</b> nice fellow.</p>'
-			} )
-		] ) );
+				description: '<p>A <strong>really</strong> nice fellow.</p>'
+			}
+		] );
 	} );
 
 	// This test passes when run solo or testes as first, but throws a type error when run after other tests.
