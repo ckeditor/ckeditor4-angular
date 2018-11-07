@@ -94,6 +94,8 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	 */
 	instance: any;
 
+	wrapper: HTMLElement;
+
 	/**
 	 * If the component is read–only before the editor instance is created, it remembers that state,
 	 * so the editor can become read–only once it is ready.
@@ -117,9 +119,6 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	onTouched?: () => void;
 
 	private _data: string = null;
-
-	private frame: any;
-	private frameParent: any;
 
 	/**
 	 * Keeps track of the editor's data.
@@ -185,15 +184,8 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	ngOnDestroy() {
 		this.ngZone.runOutsideAngular( () => {
 			if ( this.instance ) {
-				// Restore reference to the CKEditors iframe element when native element is removed.
-				if ( this.frame ) {
-					this.frame.getParent = () => this.frameParent;
-					this.instance.window.getFrame = () => this.frame;
-				}
-				setTimeout( () => {
-					this.instance.destroy();
-					this.instance = null;
-				} );
+				this.instance.destroy();
+				this.instance = null;
 			}
 		} );
 	}
@@ -222,9 +214,27 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 			return;
 		}
 
+		// Render editor outside of component so it won't be removed from DOM before `instanceReady`.
+		this.wrapper = document.createElement( 'div' );
 		const element = document.createElement( this.tagName );
 
-		this.elementRef.nativeElement.appendChild( element );
+		this.wrapper.setAttribute( 'style', 'display:none;' );
+
+		document.body.appendChild( this.wrapper );
+		this.wrapper.appendChild( element );
+
+		if ( this.config ) {
+			if ( this.config.extraPlugins ) {
+				if ( this.config.extraPlugins.indexOf( 'divarea' ) === -1 ) {
+					this.config.extraPlugins += ',divarea';
+				}
+			} else {
+				this.config.extraPlugins = 'divarea';
+			}
+		} else {
+			this.config = { extraPlugins: 'divarea' };
+		}
+
 
 		const instance = this.type === CKEditor4.EditorType.INLINE ?
 			CKEDITOR.inline( element, this.config )
@@ -232,6 +242,10 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 
 		instance.once( 'instanceReady', evt => {
 			this.instance = instance;
+
+			this.wrapper.removeAttribute( 'style' );
+
+			this.elementRef.nativeElement.appendChild( this.wrapper );
 
 			if ( this.data !== null ) {
 				this.instance.on( 'dataReady', () => {
@@ -250,9 +264,6 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		if ( this.initialDisabled !== null ) {
 			this.disabled = this.initialDisabled;
 		}
-
-		this.frame = this.instance.window.getFrame();
-		this.frameParent = this.frame && this.frame.getParent();
 
 		this.subscribe( this.instance );
 
