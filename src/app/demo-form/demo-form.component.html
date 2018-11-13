@@ -31,13 +31,13 @@
 		<em>(Open the console first)</em></p>
 </form>
 
-<h3>Editor data preview (readable and writable)</h3>
+<h3>Editor data preview (readonly)</h3>
 <p>
 	Note that it's only a prove of concept of using the `ngModel`.
 	It allows editing, but the editor instantly strips out unknown tags and autoparagraphs text outside of block
 	elements.
 </p>
-<textarea [(ngModel)]="model.description" style="width: 100%; height: 40px"></textarea>
+<textarea readonly = true [ngModel]="model.description" style="width: 100%; height: 40px"></textarea>
 
 <h3>Form data preview</h3>
 <pre>{{ formDataPreview }}</pre>
