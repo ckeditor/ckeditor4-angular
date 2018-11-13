@@ -223,18 +223,15 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		document.body.appendChild( this.wrapper );
 		this.wrapper.appendChild( element );
 
-		if ( this.config ) {
-			if ( this.config.extraPlugins ) {
-				if ( this.config.extraPlugins.indexOf( 'divarea' ) === -1 ) {
-					this.config.extraPlugins += ',divarea';
-				}
-			} else {
-				this.config.extraPlugins = 'divarea';
-			}
-		} else {
-			this.config = { extraPlugins: 'divarea' };
-		}
+		this.config = this.config || {};
 
+		let extraPlugins = this.config.extraPlugins || '';
+
+		const isArray = extraPlugins instanceof Array;
+
+		extraPlugins = isArray ? extraPlugins.join( ',' ) : extraPlugins;
+		extraPlugins += extraPlugins.indexOf( 'divarea' ) === -1 ? ',divarea' : '';
+		this.config.extraPlugins = isArray ? extraPlugins.split( ',' ) : extraPlugins;
 
 		const instance = this.type === CKEditor4.EditorType.INLINE ?
 			CKEDITOR.inline( element, this.config )
