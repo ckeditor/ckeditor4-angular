@@ -7,13 +7,11 @@ import { AppComponent } from './app.component';
 import { CKEditorModule } from '../ckeditor/ckeditor.module';
 import { SimpleUsageComponent } from './simple-usage/simple-usage.component';
 import { DemoFormComponent } from './demo-form/demo-form.component';
-import { PlaygroundComponent } from './playground/playground.component';
 
 const appRoutes: Routes = [
 	{ path: '', redirectTo: '/simple-usage', pathMatch: 'full' },
 	{ path: 'simple-usage', component: SimpleUsageComponent },
-	{ path: 'forms', component: DemoFormComponent },
-	{ path: 'playground', component: PlaygroundComponent }
+	{ path: 'forms', component: DemoFormComponent }
 ];
 
 @NgModule( {
@@ -26,8 +24,7 @@ const appRoutes: Routes = [
 	declarations: [
 		AppComponent,
 		DemoFormComponent,
-		SimpleUsageComponent,
-		PlaygroundComponent
+		SimpleUsageComponent
 	],
 	providers: [],
 	bootstrap: [ AppComponent ]
