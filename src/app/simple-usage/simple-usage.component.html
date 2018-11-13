@@ -6,10 +6,13 @@
 	<button (click)="toggleDisableEditors()">{{ isDisabled ? 'Enable editors' : 'Disable editors' }}</button>
 </p>
 
-<h3>Classic build</h3>
+<h3>Classic editor:</h3>
 <ckeditor
-	[data]="editorData"
+	*ngIf="!isRemoved"
+	[(ngModel)]="editorData"
 	[disabled]="isDisabled"
+	[hidden]="isHidden"
+	#classic
 	id="classic-editor"
 	name="classic-editor"
 
@@ -19,7 +22,37 @@
 	(blur)="onBlur($event)">
 </ckeditor>
 
-<h4>Component events:</h4>
+<h3>Inline editor:</h3>
+<div style="border: solid 1px black;">
+	<ckeditor
+		*ngIf="!isRemoved"
+		[hidden]="isHidden"
+		[(ngModel)]="inlineData"
+		[disabled]="isDisabled"
+		#inline
+
+		id="inline-editor"
+		name="inline-editor"
+
+		type="inline"></ckeditor>
+</div>
+
+<h4>Component controls:</h4>
+
+<p>
+	<label><input type="checkbox" [(ngModel)]="syncEditors">Synchronise editors, so they share same data.</label>
+</p>
+<p>
+	<label><input type="checkbox" [(ngModel)]="isHidden">Hide editor with '[hidden]' directive.</label>
+</p>
+<p>
+	<label><input type="checkbox" [(ngModel)]="isRemoved">Remove editor from DOM with '*ngIf' directive.</label>
+</p>
+<p>
+	<label><input type="checkbox" [(ngModel)]="isDisabled">Make editor read only.</label>
+</p>
+
+<h4>Classic editor component events:</h4>
 <ul>
 	<li *ngFor="let eventInfo of componentEvents">
 		<span>{{ eventInfo }}</span>
