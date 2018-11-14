@@ -214,24 +214,9 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 			return;
 		}
 
-		// Render editor outside of component so it won't be removed from DOM before `instanceReady`.
-		this.wrapper = document.createElement( 'div' );
-		const element = document.createElement( this.tagName );
+		const element = this.createInitialElement();
 
-		this.wrapper.setAttribute( 'style', 'display:none;' );
-
-		document.body.appendChild( this.wrapper );
-		this.wrapper.appendChild( element );
-
-		this.config = this.config || {};
-
-		let extraPlugins = this.config.extraPlugins || '';
-
-		const isArray = extraPlugins instanceof Array;
-
-		extraPlugins = isArray ? extraPlugins.join( ',' ) : extraPlugins;
-		extraPlugins += extraPlugins.indexOf( 'divarea' ) === -1 ? ',divarea' : '';
-		this.config.extraPlugins = isArray ? extraPlugins.split( ',' ) : extraPlugins;
+		this.ensureDivareaPluginIncluded();
 
 		const instance = this.type === CKEditor4.EditorType.INLINE ?
 			CKEDITOR.inline( element, this.config )
@@ -305,5 +290,30 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 				}
 			} );
 		} );
+	}
+
+	private ensureDivareaPluginIncluded() {
+		this.config = this.config || {};
+
+		let extraPlugins = this.config.extraPlugins || '';
+
+		const isArray = extraPlugins instanceof Array;
+
+		extraPlugins = isArray ? extraPlugins.join( ',' ) : extraPlugins;
+		extraPlugins += extraPlugins.indexOf( 'divarea' ) === -1 ? ',divarea' : '';
+		this.config.extraPlugins = isArray ? extraPlugins.split( ',' ) : extraPlugins;
+	}
+
+	private createInitialElement() {
+		// Render editor outside of component so it won't be removed from DOM before `instanceReady`.
+		this.wrapper = document.createElement( 'div' );
+		const element = document.createElement( this.tagName );
+
+		this.wrapper.setAttribute( 'style', 'display:none;' );
+
+		document.body.appendChild( this.wrapper );
+		this.wrapper.appendChild( element );
+
+		return element;
 	}
 }
