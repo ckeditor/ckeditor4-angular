@@ -14,8 +14,8 @@ const whenEvent = TestTools.whenEvent;
 describe( 'SimpleUsageComponent', () => {
 	let component: SimpleUsageComponent,
 		fixture: ComponentFixture<SimpleUsageComponent>,
-		ckeditorComponent: CKEditorComponent,
-		debugElement: DebugElement;
+		ckeditorComponents: CKEditorComponent[],
+		debugElements: DebugElement[];
 
 	beforeEach( async( () => {
 		TestBed.configureTestingModule( {
@@ -32,18 +32,21 @@ describe( 'SimpleUsageComponent', () => {
 		// When there is `*ngIf` directive on component instance, we need another detectChanges.
 		fixture.detectChanges();
 
-		debugElement = fixture.debugElement.query( By.directive( CKEditorComponent ) );
-		ckeditorComponent = debugElement.componentInstance;
+		debugElements = fixture.debugElement.queryAll( By.directive( CKEditorComponent ) );
+		ckeditorComponents = debugElements.map( debugElement => debugElement.componentInstance );
 
 		fixture.detectChanges();
 
-		whenEvent( 'ready', ckeditorComponent ).then( done );
+		whenEach( ckeditorComponent => whenEvent( 'ready', ckeditorComponent ) ).then( done );
 	} );
 
 	afterEach( ( done ) => {
-		if ( ckeditorComponent.instance ) {
-			ckeditorComponent.instance.once( 'destroy', done );
-		}
+		whenEach( ( ckeditorComponent => new Promise( ( res ) => {
+			if ( ckeditorComponent.instance ) {
+				ckeditorComponent.instance.once( 'destroy', res );
+			}
+		} ) ) ).then( done );
+
 		fixture.destroy();
 	} );
 
@@ -61,20 +64,26 @@ describe( 'SimpleUsageComponent', () => {
 			fixture.detectChanges();
 
 			expect( component.isReadOnly ).toBeTruthy();
-			expect( ckeditorComponent.readOnly ).toBeTruthy();
+			each( ckeditorComponent => {
+				expect( ckeditorComponent.readOnly ).toBeTruthy();
+			} );
 
 			component.toggleDisableEditors();
 			fixture.detectChanges();
 
 			expect( component.isReadOnly ).toBeFalsy();
-			expect( ckeditorComponent.readOnly ).toBeFalsy();
+			each( ckeditorComponent => {
+				expect( ckeditorComponent.readOnly ).toBeFalsy();
+			} );
 		} );
 	} );
 
 	describe( 'data', () => {
 		it( 'should set initial data on the CKEditor component', () => {
-			expect( ckeditorComponent.data )
-				.toContain( '<p>Getting used to an entirely different culture can be challenging.' );
+			each( ckeditorComponent => {
+				expect( ckeditorComponent.data )
+					.toContain( '<p>Getting used to an entirely different culture can be challenging.' );
+			} );
 		} );
 
 		it( 'should be synced with editorData property', () => {
@@ -82,33 +91,52 @@ describe( 'SimpleUsageComponent', () => {
 
 			fixture.detectChanges();
 
-			expect( ckeditorComponent.data ).toEqual( '<p>foo</p>\n' );
+			each( ckeditorComponent => {
+				expect( ckeditorComponent.data ).toEqual( '<p>foo</p>\n' );
+			} );
 		} );
 	} );
+
 
 	describe( 'listeners', () => {
 		it( 'ready should be called on ckeditorComponent.ready()', () => {
-			ckeditorComponent.ready.emit();
+			each( ckeditorComponent => {
+				ckeditorComponent.ready.emit();
 
-			expect( component.componentEvents ).toContain( 'The editor is ready.' );
+				expect( component.componentEvents ).toContain( 'The editor is ready.' );
+			} );
 		} );
 
 		it( 'change should be called on ckeditorComponent.change()', () => {
-			ckeditorComponent.change.emit();
+			each( ckeditorComponent => {
+				ckeditorComponent.change.emit();
 
-			expect( component.componentEvents ).toContain( 'Editor model changed.' );
+				expect( component.componentEvents ).toContain( 'Editor model changed.' );
+			} );
 		} );
 
 		it( 'focus should be called on ckeditorComponent.focus()', () => {
-			ckeditorComponent.focus.emit();
+			each( ckeditorComponent => {
+				ckeditorComponent.focus.emit();
 
-			expect( component.componentEvents ).toContain( 'Focused the editing view.' );
+				expect( component.componentEvents ).toContain( 'Focused the editing view.' );
+			} );
 		} );
 
 		it( 'blur should be called on ckeditorComponent.blur()', () => {
-			ckeditorComponent.blur.emit();
+			each( ckeditorComponent => {
+				ckeditorComponent.blur.emit();
 
-			expect( component.componentEvents ).toContain( 'Blurred the editing view.' );
+				expect( component.componentEvents ).toContain( 'Blurred the editing view.' );
+			} );
 		} );
 	} );
+
+	function whenEach( callback ) {
+		return Promise.all( ckeditorComponents.map( ckeditorComponent => callback( ckeditorComponent ) ) );
+	}
+
+	function each( callback ) {
+		ckeditorComponents.forEach( item => callback( item ) );
+	}
 } );
