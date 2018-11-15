@@ -8,7 +8,7 @@ import { CKEditor4 } from '../../ckeditor/ckeditor';
 	styleUrls: [ './simple-usage.component.css' ]
 } )
 export class SimpleUsageComponent {
-	public isDisabled = false;
+	public isReadOnly = false;
 	public editorData =
 		`<p>Getting used to an entirely different culture can be challenging.
 While it’s also nice to learn about cultures online or from books, nothing comes close to experiencing cultural diversity in person.
@@ -42,7 +42,7 @@ You learn to appreciate each and every single one of the differences while you b
 	public componentEvents: string[] = [];
 
 	toggleDisableEditors() {
-		this.isDisabled = !this.isDisabled;
+		this.isReadOnly = !this.isReadOnly;
 	}
 
 	onReady( editor: CKEditor4.EventInfo ): void {

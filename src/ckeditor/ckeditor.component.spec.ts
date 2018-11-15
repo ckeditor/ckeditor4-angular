@@ -77,29 +77,29 @@ describe( 'CKEditorComponent', () => {
 		} );
 
 
-		describe( 'disabled state', () => {
+		describe( 'readOnly state', () => {
 			it( 'simple usage', () => {
 				fixture.detectChanges();
 
-				expect( component.disabled ).toBeFalsy();
+				expect( component.readOnly ).toBeFalsy();
 				expect( component.instance.readOnly ).toBeFalsy();
 
-				component.disabled = true;
+				component.readOnly = true;
 
-				expect( component.disabled ).toBeTruthy();
+				expect( component.readOnly ).toBeTruthy();
 				expect( component.instance.readOnly ).toBeTruthy();
 
-				component.disabled = false;
+				component.readOnly = false;
 
-				expect( component.disabled ).toBeFalsy();
+				expect( component.readOnly ).toBeFalsy();
 				expect( component.instance.readOnly ).toBeFalsy();
 			} );
 
-			it( 'editor disabled by the ControlValueAccessor', () => {
+			it( 'editor readOnly by the ControlValueAccessor', () => {
 				fixture.detectChanges();
-				component.setDisabledState( true );
+				component.setReadOnlyState( true );
 
-				expect( component.disabled ).toBeTruthy();
+				expect( component.readOnly ).toBeTruthy();
 				expect( component.instance.readOnly ).toBeTruthy();
 			} );
 		} );

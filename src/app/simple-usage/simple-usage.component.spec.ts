@@ -46,23 +46,23 @@ describe( 'SimpleUsageComponent', () => {
 		expect( component ).toBeTruthy();
 	} );
 
-	describe( 'disabled state', () => {
+	describe( 'readOnly state', () => {
 		it( 'should be set to false at start', () => {
-			expect( component.isDisabled ).toBeFalsy();
+			expect( component.isReadOnly ).toBeFalsy();
 		} );
 
 		it( 'should be synced', () => {
 			component.toggleDisableEditors();
 			fixture.detectChanges();
 
-			expect( component.isDisabled ).toBeTruthy();
-			expect( ckeditorComponent.disabled ).toBeTruthy();
+			expect( component.isReadOnly ).toBeTruthy();
+			expect( ckeditorComponent.readOnly ).toBeTruthy();
 
 			component.toggleDisableEditors();
 			fixture.detectChanges();
 
-			expect( component.isDisabled ).toBeFalsy();
-			expect( ckeditorComponent.disabled ).toBeFalsy();
+			expect( component.isReadOnly ).toBeFalsy();
+			expect( ckeditorComponent.readOnly ).toBeFalsy();
 		} );
 	} );
 

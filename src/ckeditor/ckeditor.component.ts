@@ -100,7 +100,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	 * If the component is read–only before the editor instance is created, it remembers that state,
 	 * so the editor can become read–only once it is ready.
 	 */
-	initialDisabled: any = null;
+	initialReadOnly: any = null;
 
 	/**
 	 * A callback executed when the content of the editor changes. Part of the
@@ -157,21 +157,21 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#property-readOnly
 	 * to learn more.
 	 */
-	@Input() set disabled( isDisabled: boolean ) {
+	@Input() set readOnly( isReadOnly: boolean ) {
 		if ( this.instance ) {
-			this.instance.setReadOnly( isDisabled );
+			this.instance.setReadOnly( isReadOnly );
 		} else {
 			// Delay setting read-only state until editor initialization.
-			this.initialDisabled = isDisabled;
+			this.initialReadOnly = isReadOnly;
 		}
 	}
 
-	get disabled() {
+	get readOnly() {
 		if ( this.instance ) {
 			return this.instance.readOnly;
 		}
 
-		return this.initialDisabled;
+		return this.initialReadOnly;
 	}
 
 	constructor( private elementRef: ElementRef<HTMLElement>, private ngZone: NgZone ) {
@@ -202,8 +202,8 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		this.onTouched = callback;
 	}
 
-	setDisabledState( isDisabled: boolean ): void {
-		this.disabled = isDisabled;
+	setReadOnlyState( isReadOnly: boolean ): void {
+		this.readOnly = isReadOnly;
 	}
 
 	private createEditor() {
@@ -241,11 +241,11 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	}
 
 	private whenDataReady( evt ) {
-		// If set use component's disabled attribute, otherwise use editors readOnly property.
-		if ( this.initialDisabled !== null ) {
-			this.disabled = this.initialDisabled;
+		// If set use component's readOnly attribute, otherwise use editors readOnly property.
+		if ( this.initialReadOnly !== null ) {
+			this.readOnly = this.initialReadOnly;
 		} else {
-			this.disabled = this.instance.readOnly;
+			this.readOnly = this.instance.readOnly;
 		}
 
 		this.subscribe( this.instance );

@@ -6,7 +6,7 @@
 <ckeditor
 	*ngIf="!isRemoved"
 	[(ngModel)]="editorData"
-	[disabled]="isDisabled"
+	[readOnly]="isReadOnly"
 	[hidden]="isHidden"
 	#classic
 	id="classic-editor"
@@ -24,7 +24,7 @@
 		*ngIf="!isRemoved"
 		[hidden]="isHidden"
 		[(ngModel)]="inlineData"
-		[disabled]="isDisabled"
+		[readOnly]="isReadOnly"
 		#inline
 
 		id="inline-editor"
@@ -45,7 +45,7 @@
 	<label><input type="checkbox" [(ngModel)]="isRemoved">Remove editor from DOM with '*ngIf' directive.</label>
 </p>
 <p>
-	<label><input type="checkbox" [(ngModel)]="isDisabled">Make editor read only.</label>
+	<label><input type="checkbox" [(ngModel)]="isReadOnly">Make editor read only.</label>
 </p>
 
 <h4>Classic editor component events:</h4>
