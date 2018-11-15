@@ -7,6 +7,7 @@ import { CKEditorComponent } from '../../ckeditor/ckeditor.component';
 import { DebugElement } from '@angular/core';
 
 import { TestTools } from '../../test.tools';
+import { FormsModule } from '@angular/forms';
 
 const whenEvent = TestTools.whenEvent;
 
@@ -19,7 +20,7 @@ describe( 'SimpleUsageComponent', () => {
 	beforeEach( async( () => {
 		TestBed.configureTestingModule( {
 			declarations: [ SimpleUsageComponent ],
-			imports: [ CKEditorModule ]
+			imports: [ CKEditorModule, FormsModule ]
 		} )
 			.compileComponents();
 	} ) );
