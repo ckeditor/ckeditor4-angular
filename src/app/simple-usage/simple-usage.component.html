@@ -5,7 +5,7 @@
 <h3>Classic editor:</h3>
 <ckeditor
 	*ngIf="!isRemoved"
-	[(ngModel)]="editorData"
+	[(data)]="editorData"
 	[readOnly]="isReadOnly"
 	[hidden]="isHidden"
 	#classic
@@ -23,7 +23,7 @@
 	<ckeditor
 		*ngIf="!isRemoved"
 		[hidden]="isHidden"
-		[(ngModel)]="inlineData"
+		[(data)]="inlineData"
 		[readOnly]="isReadOnly"
 		#inline
 
