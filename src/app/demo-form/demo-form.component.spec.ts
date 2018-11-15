@@ -59,7 +59,7 @@ describe( 'DemoFormComponent', () => {
 			{
 				name: 'John',
 				surname: 'Doe',
-				description: '<p>A <strong>really</strong> nice fellow.</p>'
+				description: '<p>A <strong>really</strong> nice fellow.</p>\n'
 			}
 		] );
 	} );
@@ -68,7 +68,7 @@ describe( 'DemoFormComponent', () => {
 	it( 'should show form data preview after change', ( done: Function ) => {
 		whenEvent( 'change', ckeditorComponent ).then( () => {
 			fixture.detectChanges();
-			expect( component.formDataPreview ).toEqual( '{"name":"John","surname":"Doe","description":"<p>An unidentified person</p>"}' );
+			expect( component.formDataPreview ).toEqual( '{"name":"John","surname":"Doe","description":"<p>An unidentified person</p>\\n"}' );
 			done();
 		} );
 

@@ -28,6 +28,10 @@ describe( 'SimpleUsageComponent', () => {
 	beforeEach( ( done ) => {
 		fixture = TestBed.createComponent( SimpleUsageComponent );
 		component = fixture.componentInstance;
+
+		// When there is `*ngIf` directive on component instance, we need another detectChanges.
+		fixture.detectChanges();
+
 		debugElement = fixture.debugElement.query( By.directive( CKEditorComponent ) );
 		ckeditorComponent = debugElement.componentInstance;
 
@@ -74,11 +78,11 @@ describe( 'SimpleUsageComponent', () => {
 		} );
 
 		it( 'should be synced with editorData property', () => {
-			component.editorData = '<p>foo</p>';
+			component.editorData = '<p>foo</p>\n';
 
 			fixture.detectChanges();
 
-			expect( ckeditorComponent.data ).toEqual( '<p>foo</p>' );
+			expect( ckeditorComponent.data ).toEqual( '<p>foo</p>\n' );
 		} );
 	} );
 

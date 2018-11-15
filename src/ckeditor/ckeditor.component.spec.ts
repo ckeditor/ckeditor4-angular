@@ -114,6 +114,8 @@ describe( 'CKEditorComponent', () => {
 		} );
 
 		describe( 'component data', () => {
+			const data = '<p>foo</p>\n';
+
 			it( 'initial data should be empty', () => {
 				fixture.detectChanges();
 
@@ -123,21 +125,23 @@ describe( 'CKEditorComponent', () => {
 
 			it( 'should be configurable at the start of the component', () => {
 				fixture.detectChanges();
-				component.data = 'foo';
+				component.data = data;
 
-				expect( component.data ).toEqual( 'foo' );
-				expect( component.instance.getData() ).toEqual( 'foo' );
+				expect( component.data ).toEqual( data );
+				expect( component.instance.getData() ).toEqual( data );
 			} );
 
 			it( 'should be writeable by ControlValueAccessor', () => {
 				fixture.detectChanges();
-				component.writeValue( 'foo' );
+				component.writeValue( data );
 
-				expect( component.instance.getData() ).toEqual( 'foo' );
+				expect( component.instance.getData() ).toEqual( data );
 
-				component.writeValue( 'bar' );
+				const newData = '<p>bar</p>\n';
 
-				expect( component.instance.getData() ).toEqual( 'bar' );
+				component.writeValue( newData );
+
+				expect( component.instance.getData() ).toEqual( newData );
 			} );
 		} );
 
@@ -195,7 +199,8 @@ describe( 'CKEditorComponent', () => {
 				const spy = jasmine.createSpy();
 				component.registerOnChange( spy );
 
-				component.instance.once( 'dataReady', () => {
+				whenEvent( 'change', () => {
+					fixture.detectChanges();
 					expect( spy ).toHaveBeenCalledTimes( 1 );
 				} );
 
