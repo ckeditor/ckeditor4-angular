@@ -241,9 +241,11 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	}
 
 	private whenDataReady( evt ) {
-		// Read only state may change during instance initialization, restore it here.
+		// If set use component's disabled attribute, otherwise use editors readOnly property.
 		if ( this.initialDisabled !== null ) {
 			this.disabled = this.initialDisabled;
+		} else {
+			this.disabled = this.instance.readOnly;
 		}
 
 		this.subscribe( this.instance );
