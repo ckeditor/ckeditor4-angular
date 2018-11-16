@@ -55,6 +55,27 @@ describe( 'CKEditorComponent', () => {
 				expect( spy ).toHaveBeenCalledTimes( 1 );
 			} );
 		} );
+
+		describe( 'with config', () => {
+			beforeEach( ( done ) => {
+				component.config = {
+					readOnly: true,
+					width: 1000,
+					height: 1000
+				};
+				fixture.detectChanges();
+				whenEvent( 'ready', component ).then( done );
+			} );
+
+			it( 'sets readOnly', () => {
+				expect( component.instance.readOnly ).toBeTruthy();
+			} );
+
+			it( 'sets editor width and height', () => {
+				expect( component.instance.config.width ).toBe( 1000 );
+				expect( component.instance.config.height ).toBe( 1000 );
+			} );
+		} );
 	} );
 
 	describe( 'when ready', () => {
