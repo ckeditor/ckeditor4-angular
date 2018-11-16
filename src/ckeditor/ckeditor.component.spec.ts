@@ -94,14 +94,6 @@ describe( 'CKEditorComponent', () => {
 				expect( component.readOnly ).toBeFalsy();
 				expect( component.instance.readOnly ).toBeFalsy();
 			} );
-
-			it( 'editor readOnly by the ControlValueAccessor', () => {
-				fixture.detectChanges();
-				component.setReadOnlyState( true );
-
-				expect( component.readOnly ).toBeTruthy();
-				expect( component.instance.readOnly ).toBeTruthy();
-			} );
 		} );
 
 		describe( 'tagName', () => {
