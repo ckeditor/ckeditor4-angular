@@ -225,7 +225,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 
 			this.elementRef.nativeElement.appendChild( this.wrapper );
 
-			this.setReadOnly();
+			this.readOnly = this.initialReadOnly !== null ? this.initialReadOnly : this.instance.readOnly;
 
 			this.subscribe( this.instance );
 
@@ -237,15 +237,6 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 				this.ready.emit( evt );
 			} );
 		} );
-	}
-
-	private setReadOnly() {
-		// If set use component's readOnly attribute, otherwise use editors readOnly property.
-		if ( this.initialReadOnly !== null ) {
-			this.readOnly = this.initialReadOnly;
-		} else {
-			this.readOnly = this.instance.readOnly;
-		}
 	}
 
 	private subscribe( editor: any ) {
