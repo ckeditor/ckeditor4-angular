@@ -202,10 +202,6 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		this.onTouched = callback;
 	}
 
-	setReadOnlyState( isReadOnly: boolean ): void {
-		this.readOnly = isReadOnly;
-	}
-
 	private createEditor() {
 		if ( typeof CKEDITOR === 'undefined' ) {
 			console.error( 'CKEditor4 library could not be found.' +
