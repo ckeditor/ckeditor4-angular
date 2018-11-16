@@ -23,7 +23,7 @@
 	<ckeditor
 		*ngIf="!isRemoved"
 		[hidden]="isHidden"
-		[(data)]="inlineData"
+		[(data)]="editorData"
 		[readOnly]="isReadOnly"
 		#inline
 
@@ -35,9 +35,6 @@
 
 <h4>Component controls:</h4>
 
-<p>
-	<label><input type="checkbox" [(ngModel)]="syncEditors">Synchronise editors, so they share same data.</label>
-</p>
 <p>
 	<label><input type="checkbox" [(ngModel)]="isHidden">Hide editor with '[hidden]' directive.</label>
 </p>
