@@ -229,30 +229,27 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 
 			this.elementRef.nativeElement.appendChild( this.wrapper );
 
+			this.setReadOnly();
+
+			this.subscribe( this.instance );
+
 			if ( this.data !== null ) {
-				this.instance.on( 'dataReady', () => {
-					this.whenDataReady( evt );
-				} );
 				this.instance.setData( this.data );
-			} else {
-				this.whenDataReady( evt );
 			}
+
+			this.ngZone.run( () => {
+				this.ready.emit( evt );
+			} );
 		} );
 	}
 
-	private whenDataReady( evt ) {
+	private setReadOnly() {
 		// If set use component's readOnly attribute, otherwise use editors readOnly property.
 		if ( this.initialReadOnly !== null ) {
 			this.readOnly = this.initialReadOnly;
 		} else {
 			this.readOnly = this.instance.readOnly;
 		}
-
-		this.subscribe( this.instance );
-
-		this.ngZone.run( () => {
-			this.ready.emit( evt );
-		} );
 	}
 
 	private subscribe( editor: any ) {
