@@ -54,29 +54,27 @@ describe( 'SimpleUsageComponent', () => {
 		expect( component ).toBeTruthy();
 	} );
 
-	describe( 'readOnly state', () => {
-		it( 'should be set to false at start', () => {
-			expect( component.isReadOnly ).toBeFalsy();
-		} );
-
-		it( 'should be synced', () => {
-			component.toggleDisableEditors();
-			fixture.detectChanges();
-
-			expect( component.isReadOnly ).toBeTruthy();
-			each( ckeditorComponent => {
-				expect( ckeditorComponent.readOnly ).toBeTruthy();
-			} );
-
-			component.toggleDisableEditors();
-			fixture.detectChanges();
-
-			expect( component.isReadOnly ).toBeFalsy();
-			each( ckeditorComponent => {
-				expect( ckeditorComponent.readOnly ).toBeFalsy();
-			} );
-		} );
+	it( 'readOnly should be set to false at start', () => {
+		expect( component.isReadOnly ).toBeFalsy();
 	} );
+
+	it( 'when component readOnly is changed on component editor readOnly should reflect change', () => {
+		component.toggleDisableEditors();
+		fixture.detectChanges();
+
+		expect( component.isReadOnly ).toBeTruthy();
+		each( ckeditorComponent => {
+			expect( ckeditorComponent.readOnly ).toBeTruthy();
+		} );
+
+		component.toggleDisableEditors();
+		fixture.detectChanges();
+
+		expect( component.isReadOnly ).toBeFalsy();
+		each( ckeditorComponent => {
+			expect( ckeditorComponent.readOnly ).toBeFalsy();
+		} );
+		} );
 
 	describe( 'data', () => {
 		it( 'should set initial data on the CKEditor component', () => {

@@ -23,7 +23,7 @@ describe( 'CKEditorComponent', () => {
 			.compileComponents();
 	} ) );
 
-	describe( 'initialization', () => {
+	describe( 'on initialization', () => {
 		beforeEach( () => {
 			fixture = TestBed.createComponent( CKEditorComponent );
 			component = fixture.componentInstance;
@@ -33,7 +33,7 @@ describe( 'CKEditorComponent', () => {
 			fixture.destroy();
 		} );
 
-		it( 'invalid should result in error logged to the console', () => {
+		it( 'when CKEDITOR namespace is missing should should log error to the console', () => {
 			const saved = CKEDITOR,
 				spy = spyOn( console, 'error', );
 
@@ -45,7 +45,7 @@ describe( 'CKEditorComponent', () => {
 			expect( spy ).toHaveBeenCalled();
 		} );
 
-		it( 'ready', () => {
+		it( 'when component is ready should emit ready event', () => {
 			const spy = jasmine.createSpy();
 			component.ready.subscribe( spy );
 
@@ -56,7 +56,7 @@ describe( 'CKEditorComponent', () => {
 			} );
 		} );
 
-		describe( 'with config', () => {
+		describe( 'when set with config including readOnly, width and height', () => {
 			beforeEach( ( done ) => {
 				component.config = {
 					readOnly: true,
@@ -67,18 +67,18 @@ describe( 'CKEditorComponent', () => {
 				whenEvent( 'ready', component ).then( done );
 			} );
 
-			it( 'sets readOnly', () => {
+			it( 'editor should be readOnly', () => {
 				expect( component.instance.readOnly ).toBeTruthy();
 			} );
 
-			it( 'sets editor width and height', () => {
+			it( 'editor should have width and height', () => {
 				expect( component.instance.config.width ).toBe( 1000 );
 				expect( component.instance.config.height ).toBe( 1000 );
 			} );
 		} );
 	} );
 
-	describe( 'when ready', () => {
+	describe( 'when component is ready', () => {
 		beforeEach( ( done ) => {
 			fixture = TestBed.createComponent( CKEditorComponent );
 			component = fixture.componentInstance;
@@ -98,18 +98,22 @@ describe( 'CKEditorComponent', () => {
 		} );
 
 
-		describe( 'readOnly state', () => {
-			it( 'simple usage', () => {
-				fixture.detectChanges();
+		it( 'editor shouldn\'t be readOnly', () => {
+			fixture.detectChanges();
 
-				expect( component.readOnly ).toBeFalsy();
-				expect( component.instance.readOnly ).toBeFalsy();
+			expect( component.readOnly ).toBeFalsy();
+			expect( component.instance.readOnly ).toBeFalsy();
+		} );
 
+		describe( 'and readOnly property set to true ', () => {
+			it( 'editor should be readOnly', () => {
 				component.readOnly = true;
 
 				expect( component.readOnly ).toBeTruthy();
 				expect( component.instance.readOnly ).toBeTruthy();
+			} );
 
+			it( 'and then set to false editor shouldn\'t be readOnly', () => {
 				component.readOnly = false;
 
 				expect( component.readOnly ).toBeFalsy();
@@ -117,24 +121,26 @@ describe( 'CKEditorComponent', () => {
 			} );
 		} );
 
-		describe( 'tagName', () => {
-			it( 'should enable creating component on div element', () => {
+		describe( 'and tagName set to div', () => {
+			beforeEach( () => {
 				component.tagName = 'div';
 				fixture.detectChanges();
+			} );
 
+			it( 'should create on div element', () => {
 				expect( fixture.nativeElement.lastChild.tagName ).toEqual( 'DIV' );
 			} );
 		} );
 
+		it( 'initial data should be empty', () => {
+			fixture.detectChanges();
+
+			expect( component.data ).toEqual( null );
+			expect( component.instance.getData() ).toEqual( '' );
+		} );
+
 		describe( 'component data', () => {
 			const data = '<p>foo</p>\n';
-
-			it( 'initial data should be empty', () => {
-				fixture.detectChanges();
-
-				expect( component.data ).toEqual( null );
-				expect( component.instance.getData() ).toEqual( '' );
-			} );
 
 			it( 'should be configurable at the start of the component', () => {
 				fixture.detectChanges();
@@ -158,8 +164,8 @@ describe( 'CKEditorComponent', () => {
 			} );
 		} );
 
-		describe( 'emitters', () => {
-			it( 'change', () => {
+		describe( 'editor event', () => {
+			it( 'change should emit component change', () => {
 				fixture.detectChanges();
 
 				const spy = jasmine.createSpy();
@@ -170,7 +176,7 @@ describe( 'CKEditorComponent', () => {
 				expect( spy ).toHaveBeenCalledTimes( 1 );
 			} );
 
-			it( 'focus', () => {
+			it( 'focus should emit component focus', () => {
 				fixture.detectChanges();
 
 				const spy = jasmine.createSpy();
@@ -181,7 +187,7 @@ describe( 'CKEditorComponent', () => {
 				expect( spy ).toHaveBeenCalledTimes( 1 );
 			} );
 
-			it( 'blur', () => {
+			it( 'blur should emit component blur', () => {
 				fixture.detectChanges();
 
 				const spy = jasmine.createSpy();
@@ -193,7 +199,7 @@ describe( 'CKEditorComponent', () => {
 			} );
 		} );
 
-		describe( 'control value accessor callbacks', () => {
+		describe( 'when control value accessor callbacks are set', () => {
 			it( 'onTouched callback should be called when editor is blurred', () => {
 				fixture.detectChanges();
 

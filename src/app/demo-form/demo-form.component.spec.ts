@@ -47,7 +47,7 @@ describe( 'DemoFormComponent', () => {
 		expect( component ).toBeTruthy();
 	} );
 
-	it( 'should log the model to the console when user submits the form', () => {
+	it( 'on form submission should log the model to the console', () => {
 		const spy = spyOn( console, 'log' );
 
 		const submitButton: HTMLButtonElement = fixture.debugElement.query( By.css( 'button[type=submit]' ) ).nativeElement;
@@ -65,7 +65,7 @@ describe( 'DemoFormComponent', () => {
 	} );
 
 	// This test passes when run solo or testes as first, but throws a type error when run after other tests.
-	it( 'should show form data preview after change', ( done: Function ) => {
+	it( 'when change event is emitted should show form data preview', ( done: Function ) => {
 		whenEvent( 'change', ckeditorComponent ).then( () => {
 			fixture.detectChanges();
 			expect( component.formDataPreview ).toEqual( '{"name":"John","surname":"Doe","description":"<p>An unidentified person</p>\\n"}' );
@@ -76,7 +76,7 @@ describe( 'DemoFormComponent', () => {
 
 	} );
 
-	it( 'should reset form after clicking the reset button', ( done: Function ) => {
+	it( 'when reset button is clicked should reset form', ( done: Function ) => {
 		fixture.whenStable().then( () => {
 			const resetButton: HTMLButtonElement = fixture.debugElement.query( By.css( 'button[type=reset]' ) ).nativeElement;
 			resetButton.click();
