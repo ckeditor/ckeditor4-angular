@@ -140,27 +140,26 @@ describe( 'CKEditorComponent', () => {
 		} );
 
 		describe( 'component data', () => {
-			const data = '<p>foo</p>\n';
+			const data = '<b>foo</b>',
+				expected = '<p><strong>foo</strong></p>\n'
 
 			it( 'should be configurable at the start of the component', () => {
 				fixture.detectChanges();
 				component.data = data;
 
-				expect( component.data ).toEqual( data );
-				expect( component.instance.getData() ).toEqual( data );
+				expect( component.data ).toEqual( expected );
+				expect( component.instance.getData() ).toEqual( expected );
 			} );
 
 			it( 'should be writeable by ControlValueAccessor', () => {
 				fixture.detectChanges();
 				component.writeValue( data );
 
-				expect( component.instance.getData() ).toEqual( data );
+				expect( component.instance.getData() ).toEqual( expected );
 
-				const newData = '<p>bar</p>\n';
+				component.writeValue( '<p><i>baz</i></p>' );
 
-				component.writeValue( newData );
-
-				expect( component.instance.getData() ).toEqual( newData );
+				expect( component.instance.getData() ).toEqual( '<p><em>baz</em></p>\n' );
 			} );
 		} );
 
