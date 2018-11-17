@@ -33,7 +33,7 @@ describe( 'CKEditorComponent', () => {
 			fixture.destroy();
 		} );
 
-		it( 'when CKEDITOR namespace is missing should log error to the console', () => {
+		it( 'with missing CKEDITOR namespace should log error to the console', () => {
 			const saved = CKEDITOR,
 				spy = spyOn( console, 'error', );
 
@@ -45,7 +45,7 @@ describe( 'CKEditorComponent', () => {
 			expect( spy ).toHaveBeenCalled();
 		} );
 
-		it( 'when component is ready should emit ready event', () => {
+		it( 'should emit ready event', () => {
 			const spy = jasmine.createSpy();
 			component.ready.subscribe( spy );
 
@@ -53,6 +53,14 @@ describe( 'CKEditorComponent', () => {
 
 			whenEvent( 'ready', component ).then( () => {
 				expect( spy ).toHaveBeenCalledTimes( 1 );
+			} );
+		} );
+
+		it( 'editor should use divarea plugin', () => {
+			fixture.detectChanges();
+
+			whenEvent( 'ready', component ).then( ( { editor } ) => {
+				expect( editor.plugins.divarea ).not.toBeUndefined();
 			} );
 		} );
 
