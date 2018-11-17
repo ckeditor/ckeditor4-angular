@@ -33,7 +33,7 @@ describe( 'CKEditorComponent', () => {
 			fixture.destroy();
 		} );
 
-		it( 'when CKEDITOR namespace is missing should should log error to the console', () => {
+		it( 'when CKEDITOR namespace is missing should log error to the console', () => {
 			const saved = CKEDITOR,
 				spy = spyOn( console, 'error', );
 
@@ -56,7 +56,7 @@ describe( 'CKEditorComponent', () => {
 			} );
 		} );
 
-		describe( 'when set with config including readOnly, width and height', () => {
+		describe( 'when set with config', () => {
 			beforeEach( ( done ) => {
 				component.config = {
 					readOnly: true,
@@ -93,27 +93,27 @@ describe( 'CKEditorComponent', () => {
 			fixture.destroy();
 		} );
 
-		it( 'should create', () => {
+		it( 'should be initialized', () => {
 			expect( component ).toBeTruthy();
 		} );
 
 
-		it( 'editor shouldn\'t be readOnly', () => {
+		it( "editor shouldn't be read-only", () => {
 			fixture.detectChanges();
 
 			expect( component.readOnly ).toBeFalsy();
 			expect( component.instance.readOnly ).toBeFalsy();
 		} );
 
-		describe( 'and readOnly property set to true ', () => {
-			it( 'editor should be readOnly', () => {
+		describe( 'with changed read-only mode', () => {
+			it( 'should allow to enable read-only mode', () => {
 				component.readOnly = true;
 
 				expect( component.readOnly ).toBeTruthy();
 				expect( component.instance.readOnly ).toBeTruthy();
 			} );
 
-			it( 'and then set to false editor shouldn\'t be readOnly', () => {
+			it( 'should allow to disable read-only mode', () => {
 				component.readOnly = false;
 
 				expect( component.readOnly ).toBeFalsy();
@@ -121,13 +121,13 @@ describe( 'CKEditorComponent', () => {
 			} );
 		} );
 
-		describe( 'and tagName set to div', () => {
+		describe( 'with tagName set to div', () => {
 			beforeEach( () => {
 				component.tagName = 'div';
 				fixture.detectChanges();
 			} );
 
-			it( 'should create on div element', () => {
+			it( 'editor should be initialized using div element', () => {
 				expect( fixture.nativeElement.lastChild.tagName ).toEqual( 'DIV' );
 			} );
 		} );
