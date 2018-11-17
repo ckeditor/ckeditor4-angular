@@ -62,65 +62,6 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	@Input() type: CKEditor4.EditorType = CKEditor4.EditorType.CLASSIC;
 
 	/**
-	 * Fires when the editor is ready. It corresponds with the `editor#instanceReady`
-	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-instanceReady
-	 * event.
-	 */
-	@Output() ready: EventEmitter<CKEditor4.EventInfo> = new EventEmitter<CKEditor4.EventInfo>();
-
-	/**
-	 * Fires when the content of the editor has changed. It corresponds with the `editor#change`
-	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-change
-	 * event.
-	 */
-	@Output() change: EventEmitter<CKEditor4.EventInfo> = new EventEmitter<CKEditor4.EventInfo>();
-
-	/**
-	 * Fires when the editing view of the editor is focused. It corresponds with the `editor#focus`
-	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-focus
-	 * event.
-	 */
-	@Output() focus: EventEmitter<CKEditor4.EventInfo> = new EventEmitter<CKEditor4.EventInfo>();
-
-	/**
-	 * Fires when the editing view of the editor is blurred. It corresponds with the `editor#blur`
-	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-blur
-	 * event.
-	 */
-	@Output() blur: EventEmitter<CKEditor4.EventInfo> = new EventEmitter<CKEditor4.EventInfo>();
-
-	/**
-	 * The instance of the editor created by this component.
-	 */
-	instance: any;
-
-	wrapper: HTMLElement;
-
-	/**
-	 * If the component is read–only before the editor instance is created, it remembers that state,
-	 * so the editor can become read–only once it is ready.
-	 */
-	initialReadOnly: any = null;
-
-	/**
-	 * A callback executed when the content of the editor changes. Part of the
-	 * `ControlValueAccessor` (https://angular.io/api/forms/ControlValueAccessor) interface.
-	 *
-	 * Note: Unset unless the component uses the `ngModel`.
-	 */
-	onChange?: ( data: string ) => void;
-
-	/**
-	 * A callback executed when the editor has been blurred. Part of the
-	 * `ControlValueAccessor` (https://angular.io/api/forms/ControlValueAccessor) interface.
-	 *
-	 * Note: Unset unless the component uses the `ngModel`.
-	 */
-	onTouched?: () => void;
-
-	private _data: string = null;
-
-	/**
 	 * Keeps track of the editor's data.
 	 *
 	 * It's also decorated as an input which is useful when not using the ngModel.
@@ -146,13 +87,6 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	}
 
 	/**
-	 * Emit `dataChange` event to allow `[data]` binding and two way `[(data)]` binding.
-	 *
-	 * See more: https://angular.io/guide/template-syntax#two-way-binding---
-	 */
-	@Output() dataChange: EventEmitter<CKEditor4.EventInfo> = new EventEmitter<CKEditor4.EventInfo>();
-
-	/**
 	 * When set `true`, the editor becomes read-only.
 	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#property-readOnly
 	 * to learn more.
@@ -173,6 +107,76 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 
 		return this.initialReadOnly;
 	}
+
+	/**
+	 * Fires when the editor is ready. It corresponds with the `editor#instanceReady`
+	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-instanceReady
+	 * event.
+	 */
+	@Output() ready: EventEmitter<CKEditor4.EventInfo> = new EventEmitter<CKEditor4.EventInfo>();
+
+	/**
+	 * Fires when the content of the editor has changed. It corresponds with the `editor#change`
+	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-change
+	 * event. For performance reasons this event may be called even when data didn't really changed.
+	 */
+	@Output() change: EventEmitter<CKEditor4.EventInfo> = new EventEmitter<CKEditor4.EventInfo>();
+
+	/**
+	 * Fires when the content of the editor has changed. In contrast to `change` - only emits when
+	 * data really changed thus can be successfully used with `[data]` and two way `[(data)]` binding.
+	 *
+	 * See more: https://angular.io/guide/template-syntax#two-way-binding---
+	 */
+	@Output() dataChange: EventEmitter<CKEditor4.EventInfo> = new EventEmitter<CKEditor4.EventInfo>();
+
+	/**
+	 * Fires when the editing view of the editor is focused. It corresponds with the `editor#focus`
+	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-focus
+	 * event.
+	 */
+	@Output() focus: EventEmitter<CKEditor4.EventInfo> = new EventEmitter<CKEditor4.EventInfo>();
+
+	/**
+	 * Fires when the editing view of the editor is blurred. It corresponds with the `editor#blur`
+	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-blur
+	 * event.
+	 */
+	@Output() blur: EventEmitter<CKEditor4.EventInfo> = new EventEmitter<CKEditor4.EventInfo>();
+
+	/**
+	 * The instance of the editor created by this component.
+	 */
+	instance: any;
+
+	/**
+	 * Wrapper element used to initialize editor.
+	 */
+	wrapper: HTMLElement;
+
+	/**
+	 * If the component is read–only before the editor instance is created, it remembers that state,
+	 * so the editor can become read–only once it is ready.
+	 */
+	initialReadOnly: any = null;
+
+	/**
+	 * A callback executed when the content of the editor changes. Part of the
+	 * `ControlValueAccessor` (https://angular.io/api/forms/ControlValueAccessor) interface.
+	 *
+	 * Note: Unset unless the component uses the `ngModel`.
+	 */
+	onChange?: ( data: string ) => void;
+
+	/**
+	 * A callback executed when the editor has been blurred. Part of the
+	 * `ControlValueAccessor` (https://angular.io/api/forms/ControlValueAccessor) interface.
+	 *
+	 * Note: Unset unless the component uses the `ngModel`.
+	 */
+	onTouched?: () => void;
+
+	private _data: string = null;
 
 	constructor( private elementRef: ElementRef<HTMLElement>, private ngZone: NgZone ) {
 	}
@@ -225,6 +229,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 
 			this.elementRef.nativeElement.appendChild( this.wrapper );
 
+			// Read only state may change during instance initialization.
 			this.readOnly = this.initialReadOnly !== null ? this.initialReadOnly : this.instance.readOnly;
 
 			this.subscribe( this.instance );
@@ -240,7 +245,6 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	}
 
 	private subscribe( editor: any ) {
-
 		editor.on( 'focus', evt => {
 			this.ngZone.run( () => {
 				this.focus.emit( evt );
@@ -258,7 +262,6 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		} );
 
 		editor.on( 'change', evt => {
-
 			this.ngZone.run( () => {
 				const newData = editor.getData();
 
@@ -281,12 +284,12 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	private ensureDivareaPluginIncluded() {
 		this.config = this.config || {};
 
-		let extraPlugins = this.config.extraPlugins || '';
-
-		const isArray = extraPlugins instanceof Array;
+		let extraPlugins = this.config.extraPlugins || '',
+			isArray = extraPlugins instanceof Array;
 
 		extraPlugins = isArray ? extraPlugins.join( ',' ) : extraPlugins;
 		extraPlugins += extraPlugins.indexOf( 'divarea' ) === -1 ? ',divarea' : '';
+
 		this.config.extraPlugins = isArray ? extraPlugins.split( ',' ) : extraPlugins;
 	}
 
