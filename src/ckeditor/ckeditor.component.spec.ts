@@ -56,11 +56,50 @@ describe( 'CKEditorComponent', () => {
 			} );
 		} );
 
-		it( 'editor should use divarea plugin', () => {
-			fixture.detectChanges();
+		[ {
+			config: undefined,
+			msg: 'without config',
+			warn: false
+		}, {
+			config: { extraPlugins: 'basicstyles,divarea,link' },
+			msg: 'config.extraPlugins defined as a string',
+			warn: false
+		}, {
+			config: { extraPlugins: [ 'basicstyles', 'divarea', 'link' ] },
+			msg: 'config.extraPlugins defined as an array',
+			warn: false
+		}, {
+			config: { removePlugins: 'basicstyles,divarea,link,divarea' },
+			msg: 'config.removePlugins defined as a string',
+			warn: true
+		}, {
+			config: { removePlugins: [ 'basicstyles', 'divarea', 'link', 'divarea' ] },
+			msg: 'config.removePlugins defined as an array',
+			warn: true
+		}
+		].forEach( ( { config, msg, warn } ) => {
+			describe( msg, () => {
+				beforeEach( () => {
+					component.config = config;
+				} );
 
-			whenEvent( 'ready', component ).then( ( { editor } ) => {
-				expect( editor.plugins.divarea ).not.toBeUndefined();
+				it( `console ${warn ? 'should' : 'shouldn\'t'} warn`, () => {
+					const spy = spyOn( console, 'warn' );
+
+					fixture.detectChanges();
+
+					warn
+						? expect( spy ).toHaveBeenCalled()
+						: expect( spy ).not.toHaveBeenCalled();
+				} );
+
+				it( 'editor should use divarea plugin', () => {
+					fixture.detectChanges();
+
+					whenEvent( 'ready', component ).then( ( { editor } ) => {
+						expect( editor.plugins.divarea ).not.toBeUndefined();
+					} );
+				} );
 			} );
 		} );
 
@@ -106,7 +145,7 @@ describe( 'CKEditorComponent', () => {
 		} );
 
 
-		it( "editor shouldn't be read-only", () => {
+		it( 'editor shouldn\'t be read-only', () => {
 			fixture.detectChanges();
 
 			expect( component.readOnly ).toBeFalsy();
@@ -149,7 +188,7 @@ describe( 'CKEditorComponent', () => {
 
 		describe( 'component data', () => {
 			const data = '<b>foo</b>',
-				expected = '<p><strong>foo</strong></p>\n'
+				expected = '<p><strong>foo</strong></p>\n';
 
 			it( 'should be configurable at the start of the component', () => {
 				fixture.detectChanges();
@@ -225,7 +264,7 @@ describe( 'CKEditorComponent', () => {
 				const spy = jasmine.createSpy();
 				component.registerOnChange( spy );
 
-				whenEvent( 'change', () => {
+				whenEvent( 'change',() => {
 					fixture.detectChanges();
 					expect( spy ).toHaveBeenCalledTimes( 1 );
 				} );
