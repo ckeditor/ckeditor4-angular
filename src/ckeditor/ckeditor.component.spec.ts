@@ -39,6 +39,7 @@ describe( 'CKEditorComponent', () => {
 			beforeEach( () => {
 				component.type = editorType;
 			} );
+
 			describe( 'on initialization', () => {
 				it( 'with missing CKEDITOR namespace should log error to the console', () => {
 					const saved = CKEDITOR,
@@ -50,6 +51,16 @@ describe( 'CKEditorComponent', () => {
 
 					CKEDITOR = saved;
 					expect( spy ).toHaveBeenCalled();
+				} );
+
+				const method = editorType === 'classic' ? 'replace' : 'inline';
+
+				it( `should create editor with CKEDITOR.${method}`, () => {
+					const spy = spyOn( CKEDITOR, method );
+					whenEvent( 'ready', component ).then( () => {
+						fixture.detectChanges();
+						expect( spy ).toHaveBeenCalled();
+					} );
 				} );
 
 				it( 'should emit ready event', () => {
