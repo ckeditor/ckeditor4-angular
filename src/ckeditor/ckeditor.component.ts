@@ -284,13 +284,39 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	private ensureDivareaPluginIncluded() {
 		this.config = this.config || {};
 
-		let extraPlugins = this.config.extraPlugins || '',
-			isArray = extraPlugins instanceof Array;
+		let extraPlugins = this.config.extraPlugins || '';
+		const isArray = extraPlugins instanceof Array;
 
 		extraPlugins = isArray ? extraPlugins.join( ',' ) : extraPlugins;
 		extraPlugins += extraPlugins.indexOf( 'divarea' ) === -1 ? ',divarea' : '';
 
 		this.config.extraPlugins = isArray ? extraPlugins.split( ',' ) : extraPlugins;
+		this.excludeDivareaFromRemovedPlugins();
+	}
+
+	private excludeDivareaFromRemovedPlugins() {
+		let removePlugins = this.config.removePlugins;
+
+		if ( !removePlugins || removePlugins.indexOf( 'divarea' ) === -1 ) {
+			return;
+		}
+
+		const isString = typeof removePlugins === 'string';
+
+		if ( isString ) {
+			removePlugins = removePlugins.split( ',' );
+		}
+
+		removePlugins = removePlugins.filter( pluginName => pluginName !== 'divarea' );
+
+		if ( isString ) {
+			removePlugins = removePlugins.join( ',' );
+		}
+
+		this.config.removePlugins = removePlugins;
+
+		console.warn( '[CKEDITOR] divarea plugin is required to initialize editor using Angular integration.' +
+			' For more details visit https://github.com/cksource/ckeditor4-angular/issues/6' );
 	}
 
 	private createInitialElement() {
