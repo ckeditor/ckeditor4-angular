@@ -135,8 +135,7 @@ describe( 'CKEditorComponent', () => {
 			whenEvent( 'ready', component ).then( done );
 		} );
 
-		afterEach( ( done ) => {
-			component.instance.once( 'destroy', done );
+		afterEach( () => {
 			fixture.destroy();
 		} );
 
