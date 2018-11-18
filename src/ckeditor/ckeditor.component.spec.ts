@@ -292,7 +292,6 @@ describe( 'CKEditorComponent', () => {
 						component.registerOnChange( spy );
 
 						whenEvent( 'change', component ).then( () => {
-							fixture.detectChanges();
 							expect( spy ).toHaveBeenCalledTimes( 1 );
 						} );
 
