@@ -23,16 +23,16 @@ describe( 'CKEditorComponent', () => {
 			.compileComponents();
 	} ) );
 
+	beforeEach( () => {
+		fixture = TestBed.createComponent( CKEditorComponent );
+		component = fixture.componentInstance;
+	} );
+
+	afterEach( () => {
+		fixture.destroy();
+	} );
+
 	describe( 'on initialization', () => {
-		beforeEach( () => {
-			fixture = TestBed.createComponent( CKEditorComponent );
-			component = fixture.componentInstance;
-		} );
-
-		afterEach( () => {
-			fixture.destroy();
-		} );
-
 		it( 'with missing CKEDITOR namespace should log error to the console', () => {
 			const saved = CKEDITOR,
 				spy = spyOn( console, 'error', );
@@ -127,16 +127,9 @@ describe( 'CKEditorComponent', () => {
 
 	describe( 'when component is ready', () => {
 		beforeEach( ( done ) => {
-			fixture = TestBed.createComponent( CKEditorComponent );
-			component = fixture.componentInstance;
-
 			fixture.detectChanges();
 
 			whenEvent( 'ready', component ).then( done );
-		} );
-
-		afterEach( () => {
-			fixture.destroy();
 		} );
 
 		it( 'should be initialized', () => {
