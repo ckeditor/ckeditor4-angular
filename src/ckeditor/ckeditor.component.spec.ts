@@ -63,6 +63,27 @@ describe( 'CKEditorComponent', () => {
 					} );
 				} );
 
+				describe( 'with tagName unset', () => {
+					it( 'editor should be initialized using textarea element', () => {
+						whenEvent( 'ready', component ).then( () => {
+							expect( fixture.nativeElement.lastElementChild.firstElementChild.tagName ).toEqual( 'TEXTAREA' );
+						} );
+					} );
+				} );
+
+				describe( 'with tagName set to div', () => {
+					beforeEach( () => {
+						component.tagName = 'div';
+					} );
+
+					it( 'editor should be initialized using div element', () => {
+						whenEvent( 'ready', component ).then( () => {
+							fixture.detectChanges();
+							expect( fixture.nativeElement.firstChild.tagName ).toEqual( 'DIV' );
+						} );
+					} );
+				} );
+
 				[ {
 					config: undefined,
 					msg: 'without config',
@@ -164,17 +185,6 @@ describe( 'CKEditorComponent', () => {
 
 						expect( component.readOnly ).toBeFalsy();
 						expect( component.instance.readOnly ).toBeFalsy();
-					} );
-				} );
-
-				describe( 'with tagName set to div', () => {
-					beforeEach( () => {
-						component.tagName = 'div';
-						fixture.detectChanges();
-					} );
-
-					it( 'editor should be initialized using div element', () => {
-						expect( fixture.nativeElement.lastChild.tagName ).toEqual( 'DIV' );
 					} );
 				} );
 
