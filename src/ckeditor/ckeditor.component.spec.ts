@@ -175,6 +175,13 @@ describe( 'CKEditorComponent', () => {
 					expect( component ).toBeTruthy();
 				} );
 
+				it( `editor ${editorType === 'inline' ? 'should' : 'shouldn\'t'} be inline`, () => {
+					const expectation = expect( component.instance.editable().hasClass( 'cke_editable_inline' ) );
+
+					editorType === 'inline'
+						? expectation.toBeTruthy()
+						: expectation.toBeFalsy();
+				} );
 
 				it( 'editor shouldn\'t be read-only', () => {
 					fixture.detectChanges();
