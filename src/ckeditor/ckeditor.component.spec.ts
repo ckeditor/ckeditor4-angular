@@ -264,7 +264,7 @@ describe( 'CKEditorComponent', () => {
 				const spy = jasmine.createSpy();
 				component.registerOnChange( spy );
 
-				whenEvent( 'change',() => {
+				whenEvent( 'change', component ).then( () => {
 					fixture.detectChanges();
 					expect( spy ).toHaveBeenCalledTimes( 1 );
 				} );
