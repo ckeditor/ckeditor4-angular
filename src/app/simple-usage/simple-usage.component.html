@@ -12,10 +12,10 @@
 	id="classic-editor"
 	name="classic-editor"
 
-	(ready)="onReady($event)"
-	(change)="onChange($event)"
-	(focus)="onFocus($event)"
-	(blur)="onBlur($event)">
+	(ready)="onReady( $event, 'Classic' )"
+	(change)="onChange( $event, 'Classic' )"
+	(focus)="onFocus( $event, 'Classic' )"
+	(blur)="onBlur( $event, 'Classic' )">
 </ckeditor>
 
 <h3>Inline editor:</h3>
@@ -30,7 +30,13 @@
 		id="inline-editor"
 		name="inline-editor"
 
-		type="inline"></ckeditor>
+		type="inline"
+
+		(ready)="onReady( $event, 'Inline' )"
+		(change)="onChange( $event, 'Inline' )"
+		(focus)="onFocus( $event, 'Inline' )"
+		(blur)="onBlur( $event, 'Inline' )">
+	</ckeditor>
 </div>
 <p>Note: both editors have it's data synchronized, so every change in one of editors propagates to another.</p>
 
@@ -47,9 +53,3 @@
 	<label><input type="checkbox" [(ngModel)]="isReadOnly">Make editor read only.</label>
 </p>
 
-<h4>Classic editor component events:</h4>
-<ul>
-	<li *ngFor="let eventInfo of componentEvents">
-		<span>{{ eventInfo }}</span>
-	</li>
-</ul>

@@ -30,19 +30,19 @@ You learn to appreciate each and every single one of the differences while you b
 		this.isReadOnly = !this.isReadOnly;
 	}
 
-	onReady( editor: CKEditor4.EventInfo ): void {
-		this.componentEvents.push( 'The editor is ready.' );
+	onReady( editor: CKEditor4.EventInfo, EditorName: string ): void {
+		console.log( `${EditorName} editor is ready.` );
 	}
 
-	onChange( event: CKEditor4.EventInfo ): void {
-		this.componentEvents.push( 'Editor model changed.' );
+	onChange( event: CKEditor4.EventInfo, EditorName: string ): void {
+		console.log( `${EditorName} editor model changed.` );
 	}
 
-	onFocus( event: CKEditor4.EventInfo ): void {
-		this.componentEvents.push( 'Focused the editing view.' );
+	onFocus( event: CKEditor4.EventInfo, EditorName: string ): void {
+		console.log( `Focused ${EditorName.toLowerCase()} editing view.` );
 	}
 
-	onBlur( event: CKEditor4.EventInfo ): void {
-		this.componentEvents.push( 'Blurred the editing view.' );
+	onBlur( event: CKEditor4.EventInfo, EditorName: string ): void {
+		console.log( `Blurred ${EditorName.toLowerCase()} editing view.` );
 	}
 }
