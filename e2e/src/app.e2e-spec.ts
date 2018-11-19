@@ -16,7 +16,7 @@ describe( 'workspace-project App', () => {
 
 	describe( 'simple-usage', () => {
 		beforeEach( () => {
-			page.navigateTo();
+			page.navigateTo( 'simple-usage' );
 		} );
 
 		beforeEach( async () => {
