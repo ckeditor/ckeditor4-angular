@@ -13,6 +13,7 @@ import { DebugElement } from '@angular/core';
 
 import { TestTools } from '../../test.tools';
 import { FormsModule } from '@angular/forms';
+import Spy = jasmine.Spy;
 
 const whenEvent = TestTools.whenEvent;
 
@@ -20,7 +21,8 @@ describe( 'SimpleUsageComponent', () => {
 	let component: SimpleUsageComponent,
 		fixture: ComponentFixture<SimpleUsageComponent>,
 		ckeditorComponents: CKEditorComponent[],
-		debugElements: DebugElement[];
+		debugElements: DebugElement[],
+		spy: Spy;
 
 	beforeEach( async( () => {
 		TestBed.configureTestingModule( {
@@ -79,7 +81,7 @@ describe( 'SimpleUsageComponent', () => {
 		each( ckeditorComponent => {
 			expect( ckeditorComponent.readOnly ).toBeFalsy();
 		} );
-		} );
+	} );
 
 	describe( 'data', () => {
 		it( 'should set initial data on the CKEditor component', () => {
@@ -102,11 +104,14 @@ describe( 'SimpleUsageComponent', () => {
 
 
 	describe( 'listeners', () => {
+		beforeEach( () => {
+			spy = spyOn( console, 'log' );
+		} );
 		it( 'ready should be called on ckeditorComponent.ready()', () => {
 			each( ckeditorComponent => {
 				ckeditorComponent.ready.emit();
 
-				expect( component.componentEvents ).toContain( 'The editor is ready.' );
+				expect( spy ).toHaveBeenCalledWith( 'Classic editor is ready.' );
 			} );
 		} );
 
@@ -114,7 +119,7 @@ describe( 'SimpleUsageComponent', () => {
 			each( ckeditorComponent => {
 				ckeditorComponent.change.emit();
 
-				expect( component.componentEvents ).toContain( 'Editor model changed.' );
+				expect( spy ).toHaveBeenCalledWith( 'Classic editor model changed.' );
 			} );
 		} );
 
@@ -122,7 +127,7 @@ describe( 'SimpleUsageComponent', () => {
 			each( ckeditorComponent => {
 				ckeditorComponent.focus.emit();
 
-				expect( component.componentEvents ).toContain( 'Focused the editing view.' );
+				expect( spy ).toHaveBeenCalledWith( 'Focused classic editing view.' );
 			} );
 		} );
 
@@ -130,7 +135,7 @@ describe( 'SimpleUsageComponent', () => {
 			each( ckeditorComponent => {
 				ckeditorComponent.blur.emit();
 
-				expect( component.componentEvents ).toContain( 'Blurred the editing view.' );
+				expect( spy ).toHaveBeenCalledWith( 'Blurred classic editing view.' );
 			} );
 		} );
 	} );
