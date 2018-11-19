@@ -37,25 +37,42 @@ describe( 'workspace-project App', () => {
 		} );
 
 		describe( 'typing', () => {
-			it( `in editor1 should update editors content`, testTyping( 0 ) );
-			it( `in editor2 should update editors content`, testTyping( 1 ) );
-
-			function testTyping( editableNumber: number ) {
-				return async function() {
-					const keys = [
-						'Foo! ',
-						protractor.Key.chord( protractor.Key.CONTROL, 'b' ),
-						'Bar?'
-					];
-
-					await page.updateValue( editables[ editableNumber ], keys );
-
-					editables.forEach( item => {
-						expect( page.getHtmlString( item ) )
-							.toBe( '<p>Foo!&nbsp;<strong>Bar?</strong></p>' );
-					} );
-				};
-			}
+			it( `in editor1 should update editors content`, testTyping( editables, 0 ) );
+			it( `in editor2 should update editors content`, testTyping( editables, 1 ) );
 		} );
 	} );
+
+	describe( 'demo-forms', () => {
+		beforeEach( () => {
+			page.navigateTo( 'forms' );
+		} );
+
+		beforeEach( async () => {
+			editables = [ await page.getEditable() ];
+		} );
+
+		it( 'should display editor with initial content', async () => {
+			expect( page.getHtmlString( editables[ 0 ] ) )
+				.toBe( '<p>A <strong>really</strong> nice fellow.</p>' );
+		} );
+
+		it( `typing should update editor content`, testTyping( editables, 0 ) );
+	} );
+
+	function testTyping( elements, elementIndex: number ) {
+		return async function() {
+			const keys = [
+				'Foo! ',
+				protractor.Key.chord( protractor.Key.CONTROL, 'b' ),
+				'Bar?'
+			];
+
+			await page.updateValue( editables[ elementIndex ], keys );
+
+			editables.forEach( item => {
+				expect( page.getHtmlString( item ) )
+					.toBe( '<p>Foo!&nbsp;<strong>Bar?</strong></p>' );
+			} );
+		};
+	}
 } );
