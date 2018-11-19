@@ -1,3 +1,8 @@
+/**
+ * @license Copyright (c) 2003-2018, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md.
+ */
+
 import { protractor, browser, by, element, WebElement, ElementFinder } from 'protractor';
 
 export class AppPage {
