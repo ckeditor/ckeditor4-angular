@@ -216,7 +216,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 
 		const element = this.createInitialElement();
 
-		this.ensureDivareaPluginIncluded();
+		this.config = this.ensureDivareaPlugin( this.config || {} );
 
 		const instance = this.type === CKEditor4.EditorType.INLINE ?
 			CKEDITOR.inline( element, this.config )
@@ -281,42 +281,45 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		} );
 	}
 
-	private ensureDivareaPluginIncluded() {
-		this.config = this.config || {};
+	private ensureDivareaPlugin( config ) {
+		let { extraPlugins, removePlugins } = config;
 
-		let extraPlugins = this.config.extraPlugins || '';
-		const isArray = extraPlugins instanceof Array;
+		extraPlugins = this.removePlugin( extraPlugins, 'divarea' ) || '';
+		extraPlugins = extraPlugins.concat( this.isString( extraPlugins ) ? ',divarea' : 'divarea' );
 
-		extraPlugins = isArray ? extraPlugins.join( ',' ) : extraPlugins;
-		extraPlugins += extraPlugins.indexOf( 'divarea' ) === -1 ? ',divarea' : '';
+		if ( removePlugins && removePlugins.indexOf( 'divarea' ) !== -1 ) {
 
-		this.config.extraPlugins = isArray ? extraPlugins.split( ',' ) : extraPlugins;
-		this.excludeDivareaFromRemovedPlugins();
+			removePlugins = this.removePlugin( removePlugins, 'divarea' );
+
+			console.warn( '[CKEDITOR] divarea plugin is required to initialize editor using Angular integration.' +
+				' For more details visit https://github.com/cksource/ckeditor4-angular/issues/6' );
+		}
+
+		return Object.assign( {}, config, { extraPlugins, removePlugins } );
 	}
 
-	private excludeDivareaFromRemovedPlugins() {
-		let removePlugins = this.config.removePlugins;
-
-		if ( !removePlugins || removePlugins.indexOf( 'divarea' ) === -1 ) {
-			return;
+	private removePlugin( plugins, toRemove ){
+		if ( !plugins ) {
+			return null;
 		}
 
-		const isString = typeof removePlugins === 'string';
+		const isString = this.isString( plugins );
 
 		if ( isString ) {
-			removePlugins = removePlugins.split( ',' );
+			plugins = plugins.split( ',' );
 		}
 
-		removePlugins = removePlugins.filter( pluginName => pluginName !== 'divarea' );
+		plugins = plugins.filter( plugin => plugin !== toRemove );
 
 		if ( isString ) {
-			removePlugins = removePlugins.join( ',' );
+			plugins = plugins.join( ',' );
 		}
 
-		this.config.removePlugins = removePlugins;
+		return plugins;
+	}
 
-		console.warn( '[CKEDITOR] divarea plugin is required to initialize editor using Angular integration.' +
-			' For more details visit https://github.com/cksource/ckeditor4-angular/issues/6' );
+	private isString( x ) {
+		return typeof x === 'string';
 	}
 
 	private createInitialElement() {
