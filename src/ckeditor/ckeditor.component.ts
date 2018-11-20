@@ -317,8 +317,8 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		return plugins;
 	}
 
-	private isString( x ) {
-		return typeof x === 'string';
+	private isString( value ) {
+		return typeof value === 'string';
 	}
 
 	private createInitialElement() {
