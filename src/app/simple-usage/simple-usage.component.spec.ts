@@ -28,8 +28,7 @@ describe( 'SimpleUsageComponent', () => {
 		TestBed.configureTestingModule( {
 			declarations: [ SimpleUsageComponent ],
 			imports: [ CKEditorModule, FormsModule ]
-		} )
-			.compileComponents();
+		} ).compileComponents();
 	} ) );
 
 	beforeEach( ( done ) => {
@@ -48,11 +47,13 @@ describe( 'SimpleUsageComponent', () => {
 	} );
 
 	afterEach( ( done ) => {
-		whenEach( ( ckeditorComponent => new Promise( ( res ) => {
-			if ( ckeditorComponent.instance ) {
-				ckeditorComponent.instance.once( 'destroy', res );
-			}
-		} ) ) ).then( done );
+		whenEach( ckeditorComponent =>
+			new Promise( ( res ) => {
+				if ( ckeditorComponent.instance ) {
+					ckeditorComponent.instance.once( 'destroy', res );
+				}
+			} )
+		).then( done );
 
 		fixture.destroy();
 	} );
@@ -107,6 +108,7 @@ describe( 'SimpleUsageComponent', () => {
 		beforeEach( () => {
 			spy = spyOn( console, 'log' );
 		} );
+
 		it( 'ready should be called on ckeditorComponent.ready()', () => {
 			each( ckeditorComponent => {
 				ckeditorComponent.ready.emit();
