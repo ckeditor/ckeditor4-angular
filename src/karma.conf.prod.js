@@ -8,6 +8,6 @@ module.exports = function( config ) {
 		files: [
 			'https://cdn.ckeditor.com/4.10.1/standard-all/ckeditor.js'
 		],
-		crossOriginAttribute: false
+		crossOriginAttribute: true
 	} )
 }
