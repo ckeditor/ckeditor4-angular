@@ -13,7 +13,7 @@ module.exports = function (config) {
 			require('@angular-devkit/build-angular/plugins/karma')
 		],
 		files: [
-			'https://cdn.ckeditor.com/4.10.1/standard-all/ckeditor.js'
+			'http://localhost:1050/apps/ckeditor/ckeditor.js'
 		],
 		client: {
 			clearContext: false // leave Jasmine Spec Runner output visible in browser
@@ -29,6 +29,7 @@ module.exports = function (config) {
 		logLevel: config.LOG_INFO,
 		autoWatch: true,
 		browsers: ['Chrome'],
-		singleRun: false
+		singleRun: false,
+		crossOriginAttribute: false
 	});
 };
