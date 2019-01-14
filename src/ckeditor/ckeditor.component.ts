@@ -103,7 +103,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		this._readOnly = isReadOnly;
 	}
 
-	get readOnly() {
+	get readOnly(): boolean {
 		if ( this.instance ) {
 			return this.instance.readOnly;
 		}
@@ -184,11 +184,11 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	constructor( private elementRef: ElementRef<HTMLElement>, private ngZone: NgZone ) {
 	}
 
-	ngAfterViewInit() {
+	ngAfterViewInit(): void {
 		this.ngZone.runOutsideAngular( this.createEditor.bind( this ) );
 	}
 
-	ngOnDestroy() {
+	ngOnDestroy(): void {
 		this.ngZone.runOutsideAngular( () => {
 			if ( this.instance ) {
 				this.instance.destroy();
@@ -209,7 +209,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		this.onTouched = callback;
 	}
 
-	private createEditor() {
+	private createEditor(): void {
 		if ( typeof CKEDITOR === 'undefined' ) {
 			console.error( 'CKEditor4 library could not be found.' +
 				' See https://ckeditor.com/docs/ckeditor4/latest/guide/dev_installation.html for installation options.' );
@@ -247,7 +247,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		} );
 	}
 
-	private subscribe( editor: any ) {
+	private subscribe( editor: any ): void {
 		editor.on( 'focus', evt => {
 			this.ngZone.run( () => {
 				this.focus.emit( evt );
@@ -284,7 +284,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		} );
 	}
 
-	private ensureDivareaPlugin( config ) {
+	private ensureDivareaPlugin( config: CKEditor4.Config ): CKEditor4.Config {
 		let { extraPlugins, removePlugins } = config;
 
 		extraPlugins = this.removePlugin( extraPlugins, 'divarea' ) || '';
@@ -300,7 +300,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		return Object.assign( {}, config, { extraPlugins, removePlugins } );
 	}
 
-	private removePlugin( plugins, toRemove ) {
+	private removePlugin( plugins: string | string[], toRemove: string ): string | string[] {
 		if ( !plugins ) {
 			return null;
 		}
@@ -308,19 +308,19 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		const isString = typeof plugins === 'string';
 
 		if ( isString ) {
-			plugins = plugins.split( ',' );
+			plugins = ( plugins as string ).split( ',' );
 		}
 
-		plugins = plugins.filter( plugin => plugin !== toRemove );
+		plugins = ( plugins as string[] ).filter( plugin => plugin !== toRemove );
 
 		if ( isString ) {
-			plugins = plugins.join( ',' );
+			plugins = ( plugins as string[] ).join( ',' );
 		}
 
 		return plugins;
 	}
 
-	private createInitialElement() {
+	private createInitialElement(): HTMLElement {
 		// Render editor outside of component so it won't be removed from DOM before `instanceReady`.
 		this.wrapper = document.createElement( 'div' );
 		const element = document.createElement( this.tagName );
