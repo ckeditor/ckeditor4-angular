@@ -100,7 +100,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		}
 
 		// Delay setting read-only state until editor initialization.
-		this.initialReadOnly = isReadOnly;
+		this._readOnly = isReadOnly;
 	}
 
 	get readOnly() {
@@ -108,7 +108,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 			return this.instance.readOnly;
 		}
 
-		return this.initialReadOnly;
+		return this._readOnly;
 	}
 
 	/**
@@ -161,7 +161,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	 * If the component is read–only before the editor instance is created, it remembers that state,
 	 * so the editor can become read–only once it is ready.
 	 */
-	initialReadOnly: any = null;
+	_readOnly: any = null;
 
 	/**
 	 * A callback executed when the content of the editor changes. Part of the
@@ -233,7 +233,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 			this.elementRef.nativeElement.appendChild( this.wrapper );
 
 			// Read only state may change during instance initialization.
-			this.readOnly = this.initialReadOnly !== null ? this.initialReadOnly : this.instance.readOnly;
+			this.readOnly = this._readOnly !== null ? this._readOnly : this.instance.readOnly;
 
 			this.subscribe( this.instance );
 
