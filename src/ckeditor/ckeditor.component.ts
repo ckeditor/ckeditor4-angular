@@ -161,7 +161,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	 * If the component is read–only before the editor instance is created, it remembers that state,
 	 * so the editor can become read–only once it is ready.
 	 */
-	private _readOnly: any = null;
+	private _readOnly: boolean = null;
 
 	/**
 	 * A callback executed when the content of the editor changes. Part of the
