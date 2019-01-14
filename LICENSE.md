@@ -2,7 +2,7 @@ Software License Agreement
 ==========================
 
 **CKEditor 4 component for Angular** – https://github.com/ckeditor/ckeditor4-angular <br>
-Copyright (c) 2003-2018, [CKSource](http://cksource.com) Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2019, [CKSource](http://cksource.com) Frederico Knabben. All rights reserved.
 
 Licensed under the terms of any of the following licenses at your
 choice:
