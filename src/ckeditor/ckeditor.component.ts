@@ -197,7 +197,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		} );
 	}
 
-	writeValue( value: string | null ): void {
+	writeValue( value: string ): void {
 		this.data = value;
 	}
 
