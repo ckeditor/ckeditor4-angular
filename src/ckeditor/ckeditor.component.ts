@@ -297,7 +297,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		return Object.assign( {}, config, { extraPlugins, removePlugins } );
 	}
 
-	private removePlugin( plugins, toRemove ){
+	private removePlugin( plugins, toRemove ) {
 		if ( !plugins ) {
 			return null;
 		}
