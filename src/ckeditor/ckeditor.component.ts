@@ -225,7 +225,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 			CKEDITOR.inline( element, this.config )
 			: CKEDITOR.replace( element, this.config );
 
-		instance.once( 'instanceReady', evt => {
+		instance.once( 'instanceReady', function( evt ) {
 			this.instance = instance;
 
 			this.wrapper.removeAttribute( 'style' );
@@ -237,14 +237,24 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 
 			this.subscribe( this.instance );
 
+			const undo = instance.undoManager;
+
 			if ( this.data !== null ) {
-				this.instance.setData( this.data );
+				undo && undo.lock();
+				instance.setData( this.data );
+
+				// Locking undoManager prevents 'change' event.
+				// Trigger it manually to updated bound data.
+				if ( this.data !== instance.getData() ) {
+					instance.fire( 'change' );
+				}
+				undo && undo.unlock();
 			}
 
 			this.ngZone.run( () => {
 				this.ready.emit( evt );
 			} );
-		} );
+		}, this );
 	}
 
 	private subscribe( editor: any ): void {
