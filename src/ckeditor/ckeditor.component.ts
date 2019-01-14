@@ -288,7 +288,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		let { extraPlugins, removePlugins } = config;
 
 		extraPlugins = this.removePlugin( extraPlugins, 'divarea' ) || '';
-		extraPlugins = extraPlugins.concat( this.isString( extraPlugins ) ? ',divarea' : 'divarea' );
+		extraPlugins = extraPlugins.concat( typeof extraPlugins === 'string' ? ',divarea' : 'divarea' );
 
 		if ( removePlugins && removePlugins.indexOf( 'divarea' ) !== -1 ) {
 
@@ -305,7 +305,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 			return null;
 		}
 
-		const isString = this.isString( plugins );
+		const isString = typeof plugins === 'string';
 
 		if ( isString ) {
 			plugins = plugins.split( ',' );
@@ -318,10 +318,6 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		}
 
 		return plugins;
-	}
-
-	private isString( value ) {
-		return typeof value === 'string';
 	}
 
 	private createInitialElement() {
