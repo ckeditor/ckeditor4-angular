@@ -77,9 +77,11 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 			this.instance.setData( data );
 			// Data may be changed by ACF.
 			this._data = this.instance.getData();
-		} else {
-			this._data = data;
+			return;
 		}
+
+		this._data = data;
+
 	}
 
 	get data(): string {
@@ -94,10 +96,11 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	@Input() set readOnly( isReadOnly: boolean ) {
 		if ( this.instance ) {
 			this.instance.setReadOnly( isReadOnly );
-		} else {
-			// Delay setting read-only state until editor initialization.
-			this.initialReadOnly = isReadOnly;
+			return;
 		}
+
+		// Delay setting read-only state until editor initialization.
+		this.initialReadOnly = isReadOnly;
 	}
 
 	get readOnly() {
