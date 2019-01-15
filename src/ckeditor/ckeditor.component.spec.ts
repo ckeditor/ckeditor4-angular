@@ -41,18 +41,6 @@ describe( 'CKEditorComponent', () => {
 			} );
 
 			describe( 'on initialization', () => {
-				it( 'with missing CKEDITOR namespace should log error to the console', () => {
-					const saved = CKEDITOR,
-						spy = spyOn( console, 'error', );
-
-					CKEDITOR = undefined;
-
-					fixture.detectChanges();
-
-					CKEDITOR = saved;
-					expect( spy ).toHaveBeenCalled();
-				} );
-
 				const method = editorType === 'classic' ? 'replace' : 'inline';
 
 				it( `should create editor with CKEDITOR.${method}`, () => {
@@ -127,9 +115,11 @@ describe( 'CKEditorComponent', () => {
 
 							fixture.detectChanges();
 
-							warn
-								? expect( spy ).toHaveBeenCalled()
-								: expect( spy ).not.toHaveBeenCalled();
+							whenEvent( 'ready', component ).then( () => {
+								warn
+									? expect( spy ).toHaveBeenCalled()
+									: expect( spy ).not.toHaveBeenCalled();
+							} );
 						} );
 
 						it( 'editor should use divarea plugin', () => {
