@@ -9,7 +9,7 @@ declare let CKEDITOR: any;
 let promise;
 
 export function getEditorNamespace( editorURL: string ): Promise<object> {
-	if ( typeof editorURL !== 'string' || editorURL.length < 1 ) {
+	if ( editorURL.length < 1 ) {
 		throw new TypeError( 'CKEditor URL must be a non-empty string.' );
 	}
 
