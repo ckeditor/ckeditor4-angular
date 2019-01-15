@@ -19,9 +19,11 @@ import {
 	NG_VALUE_ACCESSOR
 } from '@angular/forms';
 
+import { getEditorNamespace } from './ckeditor.helpers';
+
 import { CKEditor4 } from './ckeditor';
 
-declare var CKEDITOR: any;
+declare let CKEDITOR: any;
 
 @Component( {
 	selector: 'ckeditor',
@@ -181,11 +183,20 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 
 	private _data: string = null;
 
+	/**
+	 * CKEditor 4 script url address. Script will be loaded only if CKEDITOR namespace is missing.
+	 *
+	 * Defaults to 'https://cdn.ckeditor.com/4.11.2/standard-all/ckeditor.js'
+	 */
+	@Input() editorUrl = 'https://cdn.ckeditor.com/4.11.2/standard-all/ckeditor.js';
+
 	constructor( private elementRef: ElementRef<HTMLElement>, private ngZone: NgZone ) {
 	}
 
 	ngAfterViewInit(): void {
-		this.ngZone.runOutsideAngular( this.createEditor.bind( this ) );
+		getEditorNamespace( this.editorUrl ).then( () => {
+			this.ngZone.runOutsideAngular( this.createEditor.bind( this ) );
+		} ).catch( window.console.error );
 	}
 
 	ngOnDestroy(): void {
@@ -210,13 +221,6 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	}
 
 	private createEditor(): void {
-		if ( typeof CKEDITOR === 'undefined' ) {
-			console.error( 'CKEditor4 library could not be found.' +
-				' See https://ckeditor.com/docs/ckeditor4/latest/guide/dev_installation.html for installation options.' );
-
-			return;
-		}
-
 		const element = this.createInitialElement();
 
 		this.config = this.ensureDivareaPlugin( this.config || {} );
