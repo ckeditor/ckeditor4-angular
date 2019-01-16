@@ -47,7 +47,6 @@ describe( 'getEditorNamespace', () => {
 		} );
 	} );
 
-
 	it( 'returns the same promise', () => {
 		expect( getEditorNamespace( fakeScript ) ).toBe( getEditorNamespace( fakeScript) );
 	} );
