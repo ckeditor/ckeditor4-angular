@@ -38,5 +38,8 @@
 			"."
 		],
 		"dest": "../../dist"
+	},
+	"dependencies": {
+		"load-script": "^1.0.0"
 	}
 }
