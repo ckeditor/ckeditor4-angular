@@ -34,14 +34,14 @@ describe( 'CKEditorComponent', () => {
 		fixture.destroy();
 	} );
 
-	[ EditorType.CLASSIC, EditorType.INLINE ].forEach( ( editorType ) => {
+	[ EditorType.DIVAREA, EditorType.INLINE ].forEach( ( editorType ) => {
 		describe( `type="${editorType}"`, () => {
 			beforeEach( () => {
 				component.type = editorType;
 			} );
 
 			describe( 'on initialization', () => {
-				const method = editorType === 'classic' ? 'replace' : 'inline';
+				const method = editorType === 'divarea' ? 'replace' : 'inline';
 
 				it( `should create editor with CKEDITOR.${method}`, () => {
 					const spy = spyOn( CKEDITOR, method );

@@ -113,7 +113,7 @@ describe( 'SimpleUsageComponent', () => {
 			each( ckeditorComponent => {
 				ckeditorComponent.ready.emit();
 
-				expect( spy ).toHaveBeenCalledWith( 'Classic editor is ready.' );
+				expect( spy ).toHaveBeenCalledWith( 'Divarea editor is ready.' );
 			} );
 		} );
 
@@ -121,7 +121,7 @@ describe( 'SimpleUsageComponent', () => {
 			each( ckeditorComponent => {
 				ckeditorComponent.change.emit();
 
-				expect( spy ).toHaveBeenCalledWith( 'Classic editor model changed.' );
+				expect( spy ).toHaveBeenCalledWith( 'Divarea editor model changed.' );
 			} );
 		} );
 
@@ -129,7 +129,7 @@ describe( 'SimpleUsageComponent', () => {
 			each( ckeditorComponent => {
 				ckeditorComponent.focus.emit();
 
-				expect( spy ).toHaveBeenCalledWith( 'Focused classic editing view.' );
+				expect( spy ).toHaveBeenCalledWith( 'Focused divarea editing view.' );
 			} );
 		} );
 
@@ -137,7 +137,7 @@ describe( 'SimpleUsageComponent', () => {
 			each( ckeditorComponent => {
 				ckeditorComponent.blur.emit();
 
-				expect( spy ).toHaveBeenCalledWith( 'Blurred classic editing view.' );
+				expect( spy ).toHaveBeenCalledWith( 'Blurred divarea editing view.' );
 			} );
 		} );
 	} );
