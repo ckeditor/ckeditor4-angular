@@ -29,19 +29,19 @@ You learn to appreciate each and every single one of the differences while you b
 		this.isReadOnly = !this.isReadOnly;
 	}
 
-	onReady( editor: CKEditor4.EventInfo, EditorName: string ): void {
-		console.log( `${EditorName} editor is ready.` );
+	onReady( editor: CKEditor4.EventInfo, editorName: string ): void {
+		console.log( `${editorName} editor is ready.` );
 	}
 
-	onChange( event: CKEditor4.EventInfo, EditorName: string ): void {
-		console.log( `${EditorName} editor model changed.` );
+	onChange( event: CKEditor4.EventInfo, editorName: string ): void {
+		console.log( `${editorName} editor model changed.` );
 	}
 
-	onFocus( event: CKEditor4.EventInfo, EditorName: string ): void {
-		console.log( `Focused ${EditorName.toLowerCase()} editing view.` );
+	onFocus( event: CKEditor4.EventInfo, editorName: string ): void {
+		console.log( `Focused ${editorName.toLowerCase()} editing view.` );
 	}
 
-	onBlur( event: CKEditor4.EventInfo, EditorName: string ): void {
-		console.log( `Blurred ${EditorName.toLowerCase()} editing view.` );
+	onBlur( event: CKEditor4.EventInfo, editorName: string ): void {
+		console.log( `Blurred ${editorName.toLowerCase()} editing view.` );
 	}
 }
