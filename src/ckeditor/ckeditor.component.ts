@@ -305,7 +305,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		extraPlugins = this.removePlugin( extraPlugins, 'divarea' ) || '';
 		extraPlugins = extraPlugins.concat( typeof extraPlugins === 'string' ? ',divarea' : 'divarea' );
 
-		if ( removePlugins && removePlugins.indexOf( 'divarea' ) !== -1 ) {
+		if ( removePlugins && removePlugins.includes( 'divarea' ) ) {
 
 			removePlugins = this.removePlugin( removePlugins, 'divarea' );
 
