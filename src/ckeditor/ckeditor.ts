@@ -20,7 +20,7 @@ export namespace CKEditor4 {
 	 * See https://ckeditor.com/docs/ckeditor4/latest/guide/dev_uitypes.html
 	 * to learn more.
 	 */
-	export enum EditorType {
+	export const enum EditorType {
 		DIVAREA = 'divarea',
 		INLINE = 'inline'
 	}
