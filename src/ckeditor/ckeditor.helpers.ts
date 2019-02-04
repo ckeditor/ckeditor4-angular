@@ -8,7 +8,7 @@ import loadScript from 'load-script';
 declare let CKEDITOR: any;
 let promise;
 
-export function getEditorNamespace( editorURL: string ): Promise<object> {
+export function getEditorNamespace( editorURL: string ): Promise<{ [ key: string ]: any; }> {
 	if ( editorURL.length < 1 ) {
 		throw new TypeError( 'CKEditor URL must be a non-empty string.' );
 	}

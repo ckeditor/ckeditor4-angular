@@ -34,9 +34,15 @@ export namespace CKEditor4 {
 	export interface EventInfo {
 		readonly name: string;
 		readonly editor: any;
-		readonly data: object;
-		readonly listenerData: object;
-		readonly sender: object;
+		readonly data: {
+			[ key: string ]: any;
+		};
+		readonly listenerData: {
+			[ key: string ]: any;
+		};
+		readonly sender: {
+			[ key: string ]: any;
+		};
 
 		cancel(): void;
 
