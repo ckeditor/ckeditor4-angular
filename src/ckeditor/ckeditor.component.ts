@@ -119,14 +119,14 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-instanceReady
 	 * event.
 	 */
-	@Output() ready: EventEmitter<CKEditor4.EventInfo> = new EventEmitter<CKEditor4.EventInfo>();
+	@Output() ready = new EventEmitter<CKEditor4.EventInfo>();
 
 	/**
 	 * Fires when the content of the editor has changed. It corresponds with the `editor#change`
 	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-change
 	 * event. For performance reasons this event may be called even when data didn't really changed.
 	 */
-	@Output() change: EventEmitter<CKEditor4.EventInfo> = new EventEmitter<CKEditor4.EventInfo>();
+	@Output() change = new EventEmitter<CKEditor4.EventInfo>();
 
 	/**
 	 * Fires when the content of the editor has changed. In contrast to `change` - only emits when
@@ -134,21 +134,21 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	 *
 	 * See more: https://angular.io/guide/template-syntax#two-way-binding---
 	 */
-	@Output() dataChange: EventEmitter<CKEditor4.EventInfo> = new EventEmitter<CKEditor4.EventInfo>();
+	@Output() dataChange = new EventEmitter<CKEditor4.EventInfo>();
 
 	/**
 	 * Fires when the editing view of the editor is focused. It corresponds with the `editor#focus`
 	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-focus
 	 * event.
 	 */
-	@Output() focus: EventEmitter<CKEditor4.EventInfo> = new EventEmitter<CKEditor4.EventInfo>();
+	@Output() focus = new EventEmitter<CKEditor4.EventInfo>();
 
 	/**
 	 * Fires when the editing view of the editor is blurred. It corresponds with the `editor#blur`
 	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-blur
 	 * event.
 	 */
-	@Output() blur: EventEmitter<CKEditor4.EventInfo> = new EventEmitter<CKEditor4.EventInfo>();
+	@Output() blur = new EventEmitter<CKEditor4.EventInfo>();
 
 	/**
 	 * The instance of the editor created by this component.
