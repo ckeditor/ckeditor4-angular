@@ -15,3 +15,5 @@ import { CKEditorComponent } from './ckeditor.component';
 } )
 export class CKEditorModule {
 }
+export * from './ckeditor';
+export { CKEditorComponent } from './ckeditor.component';
