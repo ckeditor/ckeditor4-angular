@@ -9,13 +9,15 @@ declare let CKEDITOR: any;
 
 describe( 'getEditorNamespace', () => {
 	const fakeScript = 'data:text/javascript;base64,d2luZG93LkNLRURJVE9SID0ge307';
+	let isIe10 = navigator.userAgent.toLowerCase().indexOf( 'trident/' ) > -1;
+	isIe10 = isIe10 && document[ 'documentMode' ] === 10;
 
 	beforeEach( () => {
 		delete window[ 'CKEDITOR' ];
 	} );
 
 	it( 'is a function', () => {
-		expect( typeof getEditorNamespace  === 'function' ).toBeTruthy();
+		expect( typeof getEditorNamespace === 'function' ).toBeTruthy();
 	} );
 
 	it( 'typeError thrown when empty string passed', () => {
@@ -35,11 +37,13 @@ describe( 'getEditorNamespace', () => {
 		} );
 	} );
 
-	it( 'load script and resolves with loaded namespace', () => {
-		return getEditorNamespace( fakeScript ).then( namespace => {
-			expect( namespace ).toBe( CKEDITOR );
+	if ( !isIe10 ) {
+		it( 'load script and resolves with loaded namespace', () => {
+			return getEditorNamespace( fakeScript ).then( namespace => {
+				expect( namespace ).toBe( CKEDITOR );
+			} );
 		} );
-	} );
+	}
 
 	it( 'rejects with error when script cannot be loaded', () => {
 		return getEditorNamespace( 'non-existent.js' ).catch( err => {
@@ -48,6 +52,6 @@ describe( 'getEditorNamespace', () => {
 	} );
 
 	it( 'returns the same promise', () => {
-		expect( getEditorNamespace( fakeScript ) ).toBe( getEditorNamespace( fakeScript) );
+		expect( getEditorNamespace( fakeScript ) ).toBe( getEditorNamespace( fakeScript ) );
 	} );
 } );
