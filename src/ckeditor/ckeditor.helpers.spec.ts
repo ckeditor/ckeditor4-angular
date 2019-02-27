@@ -37,7 +37,7 @@ describe( 'getEditorNamespace', () => {
 		} );
 	} );
 
-	if ( !isIe10 ) {
+	if ( !isIe10 ) { // Ignore unstable test on IE10.
 		it( 'load script and resolves with loaded namespace', () => {
 			return getEditorNamespace( fakeScript ).then( namespace => {
 				expect( namespace ).toBe( CKEDITOR );
