@@ -1,16 +1,22 @@
 /**
- * @license Copyright (c) 2003-2018, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md.
  */
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CKEditorComponent } from './ckeditor.component';
 
+import { TestTools } from '../test.tools';
+import { CKEditor4 } from './ckeditor';
+import EditorType = CKEditor4.EditorType;
+
+const whenEvent = TestTools.whenEvent;
+
 declare var CKEDITOR: any;
 
 describe( 'CKEditorComponent', () => {
-	let component: CKEditorComponent;
-	let fixture: ComponentFixture<CKEditorComponent>;
+	let component: CKEditorComponent,
+		fixture: ComponentFixture<CKEditorComponent>;
 
 	beforeEach( async( () => {
 		TestBed.configureTestingModule( {
@@ -28,189 +34,262 @@ describe( 'CKEditorComponent', () => {
 		fixture.destroy();
 	} );
 
-	it( 'should create', () => {
-		expect( component ).toBeTruthy();
-	} );
-
-	describe( 'invalid initialization', () => {
-		it( 'should result in error logged to the console', () => {
-			let saved = CKEDITOR,
-				spy = spyOn( console, 'error', );
-
-			CKEDITOR = undefined;
-
-			fixture.detectChanges();
-
-			CKEDITOR = saved;
-			expect( spy ).toHaveBeenCalled();
-		} );
-	} );
-
-	describe( 'disabled state', () => {
-		it( 'simple usage', () => {
-			fixture.detectChanges();
-
-			return whenReady( component ).then( () => {
-				expect( component.disabled ).toBeFalsy();
-				expect( component.instance.readOnly ).toBeFalsy();
-
-				component.disabled = true;
-
-				expect( component.disabled ).toBeTruthy();
-				expect( component.instance.readOnly ).toBeTruthy();
-
-				component.disabled = false;
-
-				expect( component.disabled ).toBeFalsy();
-				expect( component.instance.readOnly ).toBeFalsy();
+	[ EditorType.DIVAREA, EditorType.INLINE ].forEach( ( editorType ) => {
+		describe( `type="${editorType}"`, () => {
+			beforeEach( () => {
+				component.type = editorType;
 			} );
-		} );
 
-		it( 'editor disabled by the ControlValueAccessor', () => {
-			fixture.detectChanges();
-			component.setDisabledState( true );
+			describe( 'on initialization', () => {
+				const method = editorType === 'divarea' ? 'replace' : 'inline';
 
-			return whenReady( component ).then( () => {
-				expect( component.disabled ).toBeTruthy();
-				expect( component.instance.readOnly ).toBeTruthy();
+				it( `should create editor with CKEDITOR.${method}`, () => {
+					const spy = spyOn( CKEDITOR, method );
+					whenEvent( 'ready', component ).then( () => {
+						fixture.detectChanges();
+						expect( spy ).toHaveBeenCalled();
+					} );
+				} );
+
+				it( 'should emit ready event', () => {
+					const spy = jasmine.createSpy();
+					component.ready.subscribe( spy );
+
+					fixture.detectChanges();
+
+					whenEvent( 'ready', component ).then( () => {
+						expect( spy ).toHaveBeenCalledTimes( 1 );
+					} );
+				} );
+
+				describe( 'with tagName unset', () => {
+					it( 'editor should be initialized using textarea element', () => {
+						whenEvent( 'ready', component ).then( () => {
+							expect( fixture.nativeElement.lastElementChild.firstElementChild.tagName ).toEqual( 'TEXTAREA' );
+						} );
+					} );
+				} );
+
+				describe( 'with tagName set to div', () => {
+					beforeEach( () => {
+						component.tagName = 'div';
+					} );
+
+					it( 'editor should be initialized using div element', () => {
+						whenEvent( 'ready', component ).then( () => {
+							fixture.detectChanges();
+							expect( fixture.nativeElement.firstChild.tagName ).toEqual( 'DIV' );
+						} );
+					} );
+				} );
+
+				[ {
+					config: undefined,
+					msg: 'without config',
+					warn: false
+				}, {
+					config: { extraPlugins: 'basicstyles,divarea,link' },
+					msg: 'config.extraPlugins defined as a string',
+					warn: false
+				}, {
+					config: { extraPlugins: [ 'basicstyles', 'divarea', 'link' ] },
+					msg: 'config.extraPlugins defined as an array',
+					warn: false
+				}, {
+					config: { removePlugins: 'basicstyles,divarea,link,divarea' },
+					msg: 'config.removePlugins defined as a string',
+					warn: true
+				}, {
+					config: { removePlugins: [ 'basicstyles', 'divarea', 'link', 'divarea' ] },
+					msg: 'config.removePlugins defined as an array',
+					warn: true
+				}
+				].forEach( ( { config, msg, warn } ) => {
+					describe( msg, () => {
+						beforeEach( () => {
+							component.config = config;
+						} );
+
+						it( `console ${warn ? 'should' : 'shouldn\'t'} warn`, () => {
+							const spy = spyOn( console, 'warn' );
+
+							fixture.detectChanges();
+
+							whenEvent( 'ready', component ).then( () => {
+								warn
+									? expect( spy ).toHaveBeenCalled()
+									: expect( spy ).not.toHaveBeenCalled();
+							} );
+						} );
+
+						it( 'editor should use divarea plugin', () => {
+							fixture.detectChanges();
+
+							whenEvent( 'ready', component ).then( ( { editor } ) => {
+								expect( editor.plugins.divarea ).not.toBeUndefined();
+							} );
+						} );
+					} );
+				} );
+
+				describe( 'when set with config', () => {
+					beforeEach( ( done ) => {
+						component.config = {
+							readOnly: true,
+							width: 1000,
+							height: 1000
+						};
+						fixture.detectChanges();
+						whenEvent( 'ready', component ).then( done );
+					} );
+
+					it( 'editor should be readOnly', () => {
+						expect( component.instance.readOnly ).toBeTruthy();
+					} );
+
+					it( 'editor should have width and height', () => {
+						expect( component.instance.config.width ).toBe( 1000 );
+						expect( component.instance.config.height ).toBe( 1000 );
+					} );
+				} );
 			} );
-		} );
-	} );
 
-	describe( 'tagName', () => {
-		it( 'should enable creating component on div element', () => {
-			component.tagName = 'div';
-			fixture.detectChanges();
+			describe( 'when component is ready', () => {
+				beforeEach( ( done ) => {
+					fixture.detectChanges();
 
-			expect( fixture.nativeElement.lastChild.tagName ).toEqual( 'DIV' );
-		} );
-	} );
+					whenEvent( 'ready', component ).then( done );
+				} );
 
-	describe( 'component data', () => {
-		it( 'initial data should be empty', () => {
-			fixture.detectChanges();
+				it( 'should be initialized', () => {
+					expect( component ).toBeTruthy();
+				} );
 
-			return whenReady( component ).then( () => {
-				expect( component.data ).toEqual( '' );
-				expect( component.instance.getData() ).toEqual( '' );
-			} );
-		} );
+				it( `editor ${editorType === 'inline' ? 'should' : 'shouldn\'t'} be inline`, () => {
+					const expectation = expect( component.instance.editable().hasClass( 'cke_editable_inline' ) );
 
-		it( 'should be configurable at the start of the component', () => {
-			fixture.detectChanges();
-			component.data = 'foo';
+					editorType === 'inline'
+						? expectation.toBeTruthy()
+						: expectation.toBeFalsy();
+				} );
 
-			return whenReady( component ).then( () => {
-				expect( component.data ).toEqual( 'foo' );
-				expect( component.instance.getData() ).toEqual( 'foo' );
-			} );
-		} );
+				it( 'editor shouldn\'t be read-only', () => {
+					fixture.detectChanges();
 
-		it( 'should be writeable by ControlValueAccessor', () => {
-			fixture.detectChanges();
-			component.writeValue( 'foo' );
+					expect( component.readOnly ).toBeFalsy();
+					expect( component.instance.readOnly ).toBeFalsy();
+				} );
 
-			return whenReady( component ).then( () => {
-				expect( component.instance.getData() ).toEqual( 'foo' );
+				describe( 'with changed read-only mode', () => {
+					it( 'should allow to enable read-only mode', () => {
+						component.readOnly = true;
 
-				component.writeValue( 'bar' );
+						expect( component.readOnly ).toBeTruthy();
+						expect( component.instance.readOnly ).toBeTruthy();
+					} );
 
-				expect( component.instance.getData() ).toEqual( 'bar' );
-			} );
-		} );
-	} );
+					it( 'should allow to disable read-only mode', () => {
+						component.readOnly = false;
 
-	describe( 'emitters', () => {
-		it( 'ready', () => {
-			let spy = jasmine.createSpy();
-			component.ready.subscribe( spy );
+						expect( component.readOnly ).toBeFalsy();
+						expect( component.instance.readOnly ).toBeFalsy();
+					} );
+				} );
 
-			fixture.detectChanges();
+				it( 'initial data should be empty', () => {
+					fixture.detectChanges();
 
-			return whenReady( component ).then( () => {
-				expect( spy ).toHaveBeenCalledTimes( 1 );
-			} );
-		} );
+					expect( component.data ).toEqual( null );
+					expect( component.instance.getData() ).toEqual( '' );
+				} );
 
-		it( 'change', () => {
-			fixture.detectChanges();
+				describe( 'component data', () => {
+					const data = '<b>foo</b>',
+						expected = '<p><strong>foo</strong></p>\n';
 
-			return whenReady( component ).then( () => {
-				let spy = jasmine.createSpy();
-				component.change.subscribe( spy );
+					it( 'should be configurable at the start of the component', () => {
+						fixture.detectChanges();
+						component.data = data;
 
-				component.instance.fire( 'change' );
+						expect( component.data ).toEqual( expected );
+						expect( component.instance.getData() ).toEqual( expected );
+					} );
 
-				expect( spy ).toHaveBeenCalledTimes( 1 );
-			} );
-		} );
+					it( 'should be writeable by ControlValueAccessor', () => {
+						fixture.detectChanges();
+						component.writeValue( data );
 
-		it( 'focus', () => {
-			fixture.detectChanges();
+						expect( component.instance.getData() ).toEqual( expected );
 
-			return whenReady( component ).then( () => {
-				let spy = jasmine.createSpy();
-				component.focus.subscribe( spy );
+						component.writeValue( '<p><i>baz</i></p>' );
 
-				component.instance.fire( 'focus' );
+						expect( component.instance.getData() ).toEqual( '<p><em>baz</em></p>\n' );
+					} );
+				} );
 
-				expect( spy ).toHaveBeenCalledTimes( 1 );
-			} );
-		} );
+				describe( 'editor event', () => {
+					it( 'change should emit component change', () => {
+						fixture.detectChanges();
 
-		it( 'blur', () => {
-			fixture.detectChanges();
+						const spy = jasmine.createSpy();
+						component.change.subscribe( spy );
 
-			return whenReady( component ).then( () => {
-				let spy = jasmine.createSpy();
-				component.blur.subscribe( spy );
+						component.instance.fire( 'change' );
 
-				component.instance.fire( 'blur' );
+						expect( spy ).toHaveBeenCalledTimes( 1 );
+					} );
 
-				expect( spy ).toHaveBeenCalledTimes( 1 );
-			} );
-		} );
-	} );
+					it( 'focus should emit component focus', () => {
+						fixture.detectChanges();
 
-	describe( 'control value accessor callbacks', () => {
-		it( 'onTouched callback should be called when editor is blurred', () => {
-			fixture.detectChanges();
+						const spy = jasmine.createSpy();
+						component.focus.subscribe( spy );
 
-			return whenReady( component ).then( () => {
-				let spy = jasmine.createSpy();
+						component.instance.fire( 'focus' );
 
-				component.registerOnTouched( spy );
+						expect( spy ).toHaveBeenCalledTimes( 1 );
+					} );
 
-				component.instance.fire( 'blur' );
+					it( 'blur should emit component blur', () => {
+						fixture.detectChanges();
 
-				expect( spy ).toHaveBeenCalled();
-			} );
-		} );
+						const spy = jasmine.createSpy();
+						component.blur.subscribe( spy );
 
-		it( 'onChange callback should be called when editor model changes', () => {
-			fixture.detectChanges();
+						component.instance.fire( 'blur' );
 
-			return whenReady( component ).then( () => {
-				let spy = jasmine.createSpy();
-				component.registerOnChange( spy );
+						expect( spy ).toHaveBeenCalledTimes( 1 );
+					} );
+				} );
 
-				component.data = 'initial';
-				component.instance.fire( 'change' );
+				describe( 'when control value accessor callbacks are set', () => {
+					it( 'onTouched callback should be called when editor is blurred', () => {
+						fixture.detectChanges();
 
-				expect( spy ).toHaveBeenCalledTimes( 1 );
+						const spy = jasmine.createSpy();
+
+						component.registerOnTouched( spy );
+
+						component.instance.fire( 'blur' );
+
+						expect( spy ).toHaveBeenCalled();
+					} );
+
+					it( 'onChange callback should be called when editor model changes', () => {
+						fixture.detectChanges();
+
+						const spy = jasmine.createSpy();
+						component.registerOnChange( spy );
+
+						whenEvent( 'change', component ).then( () => {
+							expect( spy ).toHaveBeenCalledTimes( 1 );
+						} );
+
+						component.instance.setData( 'initial' );
+					} );
+				} );
 			} );
 		} );
 	} );
 } );
 
-function whenReady( component ) {
-	return new Promise( res => {
-		component.ready.subscribe( res );
-	} ); // Make sure that instance is fully initialized.
-}
-
-// function wait( time?: number ) {
-// 	return new Promise( res => {
-// 		setTimeout( res, time );
-// 	} );
-// }

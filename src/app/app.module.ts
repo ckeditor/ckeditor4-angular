@@ -1,3 +1,8 @@
+/**
+ * @license Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md.
+ */
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -11,7 +16,7 @@ import { DemoFormComponent } from './demo-form/demo-form.component';
 const appRoutes: Routes = [
 	{ path: '', redirectTo: '/simple-usage', pathMatch: 'full' },
 	{ path: 'simple-usage', component: SimpleUsageComponent },
-	{ path: 'forms', component: DemoFormComponent },
+	{ path: 'forms', component: DemoFormComponent }
 ];
 
 @NgModule( {
@@ -30,4 +35,5 @@ const appRoutes: Routes = [
 	bootstrap: [ AppComponent ]
 } )
 
-export class AppModule {}
+export class AppModule {
+}

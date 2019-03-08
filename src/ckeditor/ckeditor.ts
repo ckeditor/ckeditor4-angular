@@ -1,4 +1,9 @@
 /**
+ * @license Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md.
+ */
+
+/**
  * Basic typings for the CKEditor4 elements.
  */
 export namespace CKEditor4 {
@@ -15,8 +20,8 @@ export namespace CKEditor4 {
 	 * See https://ckeditor.com/docs/ckeditor4/latest/guide/dev_uitypes.html
 	 * to learn more.
 	 */
-	export enum EditorType {
-		CLASSIC = 'classic',
+	export const enum EditorType {
+		DIVAREA = 'divarea',
 		INLINE = 'inline'
 	}
 
@@ -29,12 +34,20 @@ export namespace CKEditor4 {
 	export interface EventInfo {
 		readonly name: string;
 		readonly editor: any;
-		readonly data: object;
-		readonly listenerData: object;
-		readonly sender: object;
+		readonly data: {
+			[ key: string ]: any;
+		};
+		readonly listenerData: {
+			[ key: string ]: any;
+		};
+		readonly sender: {
+			[ key: string ]: any;
+		};
 
 		cancel(): void;
+
 		removeListener(): void;
+
 		stop(): void;
 	}
 }

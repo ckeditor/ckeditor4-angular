@@ -2,26 +2,52 @@
 
 <p><strong>Note:</strong> Open the console for additional logs.</p>
 
-<p>
-	<button (click)="toggleDisableEditors()">{{ isDisabled ? 'Enable editors' : 'Disable editors' }}</button>
-</p>
-
-<h3>Classic build</h3>
+<h3>Divarea editor:</h3>
 <ckeditor
-	[data]="editorData"
-	[disabled]="isDisabled"
-	id="classic-editor"
-	name="classic-editor"
+	*ngIf="!isRemoved"
+	[(data)]="editorData"
+	[readOnly]="isReadOnly"
+	[hidden]="isHidden"
+	#divarea
+	id="divarea-editor"
+	name="divarea-editor"
 
-	(ready)="onReady($event)"
-	(change)="onChange($event)"
-	(focus)="onFocus($event)"
-	(blur)="onBlur($event)">
+	(ready)="onReady( $event, 'Divarea' )"
+	(change)="onChange( $event, 'Divarea' )"
+	(focus)="onFocus( $event, 'Divarea' )"
+	(blur)="onBlur( $event, 'Divarea' )">
 </ckeditor>
 
-<h4>Component events:</h4>
-<ul>
-	<li *ngFor="let eventInfo of componentEvents">
-		<span>{{ eventInfo }}</span>
-	</li>
-</ul>
+<h3>Inline editor:</h3>
+<div style="border: solid 1px black;">
+	<ckeditor
+		*ngIf="!isRemoved"
+		[hidden]="isHidden"
+		[(data)]="editorData"
+		[readOnly]="isReadOnly"
+		#inline
+
+		id="inline-editor"
+		name="inline-editor"
+
+		type="inline"
+
+		(ready)="onReady( $event, 'Inline' )"
+		(change)="onChange( $event, 'Inline' )"
+		(focus)="onFocus( $event, 'Inline' )"
+		(blur)="onBlur( $event, 'Inline' )">
+	</ckeditor>
+</div>
+<p>Note: both editors have it's data synchronized, so every change in one of editors propagates to another.</p>
+
+<h4>Component controls:</h4>
+
+<p>
+	<label><input type="checkbox" [(ngModel)]="isHidden">Hide editor with '[hidden]' directive.</label>
+</p>
+<p>
+	<label><input type="checkbox" [(ngModel)]="isRemoved">Remove editor from DOM with '*ngIf' directive.</label>
+</p>
+<p>
+	<label><input type="checkbox" [(ngModel)]="isReadOnly">Make editor read only.</label>
+</p>
