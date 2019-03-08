@@ -1,6 +1,6 @@
 {
 	"name": "@ckeditor/ckeditor4-angular",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"description": "Official Angular 2+ component for CKEditor 4.",
 	"keywords": [
 		"wysiwyg",
