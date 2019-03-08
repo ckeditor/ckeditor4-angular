@@ -24,6 +24,7 @@ Where not otherwise indicated, all CKEditor content is authored by CKSource engi
 The following library is included in CKEditor 4 component for Angular under the MIT license:
 
 - [load-script](https://github.com/eldargab/load-script)
+- Angular Copyright (c) 2010-2019 Google LLC. http://angular.io/license
 
 Trademarks
 ----------
