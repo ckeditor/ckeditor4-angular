@@ -11,14 +11,14 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
-    "author": "CKSource (http://cksource.com/)",
-    "license": "(GPL-2.0-or-later OR LGPL-2.1-or-later OR MPL-1.1-or-later)",
-    "homepage": "https://ckeditor.com",
-    "bugs": "https://github.com/ckeditor/ckeditor4-angular/issues",
-    "repository": {
-      "type": "git",
-      "url": "https://github.com/ckeditor/ckeditor4-angular.git"
-    },
+  "author": "CKSource (http://cksource.com/)",
+  "license": "(GPL-2.0-or-later OR LGPL-2.1-or-later OR MPL-1.1-or-later)",
+  "homepage": "https://ckeditor.com",
+  "bugs": "https://github.com/ckeditor/ckeditor4-angular/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ckeditor/ckeditor4-angular.git"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "^7.2.3",
