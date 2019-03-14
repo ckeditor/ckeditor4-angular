@@ -1,5 +1,5 @@
 {
-	"name": "@ckeditor/ckeditor4-angular",
+	"name": "ckeditor4-angular",
 	"version": "0.1.0",
 	"description": "Official Angular 2+ component for CKEditor 4.",
 	"keywords": [
