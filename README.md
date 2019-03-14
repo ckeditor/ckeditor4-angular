@@ -4,7 +4,11 @@ Official [CKeditor 4](https://ckeditor.com/ckeditor-4/) WYSIWYG editor Angular c
 
 ## Documentation
 
-See [CKEditor 4 Angular component](https://ckeditor.com/docs/ckeditor4/latest/guide/index.html) article.
+See [CKEditor 4 Angular component](https://ckeditor.com/docs/ckeditor4/latest/guide/dev_angular.html) article.
+
+### Browser support
+
+CKEditor 4 Angular component fully works with all the [supported browsers](https://ckeditor.com/docs/ckeditor4/latest/guide/dev_browsers.html#officially-supported-browsers) except for IE8-10.
 
 ## Contributing
 
@@ -38,6 +42,7 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
 ### License
+
 Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.
 
 For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
