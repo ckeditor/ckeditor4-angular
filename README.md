@@ -1,10 +1,10 @@
 # CKEditor 4 WYSIWYG editor Angular component
 
-Official [CKEditor 4](https://ckeditor.com/ckeditor-4/) WYSIWYG editor Angular component for Angular 2+
+Official [CKEditor 4](https://ckeditor.com/ckeditor-4/) WYSIWYG editor Angular component for Angular 2+.
 
 ## Documentation
 
-See [CKEditor 4 Angular component](https://ckeditor.com/docs/ckeditor4/latest/guide/dev_angular.html) article.
+See the [CKEditor 4 Angular Integration](https://ckeditor.com/docs/ckeditor4/latest/guide/dev_angular.html) article.
 
 ### Browser support
 
@@ -12,7 +12,7 @@ CKEditor 4 Angular component fully works with all the [supported browsers](https
 
 ## Contributing
 
-Once you have cloned the repository install dependecies:
+Once you have cloned the repository, install dependecies:
 
 ```bash
 npm install
