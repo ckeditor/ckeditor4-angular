@@ -1,6 +1,6 @@
 {
   "name": "ckeditor4-angular",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Official Angular 2+ component for CKEditor 4.",
   "scripts": {
     "ng": "ng",
