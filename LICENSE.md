@@ -21,10 +21,14 @@ Sources of Intellectual Property Included in CKEditor
 
 Where not otherwise indicated, all CKEditor content is authored by CKSource engineers and consists of CKSource-owned intellectual property. In some specific instances, CKEditor will incorporate work done by developers outside of CKSource with their express permission.
 
-The following library is included in CKEditor 4 component for Angular under the MIT license:
+The following libraries are included in CKEditor 4 component for Angular under the following licenses:
 
-- [load-script](https://github.com/eldargab/load-script)
-- Angular Copyright (c) 2010-2019 Google LLC. http://angular.io/license
+- Angular Copyright (c) 2010-2019 Google LLC. [MIT](http://angular.io/license)
+- core-js Copyright (c) 2014-2019 Denis Pushkarev [MIT](https://github.com/zloirock/core-js/blob/master/LICENSE)
+- load-script [MIT](https://github.com/eldargab/load-script#license)
+- RxJS: Reactive Extensions For JavaScript [Apache-2.0](https://github.com/ReactiveX/rxjs/blob/master/LICENSE.txt)
+- tslib Copyright (c) 2012-2019 Microsoft [Apache-2.0](https://github.com/Microsoft/tslib/blob/master/LICENSE.txt)
+- Zone.js Copyright (c) 2016-2018 Google, Inc. [MIT](https://github.com/angular/zone.js/blob/master/LICENSE)
 
 Trademarks
 ----------
