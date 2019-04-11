@@ -43,7 +43,7 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 
 ### Publishing
 
-To build and publish the package run `npm run publish`. You can manually build the package with `npm run build-package`. It will be stored in `dist/`, then you can publish it with `npm publish dist/`.
+To build and publish the package run `npm run publish`. You can also manually build the package with `npm run build-package` which will be stored in `dist/`. Then you can publish it with `npm publish dist/`.
 
 ### License
 
