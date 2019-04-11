@@ -29,9 +29,9 @@ This repository contains the following code:
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-### Build
+### Build samples
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Run `ng build` to build the samples. The build artifacts will be stored in the `samples/` directory.
 
 ### Running unit tests
 
@@ -40,6 +40,10 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 ### Running end-to-end tests
 
 Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+
+### Publishing
+
+To build and publish the package run `npm run publish`. You can also manually build the package with `npm run build-package` which will be stored in `dist/`. Then you can publish it with `npm publish dist/`.
 
 ### License
 
