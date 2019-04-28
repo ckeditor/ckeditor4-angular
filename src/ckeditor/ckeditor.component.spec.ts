@@ -345,6 +345,78 @@ describe( 'CKEditorComponent', () => {
 
 						expect( spy ).toHaveBeenCalledTimes( 1 );
 					} );
+
+					it( 'paste should emit component paste', () => {
+						fixture.detectChanges();
+
+						const spy = jasmine.createSpy();
+						component.paste.subscribe( spy );
+
+						component.instance.fire( 'paste' );
+
+						expect( spy ).toHaveBeenCalledTimes( 1 );
+					} );
+
+					it( 'dragend should emit component dragend', () => {
+						fixture.detectChanges();
+
+						const spy = jasmine.createSpy();
+						component.dragEnd.subscribe( spy );
+
+						component.instance.fire( 'dragend' );
+
+						expect( spy ).toHaveBeenCalledTimes( 1 );
+					});
+
+					it( 'dragstart should emit component dragstart', () => {
+						fixture.detectChanges();
+
+						const spy = jasmine.createSpy();
+						component.dragStart.subscribe( spy );
+
+						component.instance.fire( 'dragstart' );
+
+						expect( spy ).toHaveBeenCalledTimes( 1 );
+					} );
+
+					it( 'drop should emit component drop', () => {
+						fixture.detectChanges();
+
+						const spy = jasmine.createSpy();
+						component.drop.subscribe( spy );
+
+						component.instance.fire( 'drop' );
+
+						expect( spy ).toHaveBeenCalledTimes( 1 );
+					} );
+
+					it('fileUploadRequest should emit component fileUploadRequest', () => {
+						component.config = {
+							extraPlugins: 'uploadimage'
+						};
+						fixture.detectChanges();
+
+						const spy = jasmine.createSpy();
+						component.fileUploadRequest.subscribe( spy );
+
+						component.instance.fire( 'fileUploadRequest' );
+
+						expect( spy ).toHaveBeenCalledTimes( 1 );
+					} );
+
+					it('fileUploadResponse should emit component fileUploadResponse', () => {
+						component.config = {
+							extraPlugins: 'uploadimage'
+						};
+						fixture.detectChanges();
+
+						const spy = jasmine.createSpy();
+						component.fileUploadResponse.subscribe( spy );
+
+						component.instance.fire( 'fileUploadResponse' );
+
+						expect( spy ).toHaveBeenCalledTimes( 1 );
+					} );
 				} );
 
 				describe( 'when control value accessor callbacks are set', () => {
