@@ -9,6 +9,8 @@ import { whenEvent, whenDataReady, setDataMultipleTimes } from '../test.tools';
 import { CKEditor4 } from './ckeditor';
 import EditorType = CKEditor4.EditorType;
 
+const { mockNativeDataTransfer, mockPasteEvent, whenEvent } = TestTools;
+
 declare var CKEDITOR: any;
 
 describe( 'CKEditorComponent', () => {
@@ -348,11 +350,14 @@ describe( 'CKEditorComponent', () => {
 
 					it( 'paste should emit component paste', () => {
 						fixture.detectChanges();
+						const event = mockPasteEvent();
+						event.$.clipboardData.setData( 'text/html', '<p>bam</p>' );
 
 						const spy = jasmine.createSpy();
 						component.paste.subscribe( spy );
 
-						component.instance.fire( 'paste' );
+						// const editable = component.instance.editable();
+						component.instance.fire( 'paste', event );
 
 						expect( spy ).toHaveBeenCalledTimes( 1 );
 					} );
