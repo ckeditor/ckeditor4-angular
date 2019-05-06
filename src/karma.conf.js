@@ -13,10 +13,10 @@ module.exports = function (config) {
 			require('@angular-devkit/build-angular/plugins/karma')
 		],
 		files: [
-			{ pattern: '../node_modules/ckeditor/ckeditor.js', included: true, served: true, watched: false, nocache: true },
-			{ pattern: '../node_modules/ckeditor/+(core|plugins|skins|lang)/**/*', included: false, served: true, watched: false, nocache: true },
-			{ pattern: '../node_modules/ckeditor/+(config|styles).js', included: false, served: true, watched: false, nocache: true },
-			{ pattern: '../node_modules/ckeditor/contents.css', included: false, served: true, watched: false, nocache: true },
+			{ pattern: '../node_modules/ckeditor-dev/ckeditor.js', included: true, served: true, watched: false, nocache: true },
+			{ pattern: '../node_modules/ckeditor-dev/+(core|plugins|skins|lang)/**/*', included: false, served: true, watched: false, nocache: true },
+			{ pattern: '../node_modules/ckeditor-dev/+(config|styles).js', included: false, served: true, watched: false, nocache: true },
+			{ pattern: '../node_modules/ckeditor-dev/contents.css', included: false, served: true, watched: false, nocache: true },
 		],
 		client: {
 			clearContext: false // leave Jasmine Spec Runner output visible in browser

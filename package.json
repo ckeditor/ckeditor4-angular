@@ -45,7 +45,7 @@
     "@types/jasmine": "^2.8.15",
     "@types/jasminewd2": "^2.0.6",
     "@types/node": "~8.9.4",
-    "ckeditor": "^4.11.4",
+    "ckeditor-dev": "git+https://github.com/ckeditor/ckeditor-dev.git#4.11.4",
     "classlist.js": "^1.1.20150312",
     "codelyzer": "^4.5.0",
     "fs-extra": "^7.0.1",
