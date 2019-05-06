@@ -16,7 +16,7 @@ module.exports = function (config) {
 			{ pattern: '../node_modules/ckeditor-dev/ckeditor.js', included: true, served: true, watched: false, nocache: true },
 			{ pattern: '../node_modules/ckeditor-dev/+(core|plugins|skins|lang)/**/*', included: false, served: true, watched: false, nocache: true },
 			{ pattern: '../node_modules/ckeditor-dev/+(config|styles).js', included: false, served: true, watched: false, nocache: true },
-			{ pattern: '../node_modules/ckeditor-dev/contents.css', included: false, served: true, watched: false, nocache: true },
+			{ pattern: '../node_modules/ckeditor-dev/contents.css', included: false, served: true, watched: false, nocache: true }
 		],
 		client: {
 			clearContext: false // leave Jasmine Spec Runner output visible in browser
