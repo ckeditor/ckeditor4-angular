@@ -2,9 +2,42 @@
 
 Official [CKEditor 4](https://ckeditor.com/ckeditor-4/) WYSIWYG editor Angular component for Angular 2+.
 
-## Documentation
+![CKEditor 4 screenshot](https://c.cksource.com/a/1/img/npm/ckeditor4.png)
 
-See the [CKEditor 4 Angular Integration](https://ckeditor.com/docs/ckeditor4/latest/guide/dev_angular.html) article.
+## Usage
+
+In order to create an editor instance in Angular, install the `ckeditor4-angular` npm package as a dependency of your project:
+
+```bash
+npm install --save ckeditor4-angular
+```
+
+After installing, import `CKEditorModule` to your application:
+
+```js
+import { CKEditorModule } from 'ckeditor4-angular';
+
+@NgModule( {
+    imports: [
+        ...
+        CKEditorModule,
+        ...
+    ],
+    …
+} )
+```
+
+You can now use the `<ckeditor>` tag in the component template to include the rich text editor:
+
+```html
+<ckeditor data="<p>Hello, world!</p>"></ckeditor>
+```
+
+The `data` attribute used in the example above is responsible for setting the editor’s data.
+
+## Documentation and examples
+
+See the [CKEditor 4 Angular Integration](https://ckeditor.com/docs/ckeditor4/latest/guide/dev_angular.html) article and [Angular examples](https://ckeditor.com/docs/ckeditor4/latest/examples/angular.html) in the [CKEditor 4 documentation](https://ckeditor.com/docs/ckeditor4/latest).
 
 ### Browser support
 
@@ -12,40 +45,48 @@ CKEditor 4 Angular component fully works with all the [supported browsers](https
 
 ## Contributing
 
-Once you have cloned the repository, install dependecies:
+### Reporting issues and feature requests
+
+All issues and feature requests should be reported in Angular integration official Github repository [issue section](https://github.com/ckeditor/ckeditor4-angular/issues/new).
+
+### Development
+
+Clone the [Angular integration repository](https://github.com/ckeditor/ckeditor4-angular).
+
+Once you have cloned it, install dependencies by running:
 
 ```bash
 npm install
 ```
 
-### The structure of the repository
+#### The structure of the repository
 
 This repository contains the following code:
 
 * `./src/ckeditor` contains the CKEditor component,
 * `./src/app` is a demo application using the component.
 
-### Development server
+#### Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-### Build samples
+#### Building samples
 
 Run `ng build` to build the samples. The build artifacts will be stored in the `samples/` directory.
 
-### Running unit tests
+#### Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-### Running end-to-end tests
+#### Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Run `ng e2e` to execute the end-to-end tests via [Protractor](https://www.protractortest.org/).
 
-### Publishing
+#### Publishing
 
 To build and publish the package run `npm run publish`. You can also manually build the package with `npm run build-package` which will be stored in `dist/`. Then you can publish it with `npm publish dist/`.
 
-### License
+## License
 
 Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.
 
