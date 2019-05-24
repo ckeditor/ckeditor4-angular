@@ -1,6 +1,6 @@
 # CKEditor 4 WYSIWYG editor Angular component
 
-Official [CKEditor 4](https://ckeditor.com/ckeditor-4/) WYSIWYG editor Angular component for Angular 2+.
+The official [CKEditor 4](https://ckeditor.com/ckeditor-4/) WYSIWYG editor Angular component for Angular.
 
 ![CKEditor 4 screenshot](https://c.cksource.com/a/1/img/npm/ckeditor4.png)
 
@@ -39,19 +39,21 @@ The `data` attribute used in the example above is responsible for setting the ed
 
 See the [CKEditor 4 Angular Integration](https://ckeditor.com/docs/ckeditor4/latest/guide/dev_angular.html) article and [Angular examples](https://ckeditor.com/docs/ckeditor4/latest/examples/angular.html) in the [CKEditor 4 documentation](https://ckeditor.com/docs/ckeditor4/latest).
 
-### Browser support
+## Browser support
 
-CKEditor 4 Angular component fully works with all the [supported browsers](https://ckeditor.com/docs/ckeditor4/latest/guide/dev_browsers.html#officially-supported-browsers) except for IE8-10.
+The CKEditor 4 Angular component works with all the [supported browsers](https://ckeditor.com/docs/ckeditor4/latest/guide/dev_browsers.html#officially-supported-browsers) except for Internet Explorer 8-10.
 
 ## Contributing
 
+Here is how you can contribute to the development of the component. Any feedback and help will be most appreciated!
+
 ### Reporting issues and feature requests
 
-All issues and feature requests should be reported in Angular integration official Github repository [issue section](https://github.com/ckeditor/ckeditor4-angular/issues/new).
+All issues and feature requests should be reported in the [issues section](https://github.com/ckeditor/ckeditor4-angular/issues/new) of the official GitHub repository for the CKEditor 4 Angular integration.
 
 ### Development
 
-Clone the [Angular integration repository](https://github.com/ckeditor/ckeditor4-angular).
+Clone the [CKEditor 4 Angular integration repository](https://github.com/ckeditor/ckeditor4-angular).
 
 Once you have cloned it, install dependencies by running:
 
@@ -68,7 +70,7 @@ This repository contains the following code:
 
 #### Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `ng serve` to start the development server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 #### Building samples
 
@@ -84,7 +86,9 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](https://www.protra
 
 #### Publishing
 
-To build and publish the package run `npm run publish`. You can also manually build the package with `npm run build-package` which will be stored in `dist/`. Then you can publish it with `npm publish dist/`.
+To build and publish the package, run `npm run publish`.
+
+You can also manually build the package with `npm run build-package` which will be stored in `dist/`. Then you can publish it with `npm publish dist/`.
 
 ## License
 
