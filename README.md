@@ -1,6 +1,6 @@
 # CKEditor 4 WYSIWYG editor Angular component
 
-The official [CKEditor 4](https://ckeditor.com/ckeditor-4/) WYSIWYG editor Angular component for Angular.
+The official [CKEditor 4](https://ckeditor.com/ckeditor-4/) WYSIWYG editor component for Angular.
 
 ![CKEditor 4 screenshot](https://c.cksource.com/a/1/img/npm/ckeditor4.png)
 
