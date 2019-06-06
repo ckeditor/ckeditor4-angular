@@ -156,11 +156,6 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	instance: any;
 
 	/**
-	 * Wrapper element used to initialize editor.
-	 */
-	wrapper: HTMLElement;
-
-	/**
 	 * If the component is read–only before the editor instance is created, it remembers that state,
 	 * so the editor can become read–only once it is ready.
 	 */
@@ -222,20 +217,19 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	}
 
 	private createEditor(): void {
-		const element = this.createInitialElement();
+		const element = document.createElement( this.tagName );
+		this.elementRef.nativeElement.appendChild( element );
 
-		this.config = this.ensureDivareaPlugin( this.config || {} );
+		if ( this.type === CKEditor4.EditorType.DIVAREA ) {
+			this.config = this.ensureDivareaPlugin( this.config || {} );
+		}
 
-		const instance = this.type === CKEditor4.EditorType.INLINE ?
-			CKEDITOR.inline( element, this.config )
+		const instance = this.type === CKEditor4.EditorType.INLINE
+			? CKEDITOR.inline( element, this.config )
 			: CKEDITOR.replace( element, this.config );
 
-		instance.once( 'instanceReady', function( evt ) {
+		instance.once( 'instanceReady', ( evt ) => {
 			this.instance = instance;
-
-			this.wrapper.removeAttribute( 'style' );
-
-			this.elementRef.nativeElement.appendChild( this.wrapper );
 
 			// Read only state may change during instance initialization.
 			this.readOnly = this._readOnly !== null ? this._readOnly : this.instance.readOnly;
@@ -259,7 +253,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 			this.ngZone.run( () => {
 				this.ready.emit( evt );
 			} );
-		}, this );
+		} );
 	}
 
 	private subscribe( editor: any ): void {
@@ -333,18 +327,5 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		}
 
 		return plugins;
-	}
-
-	private createInitialElement(): HTMLElement {
-		// Render editor outside of component so it won't be removed from DOM before `instanceReady`.
-		this.wrapper = document.createElement( 'div' );
-		const element = document.createElement( this.tagName );
-
-		this.wrapper.setAttribute( 'style', 'display:none;' );
-
-		document.body.appendChild( this.wrapper );
-		this.wrapper.appendChild( element );
-
-		return element;
 	}
 }
