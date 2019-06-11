@@ -24,7 +24,7 @@ module.exports = function ( config ) {
 		logLevel: config.LOG_INFO,
 		autoWatch: true,
 		browsers: getBrowsers(),
-		singleRun: true,
+		singleRun: !options.watch,
 
 		specReporter: {
 			suppressPassed: shouldEnableBrowserStack()

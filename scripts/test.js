@@ -18,6 +18,7 @@ spawn( 'ng', [ 'test' ], {
  * @param {Array.<String>} args CLI arguments and options.
  * @returns {Object} options
  * @returns {Boolean} options.url `ckeditor.js` url to be included by karma.
+ * @returns {Boolean} options.watch Whether to watch the files for changes.
  */
 function parseArguments( args ) {
 	const minimist = require( 'minimist' );
@@ -27,8 +28,13 @@ function parseArguments( args ) {
 			'url'
 		],
 
+		boolean: [
+			'watch'
+		],
+
 		alias: {
-			u: 'url'
+			u: 'url',
+			w: 'watch'
 		}
 	};
 
