@@ -1,11 +1,11 @@
-const { spawn } = require( 'child_process' );
-const options = parseArguments( process.argv.slice( 2 ) );
-const env = Object.create( process.env );
-
-// This file is a workaround for Angular CLI not allowing to run tests with custom options.
+// This script is a workaround for Angular CLI not allowing to run tests with custom options.
 // Manually running `karma start ./src/karma.conf.js` doesn't work either.
 // Some of the plugins check if test is run by Angular CLI, and if not, they throw.
 // https://github.com/angular/angular-cli/issues/12305
+
+const { spawn } = require( 'child_process' );
+const options = parseArguments( process.argv.slice( 2 ) );
+const env = Object.create( process.env );
 
 env.CK_OPTIONS = JSON.stringify( options );
 
