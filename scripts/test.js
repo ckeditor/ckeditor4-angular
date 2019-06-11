@@ -10,7 +10,7 @@ const env = Object.create( process.env );
 env.CK_OPTIONS = JSON.stringify( options );
 
 spawn( 'ng', [ 'test' ], {
-	stdio: 'inherit',
+	stdio: 'inherit', // Pass parent's stdio's to child. Without that option no logs will be visible.
 	env
 } );
 
