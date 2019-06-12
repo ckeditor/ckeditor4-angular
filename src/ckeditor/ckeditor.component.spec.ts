@@ -5,11 +5,9 @@
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CKEditorComponent } from './ckeditor.component';
-import { TestTools } from '../test.tools';
+import { whenEvent, whenDataReady } from '../test.tools';
 import { CKEditor4 } from './ckeditor';
 import EditorType = CKEditor4.EditorType;
-
-const whenEvent = TestTools.whenEvent;
 
 declare var CKEDITOR: any;
 
@@ -262,11 +260,11 @@ describe( 'CKEditorComponent', () => {
 					it( 'should be configurable at the start of the component', done => {
 						fixture.detectChanges();
 
-						component.instance.once( 'dataReady', () => {
+						whenDataReady( component.instance ).then( () => {
 							expect( component.data ).toEqual( expected );
 							expect( component.instance.getData() ).toEqual( expected );
 							done();
-						}, null, null, 9999 );
+						} );
 
 						component.data = data;
 					} );
@@ -276,15 +274,16 @@ describe( 'CKEditorComponent', () => {
 
 						const editor = component.instance;
 
-						editor.once( 'dataReady', () => {
+						whenDataReady( editor ).then( () => {
 							expect( component.instance.getData() ).toEqual( expected );
 
-							editor.once( 'dataReady', () => {
+							whenDataReady( editor ).then( () => {
 								expect( component.instance.getData() ).toEqual( '<p><em>baz</em></p>\n' );
 								done();
 							} );
+
 							component.writeValue( '<p><i>baz</i></p>' );
-						}, null, null, 9999 );
+						} );
 
 						component.writeValue( data );
 					} );
