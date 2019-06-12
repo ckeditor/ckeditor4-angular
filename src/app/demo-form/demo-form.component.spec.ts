@@ -12,9 +12,7 @@ import { By } from '@angular/platform-browser';
 import { CKEditorComponent } from '../../ckeditor/ckeditor.component';
 import { DebugElement } from '@angular/core';
 
-import { TestTools } from '../../test.tools';
-
-const whenEvent = TestTools.whenEvent;
+import { whenEvent } from '../../test.tools';
 
 describe( 'DemoFormComponent', () => {
 	let component: DemoFormComponent,
