@@ -59,6 +59,13 @@ describe( 'CKEditorComponent', () => {
 					} );
 				} );
 
+				it( 'should have proper editor type', () => {
+					whenEvent( 'ready', component ).then( () => {
+						fixture.detectChanges();
+						expect( component.instance.editable().isInline() ).toBe( component.type !== EditorType.CLASSIC );
+					} );
+				} );
+
 				it( 'should emit ready event', () => {
 					const spy = jasmine.createSpy();
 					component.ready.subscribe( spy );
