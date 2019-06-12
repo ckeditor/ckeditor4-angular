@@ -98,55 +98,57 @@ describe( 'CKEditorComponent', () => {
 					} );
 				} );
 
-				if ( editorType === EditorType.DIVAREA ) {
-					[ {
-						config: undefined,
-						msg: 'without config',
-						warn: false
-					}, {
-						config: { extraPlugins: 'basicstyles,divarea,link' },
-						msg: 'config.extraPlugins defined as a string',
-						warn: false
-					}, {
-						config: { extraPlugins: [ 'basicstyles', 'divarea', 'link' ] },
-						msg: 'config.extraPlugins defined as an array',
-						warn: false
-					}, {
-						config: { removePlugins: 'basicstyles,divarea,link,divarea' },
-						msg: 'config.removePlugins defined as a string',
-						warn: true
-					}, {
-						config: { removePlugins: [ 'basicstyles', 'divarea', 'link', 'divarea' ] },
-						msg: 'config.removePlugins defined as an array',
-						warn: true
-					} ].forEach( ( { config, msg, warn } ) => {
-						describe( msg, () => {
-							beforeEach( () => {
-								component.config = config;
-							} );
+				const isDivarea = editorType === EditorType.DIVAREA;
 
-							it( `console ${warn ? 'should' : 'shouldn\'t'} warn`, () => {
-								const spy = spyOn( console, 'warn' );
+				[ {
+					config: undefined,
+					msg: 'without config',
+					warn: false
+				}, {
+					config: { extraPlugins: 'basicstyles,divarea,link' },
+					msg: 'config.extraPlugins defined as a string',
+					warn: false
+				}, {
+					config: { extraPlugins: [ 'basicstyles', 'divarea', 'link' ] },
+					msg: 'config.extraPlugins defined as an array',
+					warn: false
+				}, {
+					config: { removePlugins: 'basicstyles,divarea,link,divarea' },
+					msg: 'config.removePlugins defined as a string',
+					warn: isDivarea
+				}, {
+					config: { removePlugins: [ 'basicstyles', 'divarea', 'link', 'divarea' ] },
+					msg: 'config.removePlugins defined as an array',
+					warn: isDivarea
+				} ].forEach( ( { config, msg, warn } ) => {
+					describe( msg, () => {
+						beforeEach( () => {
+							component.config = config;
+						} );
 
+						it( `console ${warn ? 'should' : 'shouldn\'t'} warn`, () => {
+							const spy = spyOn( console, 'warn' );
+
+							whenEvent( 'ready', component ).then( () => {
 								fixture.detectChanges();
 
-								whenEvent( 'ready', component ).then( () => {
-									warn
-										? expect( spy ).toHaveBeenCalled()
-										: expect( spy ).not.toHaveBeenCalled();
-								} );
+								warn
+									? expect( spy ).toHaveBeenCalled()
+									: expect( spy ).not.toHaveBeenCalled();
 							} );
+						} );
 
-							it( 'editor should use divarea plugin', () => {
+						it( `editor ${ isDivarea ? 'should' : 'shouldn\'t' } use divarea plugin`, () => {
+							whenEvent( 'ready', component ).then( ( { editor } ) => {
 								fixture.detectChanges();
 
-								whenEvent( 'ready', component ).then( ( { editor } ) => {
-									expect( editor.plugins.divarea ).not.toBeUndefined();
-								} );
+								isDivarea
+									? expect( editor.plugins.divarea ).not.toBeUndefined()
+									: expect( editor.plugins.divarea ).toBeUndefined();
 							} );
 						} );
 					} );
-				}
+				} );
 
 				describe( 'when set with config', () => {
 					beforeEach( done => {
