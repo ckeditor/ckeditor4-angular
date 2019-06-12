@@ -62,7 +62,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	 * and https://ckeditor.com/docs/ckeditor4/latest/examples/fixedui.html
 	 * to learn more.
 	 */
-	@Input() type: CKEditor4.EditorType = CKEditor4.EditorType.DIVAREA;
+	@Input() type: CKEditor4.EditorType = CKEditor4.EditorType.CLASSIC;
 
 	/**
 	 * Keeps track of the editor's data.
