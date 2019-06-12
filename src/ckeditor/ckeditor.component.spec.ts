@@ -5,12 +5,9 @@
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CKEditorComponent } from './ckeditor.component';
-
-import { TestTools } from '../test.tools';
+import { whenEvent } from '../test.tools';
 import { CKEditor4 } from './ckeditor';
 import EditorType = CKEditor4.EditorType;
-
-const whenEvent = TestTools.whenEvent;
 
 declare var CKEDITOR: any;
 
@@ -34,14 +31,18 @@ describe( 'CKEditorComponent', () => {
 		fixture.destroy();
 	} );
 
-	[ EditorType.DIVAREA, EditorType.INLINE ].forEach( ( editorType ) => {
+	[
+		EditorType.DIVAREA,
+		EditorType.INLINE,
+		EditorType.CLASSIC
+	].forEach( ( editorType ) => {
 		describe( `type="${editorType}"`, () => {
 			beforeEach( () => {
 				component.type = editorType;
 			} );
 
 			describe( 'on initialization', () => {
-				const method = editorType === 'divarea' ? 'replace' : 'inline';
+				const method = editorType === 'inline' ? 'inline' : 'replace';
 
 				it( `should create editor with CKEDITOR.${method}`, () => {
 					const spy = spyOn( CKEDITOR, method );
@@ -91,54 +92,55 @@ describe( 'CKEditorComponent', () => {
 					} );
 				} );
 
-				[ {
-					config: undefined,
-					msg: 'without config',
-					warn: false
-				}, {
-					config: { extraPlugins: 'basicstyles,divarea,link' },
-					msg: 'config.extraPlugins defined as a string',
-					warn: false
-				}, {
-					config: { extraPlugins: [ 'basicstyles', 'divarea', 'link' ] },
-					msg: 'config.extraPlugins defined as an array',
-					warn: false
-				}, {
-					config: { removePlugins: 'basicstyles,divarea,link,divarea' },
-					msg: 'config.removePlugins defined as a string',
-					warn: true
-				}, {
-					config: { removePlugins: [ 'basicstyles', 'divarea', 'link', 'divarea' ] },
-					msg: 'config.removePlugins defined as an array',
-					warn: true
-				}
-				].forEach( ( { config, msg, warn } ) => {
-					describe( msg, () => {
-						beforeEach( () => {
-							component.config = config;
-						} );
-
-						it( `console ${warn ? 'should' : 'shouldn\'t'} warn`, () => {
-							const spy = spyOn( console, 'warn' );
-
-							fixture.detectChanges();
-
-							whenEvent( 'ready', component ).then( () => {
-								warn
-									? expect( spy ).toHaveBeenCalled()
-									: expect( spy ).not.toHaveBeenCalled();
+				if ( editorType === EditorType.DIVAREA ) {
+					[ {
+						config: undefined,
+						msg: 'without config',
+						warn: false
+					}, {
+						config: { extraPlugins: 'basicstyles,divarea,link' },
+						msg: 'config.extraPlugins defined as a string',
+						warn: false
+					}, {
+						config: { extraPlugins: [ 'basicstyles', 'divarea', 'link' ] },
+						msg: 'config.extraPlugins defined as an array',
+						warn: false
+					}, {
+						config: { removePlugins: 'basicstyles,divarea,link,divarea' },
+						msg: 'config.removePlugins defined as a string',
+						warn: true
+					}, {
+						config: { removePlugins: [ 'basicstyles', 'divarea', 'link', 'divarea' ] },
+						msg: 'config.removePlugins defined as an array',
+						warn: true
+					} ].forEach( ( { config, msg, warn } ) => {
+						describe( msg, () => {
+							beforeEach( () => {
+								component.config = config;
 							} );
-						} );
 
-						it( 'editor should use divarea plugin', () => {
-							fixture.detectChanges();
+							it( `console ${warn ? 'should' : 'shouldn\'t'} warn`, () => {
+								const spy = spyOn( console, 'warn' );
 
-							whenEvent( 'ready', component ).then( ( { editor } ) => {
-								expect( editor.plugins.divarea ).not.toBeUndefined();
+								fixture.detectChanges();
+
+								whenEvent( 'ready', component ).then( () => {
+									warn
+										? expect( spy ).toHaveBeenCalled()
+										: expect( spy ).not.toHaveBeenCalled();
+								} );
+							} );
+
+							it( 'editor should use divarea plugin', () => {
+								fixture.detectChanges();
+
+								whenEvent( 'ready', component ).then( ( { editor } ) => {
+									expect( editor.plugins.divarea ).not.toBeUndefined();
+								} );
 							} );
 						} );
 					} );
-				} );
+				}
 
 				describe( 'when set with config', () => {
 					beforeEach( ( done ) => {
@@ -215,23 +217,34 @@ describe( 'CKEditorComponent', () => {
 					const data = '<b>foo</b>',
 						expected = '<p><strong>foo</strong></p>\n';
 
-					it( 'should be configurable at the start of the component', () => {
+					it( 'should be configurable at the start of the component', done => {
 						fixture.detectChanges();
-						component.data = data;
 
-						expect( component.data ).toEqual( expected );
-						expect( component.instance.getData() ).toEqual( expected );
+						component.instance.once( 'dataReady', () => {
+							expect( component.data ).toEqual( expected );
+							expect( component.instance.getData() ).toEqual( expected );
+							done();
+						}, null, null, 9999 );
+
+						component.data = data;
 					} );
 
-					it( 'should be writeable by ControlValueAccessor', () => {
+					it( 'should be writeable by ControlValueAccessor', done => {
 						fixture.detectChanges();
+
+						const editor = component.instance;
+
+						editor.once( 'dataReady', () => {
+							expect( component.instance.getData() ).toEqual( expected );
+
+							editor.once( 'dataReady', () => {
+								expect( component.instance.getData() ).toEqual( '<p><em>baz</em></p>\n' );
+								done();
+							} );
+							component.writeValue( '<p><i>baz</i></p>' );
+						}, null, null, 9999 );
+
 						component.writeValue( data );
-
-						expect( component.instance.getData() ).toEqual( expected );
-
-						component.writeValue( '<p><i>baz</i></p>' );
-
-						expect( component.instance.getData() ).toEqual( '<p><em>baz</em></p>\n' );
 					} );
 				} );
 
@@ -300,4 +313,3 @@ describe( 'CKEditorComponent', () => {
 		} );
 	} );
 } );
-
