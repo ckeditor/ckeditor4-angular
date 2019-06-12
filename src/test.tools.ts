@@ -6,10 +6,12 @@ export function whenEvent( evtName: string, component: CKEditorComponent ) {
 	} );
 }
 
-export function whenDataReady( editor: any ) {
+export function whenDataReady( editor: any, callback?: Function ) {
 	return new Promise( res => {
 		editor.once( 'dataReady', () => {
 			res();
 		}, null, null, 9999 );
+
+		callback && callback();
 	} );
 }
