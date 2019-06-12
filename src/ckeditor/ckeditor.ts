@@ -7,11 +7,17 @@
  * Basic typings for the CKEditor4 elements.
  */
 export namespace CKEditor4 {
-
 	/**
 	 * The CKEditor4 editor constructor.
 	 */
 	export interface Config {
+		[ key: string ]: any;
+	}
+
+	/**
+	 * The CKEditor4 editor.
+	 */
+	export interface Editor {
 		[ key: string ]: any;
 	}
 

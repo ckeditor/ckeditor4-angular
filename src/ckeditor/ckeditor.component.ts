@@ -224,7 +224,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 			this.config = this.ensureDivareaPlugin( this.config || {} );
 		}
 
-		const instance = this.type === CKEditor4.EditorType.INLINE
+		const instance: CKEditor4.Editor = this.type === CKEditor4.EditorType.INLINE
 			? CKEDITOR.inline( element, this.config )
 			: CKEDITOR.replace( element, this.config );
 
