@@ -228,7 +228,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 			? CKEDITOR.inline( element, this.config )
 			: CKEDITOR.replace( element, this.config );
 
-		instance.once( 'instanceReady', ( evt ) => {
+		instance.once( 'instanceReady', evt => {
 			this.instance = instance;
 
 			// Read only state may change during instance initialization.

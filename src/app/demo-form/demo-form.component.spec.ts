@@ -24,11 +24,10 @@ describe( 'DemoFormComponent', () => {
 		TestBed.configureTestingModule( {
 			declarations: [ DemoFormComponent ],
 			imports: [ FormsModule, CKEditorModule ]
-		} )
-			.compileComponents();
+		} ).compileComponents();
 	} ) );
 
-	beforeEach( ( done ) => {
+	beforeEach( done => {
 		fixture = TestBed.createComponent( DemoFormComponent );
 		component = fixture.componentInstance;
 		debugElement = fixture.debugElement.query( By.directive( CKEditorComponent ) );
@@ -39,7 +38,7 @@ describe( 'DemoFormComponent', () => {
 		whenEvent( 'ready', ckeditorComponent ).then( done );
 	} );
 
-	afterEach( ( done ) => {
+	afterEach( done => {
 		if ( ckeditorComponent.instance ) {
 			ckeditorComponent.instance.once( 'destroy', done );
 		}
@@ -68,7 +67,7 @@ describe( 'DemoFormComponent', () => {
 	} );
 
 	// This test passes when run solo or testes as first, but throws a type error when run after other tests.
-	it( 'when change event is emitted should show form data preview', ( done: Function ) => {
+	it( 'when change event is emitted should show form data preview', done => {
 		whenEvent( 'change', ckeditorComponent ).then( () => {
 			fixture.detectChanges();
 			expect( component.formDataPreview ).toEqual( '{"name":"John","surname":"Doe","description":"<p>An unidentified person</p>\\n"}' );
@@ -79,7 +78,7 @@ describe( 'DemoFormComponent', () => {
 
 	} );
 
-	it( 'when reset button is clicked should reset form', ( done: Function ) => {
+	it( 'when reset button is clicked should reset form', done => {
 		fixture.whenStable().then( () => {
 			const resetButton: HTMLButtonElement = fixture.debugElement.query( By.css( 'button[type=reset]' ) ).nativeElement;
 			resetButton.click();
