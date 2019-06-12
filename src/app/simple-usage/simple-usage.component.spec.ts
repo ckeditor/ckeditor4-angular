@@ -29,7 +29,7 @@ describe( 'SimpleUsageComponent', () => {
 		} ).compileComponents();
 	} ) );
 
-	beforeEach( ( done ) => {
+	beforeEach( done => {
 		fixture = TestBed.createComponent( SimpleUsageComponent );
 		component = fixture.componentInstance;
 
@@ -44,9 +44,9 @@ describe( 'SimpleUsageComponent', () => {
 		whenEach( ckeditorComponent => whenEvent( 'ready', ckeditorComponent ) ).then( done );
 	} );
 
-	afterEach( ( done ) => {
+	afterEach( done => {
 		whenEach( ckeditorComponent =>
-			new Promise( ( res ) => {
+			new Promise( res => {
 				if ( ckeditorComponent.instance ) {
 					ckeditorComponent.instance.once( 'destroy', res );
 				}
@@ -149,7 +149,7 @@ describe( 'SimpleUsageComponent', () => {
 	}
 
 	function each( callback ) {
-		ckeditorComponents.forEach( ( item ) => {
+		ckeditorComponents.forEach( item => {
 			let name: String = item.type;
 
 			name = name[ 0 ].toUpperCase() + name.slice( 1 );

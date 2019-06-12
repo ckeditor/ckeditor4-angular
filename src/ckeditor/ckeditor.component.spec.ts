@@ -18,8 +18,7 @@ describe( 'CKEditorComponent', () => {
 	beforeEach( async( () => {
 		TestBed.configureTestingModule( {
 			declarations: [ CKEditorComponent ]
-		} )
-			.compileComponents();
+		} ).compileComponents();
 	} ) );
 
 	beforeEach( () => {
@@ -35,7 +34,7 @@ describe( 'CKEditorComponent', () => {
 		EditorType.DIVAREA,
 		EditorType.INLINE,
 		EditorType.CLASSIC
-	].forEach( ( editorType ) => {
+	].forEach( editorType => {
 		describe( `type="${editorType}"`, () => {
 			beforeEach( () => {
 				component.type = editorType;
@@ -146,7 +145,7 @@ describe( 'CKEditorComponent', () => {
 				}
 
 				describe( 'when set with config', () => {
-					beforeEach( ( done ) => {
+					beforeEach( done => {
 						component.config = {
 							readOnly: true,
 							width: 1000,
@@ -206,7 +205,7 @@ describe( 'CKEditorComponent', () => {
 			} );
 
 			describe( 'when component is ready', () => {
-				beforeEach( ( done ) => {
+				beforeEach( done => {
 					fixture.detectChanges();
 					whenEvent( 'ready', component ).then( done );
 				} );
