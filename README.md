@@ -8,7 +8,7 @@
 
 The official [CKEditor 4](https://ckeditor.com/ckeditor-4/) WYSIWYG editor component for Angular.
 
-This is the beta version (`1.0.0-beta`) of the CKEditor 4 Angular integration. We are looking forward to your feedback! You can report any issues, ideas or feature requests on the [integration issues page](https://github.com/ckeditor/ckeditor4-angular/issues/new).
+This is the beta version of the CKEditor 4 Angular integration. We are looking forward to your feedback! You can report any issues, ideas or feature requests on the [integration issues page](https://github.com/ckeditor/ckeditor4-angular/issues/new).
 
 ![CKEditor 4 screenshot](https://c.cksource.com/a/1/img/npm/ckeditor4.png)
 
