@@ -24,7 +24,7 @@ describe( 'workspace-project App', () => {
 		} );
 
 		it( 'should display welcome message', () => {
-			expect( page.getParagraphText() ).toEqual( 'CKEditor integration with Angular 2+' );
+			expect( page.getParagraphText() ).toEqual( 'CKEditor integration with Angular' );
 		} );
 
 		it( 'should display editor with initial content', async () => {
