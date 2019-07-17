@@ -51,6 +51,9 @@ See the [CKEditor 4 Angular Integration](https://ckeditor.com/docs/ckeditor4/lat
 
 The CKEditor 4 Angular component works with all the [supported browsers](https://ckeditor.com/docs/ckeditor4/latest/guide/dev_browsers.html#officially-supported-browsers) except for Internet Explorer 8-10.
 
+## Supported Angular versions
+The integration can be used together with Angular at version 5.0.0 and higher. It is an implication of Angular metadata produced for this package by the Angular builder. Note that the package.json used in the main repository isn't published on NPM (the production one is present in src/ckeditor/package.json), so there are only a few peer dependencies to @angular/core >= 5.0.0, @angular/common >= 5.0.0 and @angular/forms >= 5.0.0 required by this package.
+
 ## Contributing
 
 Here is how you can contribute to the development of the component. Any feedback and help will be most appreciated!
