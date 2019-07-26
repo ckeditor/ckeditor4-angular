@@ -30,15 +30,15 @@ describe( 'workspace-project App', () => {
 		it( 'should display editor with initial content', async () => {
 			editables.forEach( editable => expect( page.getHtmlString( editable ) )
 				.toBe( '<p>Getting used to an entirely different culture can be challeng' +
-					'ing. While it’s also nice to learn about cultures online or from books, nothing comes close to experiencing cultural d' +
-					'iversity in person. You learn to appreciate each and every single one of the differences while you become more cultura' +
-					'lly fluid.</p>' )
+					'ing. While it’s also nice to learn about cultures online or from books, nothing comes close to experiencing' +
+					' cultural diversity in person. You learn to appreciate each and every single one of the differences while you' +
+					' become more culturally fluid.</p>' )
 			);
 		} );
 
 		describe( 'typing', () => {
-			it( `in editor1 should update editors content`, testTyping( editables, 0 ) );
-			it( `in editor2 should update editors content`, testTyping( editables, 1 ) );
+			it( 'in editor1 should update editors content', testTyping( editables, 0 ) );
+			it( 'in editor2 should update editors content', testTyping( editables, 1 ) );
 		} );
 	} );
 
@@ -56,7 +56,7 @@ describe( 'workspace-project App', () => {
 				.toBe( '<p>A <strong>really</strong> nice fellow.</p>' );
 		} );
 
-		it( `typing should update editor content`, testTyping( editables, 0 ) );
+		it( 'typing should update editor content', testTyping( editables, 0 ) );
 	} );
 
 	function testTyping( elements, elementIndex: number ) {
