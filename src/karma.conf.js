@@ -1,7 +1,7 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
-let options = process.env.CK_OPTIONS;
+let options = process.env.KARMA_OPTIONS;
 options = options ? JSON.parse( options ) : {};
 
 module.exports = function ( config ) {

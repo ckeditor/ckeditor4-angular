@@ -1,13 +1,14 @@
 // This script is a workaround for Angular CLI not allowing to run tests with custom options.
 // Manually running `karma start ./src/karma.conf.js` doesn't work either.
-// Some of the plugins check if test is run by Angular CLI, and if not, they throw.
+// Some of the plugins check if test is run by Angular CLI, and if not, they throw errors.
 // https://github.com/angular/angular-cli/issues/12305
 
+const minimist = require( 'minimist' );
 const { spawn } = require( 'child_process' );
 const options = parseArguments( process.argv.slice( 2 ) );
 const env = Object.create( process.env );
 
-env.CK_OPTIONS = JSON.stringify( options );
+env.KARMA_OPTIONS = JSON.stringify( options );
 
 spawn( 'ng', [ 'test' ], {
 	stdio: 'inherit', // Pass parent's stdio's to child. Without that option no logs will be visible.
@@ -17,12 +18,10 @@ spawn( 'ng', [ 'test' ], {
 /**
  * @param {Array.<String>} args CLI arguments and options.
  * @returns {Object} options
- * @returns {Boolean} options.url `ckeditor.js` url to be included by karma.
+ * @returns {Boolean} options.url The `ckeditor.js` url to be included by karma.
  * @returns {Boolean} options.watch Whether to watch the files for changes.
  */
 function parseArguments( args ) {
-	const minimist = require( 'minimist' );
-
 	const config = {
 		string: [
 			'url'
