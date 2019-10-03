@@ -40,7 +40,7 @@ export class AppPage {
 		await el.click();
 		await this.selectAll();
 		// Since Chrome 77 with webdirver-manager@12.1.7 protractor.sendKeys() doesn't
-		// clear current selection, we have to clean it manually.
+		// clear current selection, we have to clean it manually (#51).
 		await this.delete();
 		await el.sendKeys( ...keys );
 	}
