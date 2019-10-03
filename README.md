@@ -90,7 +90,18 @@ Run `ng build` to build the samples. The build artifacts will be stored in the `
 
 #### Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `npm test` to execute unit tests via [Karma](https://karma-runner.github.io).
+
+There are two options available to alternate the testing process:
+
+* `url` / `u` - pass custom URL to Karma, for example custom CKEditor 4 build.
+* `watch` / `w` - tell Karma to watch for changes.
+
+For example:
+
+```
+npm run test -- -u http://localhost:5000/ckeditor.js -w
+```
 
 #### Running end-to-end tests
 

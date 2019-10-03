@@ -1,6 +1,9 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
+let options = process.env.KARMA_OPTIONS;
+options = options ? JSON.parse( options ) : {};
+
 module.exports = function ( config ) {
 	config.set( {
 		basePath: '',
@@ -21,11 +24,13 @@ module.exports = function ( config ) {
 		logLevel: config.LOG_INFO,
 		autoWatch: true,
 		browsers: getBrowsers(),
-		singleRun: true,
+		singleRun: !options.watch,
 
 		specReporter: {
 			suppressPassed: shouldEnableBrowserStack()
 		},
+
+		...( options.url && { files: [ options.url ] } ),
 
 		customLaunchers: {
 			BrowserStack_Edge: {

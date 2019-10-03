@@ -7,7 +7,7 @@
     "start": "ng serve",
     "build": "ng build",
     "build-package": "node ./scripts/build-package.js",
-    "test": "ng test",
+    "test": "node ./scripts/test.js",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "publish": "npm run build-package && npm publish dist/"
@@ -33,6 +33,7 @@
     "@angular/router": "^7.2.15",
     "core-js": "^2.6.9",
     "load-script": "^1.0.0",
+    "minimalist": "^1.0.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.9.0",
     "zone.js": "^0.8.29"
