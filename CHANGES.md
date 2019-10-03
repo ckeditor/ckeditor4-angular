@@ -3,7 +3,7 @@
 ## ckeditor4-angular 1.0.0
 
 * [#40](https://github.com/ckeditor/ckeditor4-angular/pull/40): Added support for Angular 5.
-* [#35](https://github.com/ckeditor/ckeditor4-angular/pull/35): Introduce custom options for test command.
+* [#35](https://github.com/ckeditor/ckeditor4-angular/pull/35): Introduced custom options for test command.
 
 ## ckeditor4-angular 1.0.0-beta.2
 
