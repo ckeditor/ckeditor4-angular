@@ -129,7 +129,13 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	@Output() change = new EventEmitter<CKEditor4.EventInfo>();
 
 	/**
-	 * Fires when the content of the editor has changed. In contrast to `change` - only emits when
+	 * Used as a replacement if 'undo' plugin is not loaded. Fires when the selection inside editor has changed.
+	 * It corresponds with the `editor#selectionCheck` event. This event may be called when data in editor didn't change.
+	 */
+	@Output() selectionCheck = new EventEmitter<CKEditor4.EventInfo>();
+
+	/**
+	 * Fires when the content of the editor has changed. In contrast to `change` and `selectionCheck` - only emits when
 	 * data really changed thus can be successfully used with `[data]` and two way `[(data)]` binding.
 	 *
 	 * See more: https://angular.io/guide/template-syntax#two-way-binding---
@@ -279,23 +285,29 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 			} );
 		} );
 
-		editor.on( 'change', evt => {
-			this.ngZone.run( () => {
-				const newData = editor.getData();
+		editor.on( 'change', this.addChangeListener, this );
 
-				this.change.emit( evt );
+		if ( !this.instance.undoManager ) {
+			editor.on( 'selectionCheck', this.addChangeListener, this );
+		}
+	}
 
-				if ( newData === this.data ) {
-					return;
-				}
+	private addChangeListener( event: any ): void {
+		this.ngZone.run( () => {
+			const newData = this.instance.getData();
 
-				this._data = newData;
-				this.dataChange.emit( newData );
+			event.name == 'change' ? this.change.emit( event ) : this.selectionCheck.emit( event );
 
-				if ( this.onChange ) {
-					this.onChange( newData );
-				}
-			} );
+			if ( newData === this.data ) {
+				return;
+			}
+
+			this._data = newData;
+			this.dataChange.emit( newData );
+
+			if ( this.onChange ) {
+				this.onChange( newData );
+			}
 		} );
 	}
 
