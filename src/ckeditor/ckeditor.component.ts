@@ -122,6 +122,14 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	@Output() ready = new EventEmitter<CKEditor4.EventInfo>();
 
 	/**
+	 * Fires when the editor data is loaded, e.g. after calling setData()
+	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-setData
+	 * editor's method. It corresponds with the `editor#dataReady`
+	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-dataReady event.
+	 */
+	@Output() dataReady = new EventEmitter<CKEditor4.EventInfo>();
+
+	/**
 	 * Fires when the content of the editor has changed. It corresponds with the `editor#change`
 	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-change
 	 * event. For performance reasons this event may be called even when data didn't really changed.
@@ -299,7 +307,13 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		this.ngZone.run( () => {
 			const newData = this.instance.getData();
 
-			event.name == 'change' ? this.change.emit( event ) : this.selectionCheck.emit( event );
+			if ( event.name == 'change' ) {
+				this.change.emit( event );
+			} else if ( event.name == 'selectionCheck' ) {
+				this.selectionCheck.emit( event );
+			} else if ( event.name == 'dataReady' ) {
+				this.dataReady.emit( event );
+			}
 
 			if ( newData === this.data ) {
 				return;
