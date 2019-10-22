@@ -159,6 +159,44 @@ describe( 'CKEditorComponent', () => {
 						expect( component.instance.config.width ).toBe( 1000 );
 						expect( component.instance.config.height ).toBe( 1000 );
 					} );
+
+					it( 'editor should have undo plugin', () => {
+						expect( component.instance.plugins.undo ).not.toBeUndefined();
+					} );
+
+					it( 'should register changes', () => {
+						const spy = jasmine.createSpy();
+
+						component.registerOnChange( spy );
+						component.instance.setData( '<p>Hello World!</p>' );
+						component.instance.setData( '</p>I am CKEditor for Angular!</p>' );
+
+						expect( spy ).toHaveBeenCalledTimes( 2 );
+					} );
+				} );
+
+				describe( 'when set without undo plugin', () => {
+					beforeEach( ( done ) => {
+						component.config = {
+							removePlugins: 'undo'
+						};
+						fixture.detectChanges();
+						whenEvent( 'ready', component ).then( done );
+					} );
+
+					it( 'editor should not have undo plugin', () => {
+						expect( component.instance.plugins.undo ).toBeUndefined();
+					} );
+
+					it( 'should register changes without undo plugin', () => {
+						const spy = jasmine.createSpy();
+
+						component.registerOnChange( spy );
+						component.instance.setData( '<p>Hello World!</p>' );
+						component.instance.setData( '</p>I am CKEditor for Angular!</p>' );
+
+						expect( spy ).toHaveBeenCalledTimes( 2 );
+					} );
 				} );
 			} );
 
