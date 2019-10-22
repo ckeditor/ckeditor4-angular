@@ -257,7 +257,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 				// Locking undoManager prevents 'change' event.
 				// Trigger it manually to updated bound data.
 				if ( this.data !== instance.getData() ) {
-					instance.fire( 'change' );
+					undo ? instance.fire( 'change' ) : instance.fire( 'dataReady' );
 				}
 				undo && undo.unlock();
 			}
