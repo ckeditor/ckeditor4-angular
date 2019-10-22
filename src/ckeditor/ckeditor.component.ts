@@ -286,16 +286,16 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		} );
 
 		if ( this.instance.undoManager ) {
-			editor.on( 'change', this.addChangeListener, this );
+			editor.on( 'change', this.propagateChange, this );
 		}
 		// If 'undo' plugin is not loaded, listen to other events instead of 'change' (#54).
 		else {
-			editor.on( 'selectionCheck', this.addChangeListener, this );
-			editor.on( 'dataReady', this.addChangeListener, this );
+			editor.on( 'selectionCheck', this.propagateChange, this );
+			editor.on( 'dataReady', this.propagateChange, this );
 		}
 	}
 
-	private addChangeListener( event: any ): void {
+	private propagateChange( event: any ): void {
 		this.ngZone.run( () => {
 			const newData = this.instance.getData();
 
