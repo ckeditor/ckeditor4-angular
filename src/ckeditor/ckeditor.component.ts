@@ -289,6 +289,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 
 		if ( !this.instance.undoManager ) {
 			editor.on( 'selectionCheck', this.addChangeListener, this );
+			editor.on( 'dataReady', this.addChangeListener, this );
 		}
 	}
 
