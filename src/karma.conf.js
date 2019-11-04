@@ -11,7 +11,10 @@ module.exports = function ( config ) {
 		plugins: getPlugins(),
 		client: {
 			clearContext: false, // leave Jasmine Spec Runner output visible in browser
-			captureConsole: false
+			captureConsole: false,
+			jasmine: {
+				random: false
+			}
 		},
 		coverageIstanbulReporter: {
 			dir: require( 'path' ).join( __dirname, '../coverage' ),
