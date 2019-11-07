@@ -51,6 +51,14 @@ describe( 'CKEditorComponent', () => {
 					} );
 				} );
 
+				it( 'should have editorUrl pointing to 4.13.0 version', () => {
+					fixture.detectChanges();
+
+					return whenEvent( 'ready', component ).then( () => {
+						expect( component.editorUrl ).toEqual( 'https://cdn.ckeditor.com/4.13.0/standard-all/ckeditor.js' );
+					} );
+				} );
+
 				it( 'should emit ready event', () => {
 					const spy = jasmine.createSpy();
 					component.ready.subscribe( spy );
