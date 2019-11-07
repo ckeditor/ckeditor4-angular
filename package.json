@@ -1,7 +1,7 @@
 {
   "name": "ckeditor4-angular",
   "version": "1.0.0",
-  "description": "Official Angular component for CKEditor 4.",
+  "description": "Official CKEditor 4 component for Angular.",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -12,9 +12,9 @@
     "e2e": "ng e2e",
     "publish": "npm run build-package && npm publish dist/"
   },
-  "author": "CKSource (http://cksource.com/)",
+  "author": "CKSource (https://cksource.com/)",
   "license": "(GPL-2.0-or-later OR LGPL-2.1-or-later OR MPL-1.1-or-later)",
-  "homepage": "https://ckeditor.com",
+  "homepage": "https://ckeditor.com/",
   "bugs": "https://github.com/ckeditor/ckeditor4-angular/issues",
   "repository": {
     "type": "git",

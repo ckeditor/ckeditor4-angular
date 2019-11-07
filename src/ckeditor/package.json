@@ -1,16 +1,17 @@
 {
 	"name": "ckeditor4-angular",
-	"version": "0.1.0",
-	"description": "Official Angular component for CKEditor 4.",
+	"version": "1.0.0",
+	"description": "Official CKEditor 4 component for Angular.",
 	"keywords": [
 		"wysiwyg",
-		"rich text",
+		"rich text editor",
+		"rte",
 		"editor",
 		"html",
 		"contentEditable",
 		"editing",
 		"angular",
-		"angular2",
+		"angular5",
 		"ng",
 		"component",
 		"ckeditor",
@@ -22,9 +23,9 @@
 		"@angular/common": ">=5.0.0",
 		"@angular/forms": ">=5.0.0"
 	},
-	"author": "CKSource (http://cksource.com/)",
+	"author": "CKSource (https://cksource.com/)",
 	"license": "(GPL-2.0-or-later OR LGPL-2.1-or-later OR MPL-1.1-or-later)",
-	"homepage": "https://ckeditor.com",
+	"homepage": "https://ckeditor.com/",
 	"bugs": "https://github.com/ckeditor/ckeditor4-angular/issues",
 	"repository": {
 		"type": "git",
