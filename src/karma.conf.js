@@ -26,6 +26,12 @@ module.exports = function ( config ) {
 		browsers: getBrowsers(),
 		singleRun: !options.watch,
 
+		concurrency: 2,
+		captureTimeout: 60000,
+		browserDisconnectTimeout: 60000,
+		browserDisconnectTolerance: 3,
+		browserNoActivityTimeout: 60000,
+
 		specReporter: {
 			suppressPassed: shouldEnableBrowserStack()
 		},
@@ -38,6 +44,13 @@ module.exports = function ( config ) {
 				os: 'Windows',
 				os_version: '10',
 				browser: 'edge'
+			},
+			BrowserStack_IE11: {
+				base: 'BrowserStack',
+				os: 'Windows',
+				os_version: '10',
+				browser: 'ie',
+				browser_version: '11.0'
 			},
 			BrowserStack_Safari: {
 				base: 'BrowserStack',
@@ -97,9 +110,10 @@ function getBrowsers() {
 	if ( shouldEnableBrowserStack() ) {
 		return [
 			'Chrome',
+			'BrowserStack_Safari',
 			'Firefox',
 			'BrowserStack_Edge',
-			'BrowserStack_Safari'
+			'BrowserStack_IE11'
 		];
 	}
 
