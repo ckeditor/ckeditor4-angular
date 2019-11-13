@@ -113,7 +113,7 @@ function getBrowsers() {
 			'BrowserStack_Safari',
 			'Firefox',
 			'BrowserStack_Edge',
-			'BrowserStack_IE11',
+			'BrowserStack_IE11'
 		];
 	}
 
