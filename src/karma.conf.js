@@ -26,6 +26,12 @@ module.exports = function ( config ) {
 		browsers: getBrowsers(),
 		singleRun: !options.watch,
 
+		concurrency: 2,
+		captureTimeout: 60000,
+		browserDisconnectTimeout: 60000,
+		browserDisconnectTolerance: 3,
+		browserNoActivityTimeout: 60000,
+
 		specReporter: {
 			suppressPassed: shouldEnableBrowserStack()
 		},
@@ -104,10 +110,10 @@ function getBrowsers() {
 	if ( shouldEnableBrowserStack() ) {
 		return [
 			'Chrome',
+			'BrowserStack_Safari',
 			'Firefox',
 			'BrowserStack_Edge',
 			'BrowserStack_IE11',
-			'BrowserStack_Safari'
 		];
 	}
 
