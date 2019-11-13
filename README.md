@@ -1,4 +1,4 @@
-# CKEditor 4 component for Angular
+# CKEditor 4 WYSIWYG editor Angular component
 
 [![npm version](https://badge.fury.io/js/ckeditor4-angular.svg)](https://www.npmjs.com/package/ckeditor4-angular)
 [![Build Status](https://travis-ci.org/ckeditor/ckeditor4-angular.svg?branch=master)](https://travis-ci.org/ckeditor/ckeditor4-angular)
