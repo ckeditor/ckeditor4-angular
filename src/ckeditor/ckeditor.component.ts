@@ -133,6 +133,8 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	 * Fires when the content of the editor has changed. It corresponds with the `editor#change`
 	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-change
 	 * event. For performance reasons this event may be called even when data didn't really changed.
+	 * Please note that this event will only be fired when `undo` plugin is loaded. If you need to
+	 * listen for editor changes (e.g. for two-way data binding), use `dataChange` event instead.
 	 */
 	@Output() change = new EventEmitter<CKEditor4.EventInfo>();
 
