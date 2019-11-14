@@ -1,14 +1,18 @@
-# CKEditor 4 WYSIWYG editor Angular component
+# CKEditor 4 WYSIWYG editor Angular component [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Check%20out%20CKEditor%204%20Angular%20integration&url=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2Fckeditor4-angular)
 
 [![npm version](https://badge.fury.io/js/ckeditor4-angular.svg)](https://www.npmjs.com/package/ckeditor4-angular)
+[![GitHub tag](https://img.shields.io/github/tag/ckeditor/ckeditor4-angular.svg)](https://github.com/ckeditor/ckeditor4-angular)
+
 [![Build Status](https://travis-ci.org/ckeditor/ckeditor4-angular.svg?branch=master)](https://travis-ci.org/ckeditor/ckeditor4-angular)
-<br>
 [![Dependency Status](https://david-dm.org/ckeditor/ckeditor4-angular/status.svg)](https://david-dm.org/ckeditor/ckeditor4-angular)
 [![devDependency Status](https://david-dm.org/ckeditor/ckeditor4-angular/dev-status.svg)](https://david-dm.org/ckeditor/ckeditor4-angular?type=dev)
 
-The official [CKEditor 4](https://ckeditor.com/ckeditor-4/) WYSIWYG editor component for Angular.
+[![Join newsletter](https://img.shields.io/badge/join-newsletter-00cc99.svg)](http://eepurl.com/c3zRPr)
+[![Follow Twitter](https://img.shields.io/badge/follow-twitter-00cc99.svg)](https://twitter.com/ckeditor)
 
-This is the beta version of the CKEditor 4 Angular integration. We are looking forward to your feedback! You can report any issues, ideas or feature requests on the [integration issues page](https://github.com/ckeditor/ckeditor4-angular/issues/new).
+Official [CKEditor 4](https://ckeditor.com/ckeditor-4/) WYSIWYG editor component for Angular.
+
+We are looking forward to your feedback! You can report any issues, ideas or feature requests on the [integration issues page](https://github.com/ckeditor/ckeditor4-angular/issues/new).
 
 ![CKEditor 4 screenshot](https://c.cksource.com/a/1/img/npm/ckeditor4.png)
 
