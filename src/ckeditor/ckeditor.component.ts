@@ -139,12 +139,6 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	@Output() change = new EventEmitter<CKEditor4.EventInfo>();
 
 	/**
-	 * Used as a replacement if 'undo' plugin is not loaded. Fires when the selection inside editor has changed.
-	 * It corresponds with the `editor#selectionCheck` event. This event may be called when data in editor didn't change.
-	 */
-	@Output() selectionCheck = new EventEmitter<CKEditor4.EventInfo>();
-
-	/**
 	 * Fires when the content of the editor has changed. In contrast to `change` and `selectionCheck` - only emits when
 	 * data really changed thus can be successfully used with `[data]` and two way `[(data)]` binding.
 	 *
@@ -312,8 +306,6 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 
 			if ( event.name == 'change' ) {
 				this.change.emit( event );
-			} else if ( event.name == 'selectionCheck' ) {
-				this.selectionCheck.emit( event );
 			} else if ( event.name == 'dataReady' ) {
 				this.dataReady.emit( event );
 			}
