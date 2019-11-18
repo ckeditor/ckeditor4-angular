@@ -139,7 +139,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	@Output() change = new EventEmitter<CKEditor4.EventInfo>();
 
 	/**
-	 * Fires when the content of the editor has changed. In contrast to `change` and `selectionCheck` - only emits when
+	 * Fires when the content of the editor has changed. In contrast to `change` - only emits when
 	 * data really changed thus can be successfully used with `[data]` and two way `[(data)]` binding.
 	 *
 	 * See more: https://angular.io/guide/template-syntax#two-way-binding---
