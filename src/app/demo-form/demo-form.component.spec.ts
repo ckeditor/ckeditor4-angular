@@ -20,7 +20,8 @@ describe( 'DemoFormComponent', () => {
 	let component: DemoFormComponent,
 		fixture: ComponentFixture<DemoFormComponent>,
 		ckeditorComponent: CKEditorComponent,
-		debugElement: DebugElement;
+		debugElement: DebugElement,
+		originalTimeout: number;
 
 	beforeEach( async( () => {
 		TestBed.configureTestingModule( {
@@ -38,6 +39,9 @@ describe( 'DemoFormComponent', () => {
 
 		fixture.detectChanges();
 
+		originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
+
 		whenEvent( 'ready', ckeditorComponent ).then( done );
 	} );
 
@@ -46,6 +50,8 @@ describe( 'DemoFormComponent', () => {
 			ckeditorComponent.instance.once( 'destroy', done );
 		}
 		fixture.destroy();
+
+		jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
 	} );
 
 	it( 'should create', () => {
