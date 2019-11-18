@@ -87,10 +87,33 @@ describe( 'DemoFormComponent', () => {
 			resetButton.click();
 
 			fixture.detectChanges();
-
 			expect( component.formDataPreview ).toEqual( '{"name":null,"surname":null,"description":null}' );
 
 			done();
 		} );
 	} );
+
+	[ {
+		config: undefined,
+		msg: 'with undo plugin'
+	}, {
+		config: { removePlugins: 'undo' },
+		msg: 'without undo plugin'
+	}].forEach( ( { config, msg } ) => {
+		describe( msg, () => {
+			beforeEach( () => {
+				ckeditorComponent.config = config;
+				fixture.detectChanges();
+			} );
+			it( 'should emit onChange event', () => {
+				const spy = spyOn( ckeditorComponent, 'onChange' );
+
+				ckeditorComponent.instance.setData( '<p>An unidentified person</p>' );
+				fixture.detectChanges();
+
+				expect( spy ).toHaveBeenCalledTimes( 1 );
+			} );
+		} );
+	} );
+
 } );

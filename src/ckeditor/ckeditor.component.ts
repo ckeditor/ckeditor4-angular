@@ -122,9 +122,19 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	@Output() ready = new EventEmitter<CKEditor4.EventInfo>();
 
 	/**
+	 * Fires when the editor data is loaded, e.g. after calling setData()
+	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#method-setData
+	 * editor's method. It corresponds with the `editor#dataReady`
+	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-dataReady event.
+	 */
+	@Output() dataReady = new EventEmitter<CKEditor4.EventInfo>();
+
+	/**
 	 * Fires when the content of the editor has changed. It corresponds with the `editor#change`
 	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-change
 	 * event. For performance reasons this event may be called even when data didn't really changed.
+	 * Please note that this event will only be fired when `undo` plugin is loaded. If you need to
+	 * listen for editor changes (e.g. for two-way data binding), use `dataChange` event instead.
 	 */
 	@Output() change = new EventEmitter<CKEditor4.EventInfo>();
 
@@ -251,7 +261,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 				// Locking undoManager prevents 'change' event.
 				// Trigger it manually to updated bound data.
 				if ( this.data !== instance.getData() ) {
-					instance.fire( 'change' );
+					undo ? instance.fire( 'change' ) : instance.fire( 'dataReady' );
 				}
 				undo && undo.unlock();
 			}
@@ -279,23 +289,37 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 			} );
 		} );
 
-		editor.on( 'change', evt => {
-			this.ngZone.run( () => {
-				const newData = editor.getData();
+		editor.on( 'dataReady', this.propagateChange, this );
 
-				this.change.emit( evt );
+		if ( this.instance.undoManager ) {
+			editor.on( 'change', this.propagateChange, this );
+		}
+		// If 'undo' plugin is not loaded, listen to 'selectionCheck' event instead. (#54).
+		else {
+			editor.on( 'selectionCheck', this.propagateChange, this );
+		}
+	}
 
-				if ( newData === this.data ) {
-					return;
-				}
+	private propagateChange( event: any ): void {
+		this.ngZone.run( () => {
+			const newData = this.instance.getData();
 
-				this._data = newData;
-				this.dataChange.emit( newData );
+			if ( event.name == 'change' ) {
+				this.change.emit( event );
+			} else if ( event.name == 'dataReady' ) {
+				this.dataReady.emit( event );
+			}
 
-				if ( this.onChange ) {
-					this.onChange( newData );
-				}
-			} );
+			if ( newData === this.data ) {
+				return;
+			}
+
+			this._data = newData;
+			this.dataChange.emit( newData );
+
+			if ( this.onChange ) {
+				this.onChange( newData );
+			}
 		} );
 	}
 
