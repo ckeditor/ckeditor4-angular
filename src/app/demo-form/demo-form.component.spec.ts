@@ -40,7 +40,7 @@ describe( 'DemoFormComponent', () => {
 		fixture.detectChanges();
 
 		originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-        jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
+		jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
 
 		whenEvent( 'ready', ckeditorComponent ).then( done );
 	} );
