@@ -12,8 +12,6 @@ import EditorType = CKEditor4.EditorType;
 
 const whenEvent = TestTools.whenEvent;
 
-declare var CKEDITOR: any;
-
 describe( 'CKEditorComponent', () => {
 	let component: CKEditorComponent,
 		fixture: ComponentFixture<CKEditorComponent>;
@@ -44,10 +42,10 @@ describe( 'CKEditorComponent', () => {
 				const method = editorType === 'divarea' ? 'replace' : 'inline';
 
 				it( `should create editor with CKEDITOR.${method}`, () => {
-					const spy = spyOn( CKEDITOR, method );
-					whenEvent( 'ready', component ).then( () => {
-						fixture.detectChanges();
-						expect( spy ).toHaveBeenCalled();
+					fixture.detectChanges();
+
+					return whenEvent( 'ready', component ).then( () => {
+						expect( component.instance.elementMode ).toEqual( editorType == 'divarea' ? 1 : 3 );
 					} );
 				} );
 
@@ -65,14 +63,16 @@ describe( 'CKEditorComponent', () => {
 
 					fixture.detectChanges();
 
-					whenEvent( 'ready', component ).then( () => {
+					return whenEvent( 'ready', component ).then( () => {
 						expect( spy ).toHaveBeenCalledTimes( 1 );
 					} );
 				} );
 
 				describe( 'with tagName unset', () => {
 					it( 'editor should be initialized using textarea element', () => {
-						whenEvent( 'ready', component ).then( () => {
+						fixture.detectChanges();
+
+						return whenEvent( 'ready', component ).then( () => {
 							expect( fixture.nativeElement.lastElementChild.firstElementChild.tagName ).toEqual( 'TEXTAREA' );
 						} );
 					} );
@@ -84,9 +84,10 @@ describe( 'CKEditorComponent', () => {
 					} );
 
 					it( 'editor should be initialized using div element', () => {
-						whenEvent( 'ready', component ).then( () => {
-							fixture.detectChanges();
-							expect( fixture.nativeElement.firstChild.tagName ).toEqual( 'DIV' );
+						fixture.detectChanges();
+
+						return whenEvent( 'ready', component ).then( () => {
+							expect( fixture.nativeElement.lastChild.tagName ).toEqual( 'DIV' );
 						} );
 					} );
 				} );
@@ -123,7 +124,7 @@ describe( 'CKEditorComponent', () => {
 
 							fixture.detectChanges();
 
-							whenEvent( 'ready', component ).then( () => {
+							return whenEvent( 'ready', component ).then( () => {
 								warn
 									? expect( spy ).toHaveBeenCalled()
 									: expect( spy ).not.toHaveBeenCalled();
@@ -133,7 +134,7 @@ describe( 'CKEditorComponent', () => {
 						it( 'editor should use divarea plugin', () => {
 							fixture.detectChanges();
 
-							whenEvent( 'ready', component ).then( ( { editor } ) => {
+							return whenEvent( 'ready', component ).then( ( { editor } ) => {
 								expect( editor.plugins.divarea ).not.toBeUndefined();
 							} );
 						} );
@@ -203,7 +204,6 @@ describe( 'CKEditorComponent', () => {
 			describe( 'when component is ready', () => {
 				beforeEach( ( done ) => {
 					fixture.detectChanges();
-
 					whenEvent( 'ready', component ).then( done );
 				} );
 
@@ -313,7 +313,6 @@ describe( 'CKEditorComponent', () => {
 						fixture.detectChanges();
 
 						const spy = jasmine.createSpy();
-
 						component.registerOnTouched( spy );
 
 						component.instance.fire( 'blur' );
@@ -327,15 +326,14 @@ describe( 'CKEditorComponent', () => {
 						const spy = jasmine.createSpy();
 						component.registerOnChange( spy );
 
-						whenEvent( 'change', component ).then( () => {
-							expect( spy ).toHaveBeenCalledTimes( 1 );
-						} );
-
 						component.instance.setData( 'initial' );
+						component.instance.setData( 'initial' );
+						component.instance.setData( 'modified' );
+
+						expect( spy ).toHaveBeenCalledTimes( 2 );
 					} );
 				} );
 			} );
 		} );
 	} );
 } );
-

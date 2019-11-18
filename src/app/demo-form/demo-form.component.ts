@@ -16,8 +16,9 @@ import { NgForm } from '@angular/forms';
 	templateUrl: './demo-form.component.html',
 	styleUrls: [ './demo-form.component.css' ]
 } )
+
 export class DemoFormComponent implements AfterViewInit {
-	@ViewChild( 'demoForm' ) demoForm?: NgForm;
+	@ViewChild( 'demoForm', { static: true } ) demoForm?: NgForm;
 
 	public model = {
 		name: 'John',
