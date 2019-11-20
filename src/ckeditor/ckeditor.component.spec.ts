@@ -13,7 +13,8 @@ declare var CKEDITOR: any;
 
 describe( 'CKEditorComponent', () => {
 	let component: CKEditorComponent,
-		fixture: ComponentFixture<CKEditorComponent>;
+		fixture: ComponentFixture<CKEditorComponent>,
+		config: Object;
 
 	beforeEach( async( () => {
 		TestBed.configureTestingModule( {
@@ -24,9 +25,14 @@ describe( 'CKEditorComponent', () => {
 	beforeEach( () => {
 		fixture = TestBed.createComponent( CKEditorComponent );
 		component = fixture.componentInstance;
+
+		component.config = config;
+
+		fixture.detectChanges();
 	} );
 
 	afterEach( () => {
+		config = {};
 		fixture.destroy();
 	} );
 
@@ -104,37 +110,37 @@ describe( 'CKEditorComponent', () => {
 				const isDivarea = editorType === EditorType.DIVAREA;
 
 				[ {
-					config: undefined,
+					newConfig: undefined,
 					msg: 'without config',
 					warn: false
 				}, {
-					config: { extraPlugins: 'basicstyles,divarea,link' },
+					newConfig: { extraPlugins: 'basicstyles,divarea,link' },
 					msg: 'config.extraPlugins defined as a string',
 					warn: false
 				}, {
-					config: { extraPlugins: [ 'basicstyles', 'divarea', 'link' ] },
+					newConfig: { extraPlugins: [ 'basicstyles', 'divarea', 'link' ] },
 					msg: 'config.extraPlugins defined as an array',
 					warn: false
 				}, {
-					config: { removePlugins: 'basicstyles,divarea,link,divarea' },
+					newConfig: { removePlugins: 'basicstyles,divarea,link,divarea' },
 					msg: 'config.removePlugins defined as a string',
 					warn: isDivarea
 				}, {
-					config: { removePlugins: [ 'basicstyles', 'divarea', 'link', 'divarea' ] },
+					newConfig: { removePlugins: [ 'basicstyles', 'divarea', 'link', 'divarea' ] },
 					msg: 'config.removePlugins defined as an array',
 					warn: isDivarea
-				} ].forEach( ( { config, msg, warn } ) => {
+				} ].forEach( ( { newConfig, msg, warn } ) => {
 					describe( msg, () => {
-						beforeEach( () => {
-							component.config = config;
+						beforeAll( () => {
+							config = newConfig;
 						} );
 
 						it( `console ${warn ? 'should' : 'shouldn\'t'} warn`, () => {
 							const spy = spyOn( console, 'warn' );
 
-							return whenEvent( 'ready', component ).then( () => {
-								fixture.detectChanges();
+							fixture.detectChanges();
 
+							return whenEvent( 'ready', component ).then( () => {
 								warn
 									? expect( spy ).toHaveBeenCalled()
 									: expect( spy ).not.toHaveBeenCalled();
@@ -142,9 +148,9 @@ describe( 'CKEditorComponent', () => {
 						} );
 
 						it( `editor ${ isDivarea ? 'should' : 'shouldn\'t' } use divarea plugin`, () => {
-							return whenEvent( 'ready', component ).then( ( { editor } ) => {
-								fixture.detectChanges();
+							fixture.detectChanges();
 
+							return whenEvent( 'ready', component ).then( ( { editor } ) => {
 								isDivarea
 									? expect( editor.plugins.divarea ).not.toBeUndefined()
 									: expect( editor.plugins.divarea ).toBeUndefined();
