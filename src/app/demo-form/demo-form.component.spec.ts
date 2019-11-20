@@ -19,7 +19,8 @@ describe( 'DemoFormComponent', () => {
 		fixture: ComponentFixture<DemoFormComponent>,
 		ckeditorComponent: CKEditorComponent,
 		debugElement: DebugElement,
-		originalTimeout: number;
+		originalTimeout: number,
+		config: Object;
 
 	beforeEach( async( () => {
 		TestBed.configureTestingModule( {
@@ -34,6 +35,8 @@ describe( 'DemoFormComponent', () => {
 		debugElement = fixture.debugElement.query( By.directive( CKEditorComponent ) );
 		ckeditorComponent = debugElement.componentInstance;
 
+		ckeditorComponent.config = config;
+
 		fixture.detectChanges();
 
 		originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
@@ -46,6 +49,9 @@ describe( 'DemoFormComponent', () => {
 		if ( ckeditorComponent.instance ) {
 			ckeditorComponent.instance.once( 'destroy', done );
 		}
+
+		config = {};
+
 		fixture.destroy();
 
 		jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
@@ -97,24 +103,27 @@ describe( 'DemoFormComponent', () => {
 	} );
 
 	[ {
-		config: undefined,
+		newConfig: {},
 		msg: 'with undo plugin'
 	}, {
-		config: { removePlugins: 'undo' },
+		newConfig: { removePlugins: 'undo' },
 		msg: 'without undo plugin'
-	}].forEach( ( { config, msg } ) => {
-		describe( msg, () => {
-			beforeEach( () => {
-				ckeditorComponent.config = config;
-				fixture.detectChanges();
+	}].forEach( ( { newConfig, msg } ) => {
+		describe( 'should emit onChange event', () => {
+			beforeAll( () => {
+				config = newConfig;
 			} );
-			it( 'should emit onChange event', () => {
+
+			it( msg, done => {
 				const spy = spyOn( ckeditorComponent, 'onChange' );
 
-				ckeditorComponent.instance.setData( '<p>An unidentified person</p>' );
-				fixture.detectChanges();
+				whenEvent( 'dataChange', ckeditorComponent ).then( () => {
+					fixture.detectChanges();
+					expect( spy ).toHaveBeenCalledTimes( 1 );
+					done();
+				} );
 
-				expect( spy ).toHaveBeenCalledTimes( 1 );
+				ckeditorComponent.instance.setData( '<p>An unidentified person</p>' );
 			} );
 		} );
 	} );

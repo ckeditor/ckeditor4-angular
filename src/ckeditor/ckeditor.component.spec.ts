@@ -82,7 +82,7 @@ describe( 'CKEditorComponent', () => {
 						fixture.detectChanges();
 
 						return whenEvent( 'ready', component ).then( () => {
-							expect( fixture.nativeElement.lastElementChild.firstElementChild.tagName ).toEqual( 'TEXTAREA' );
+							expect( fixture.nativeElement.firstElementChild.tagName ).toEqual( 'TEXTAREA' );
 						} );
 					} );
 				} );
