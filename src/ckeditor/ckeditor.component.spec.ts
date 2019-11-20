@@ -102,7 +102,10 @@ describe( 'CKEditorComponent', () => {
 						fixture.detectChanges();
 
 						return whenEvent( 'ready', component ).then( () => {
-							expect( fixture.nativeElement.lastChild.tagName ).toEqual( 'DIV' );
+							// IE browsers use SPAN elements instead of DIV as a main CKEditor wrapper
+							// when replace() method for creation is used.
+							const expectedElement = CKEDITOR.env.ie && method !== 'inline' ? 'SPAN' : 'DIV';
+							expect( fixture.nativeElement.lastChild.tagName ).toEqual( expectedElement );
 						} );
 					} );
 				} );

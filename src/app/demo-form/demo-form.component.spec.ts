@@ -91,15 +91,13 @@ describe( 'DemoFormComponent', () => {
 	} );
 
 	it( 'when reset button is clicked should reset form', done => {
-		fixture.whenStable().then( () => {
-			const resetButton: HTMLButtonElement = fixture.debugElement.query( By.css( 'button[type=reset]' ) ).nativeElement;
-			resetButton.click();
+		const resetButton: HTMLButtonElement = fixture.debugElement.query( By.css( 'button[type=reset]' ) ).nativeElement;
+		resetButton.click();
 
-			fixture.detectChanges();
-			expect( component.formDataPreview ).toEqual( '{"name":null,"surname":null,"description":null}' );
+		fixture.detectChanges();
+		expect( component.formDataPreview ).toEqual( '{"name":null,"surname":null,"description":null}' );
 
-			done();
-		} );
+		done();
 	} );
 
 	[ {
