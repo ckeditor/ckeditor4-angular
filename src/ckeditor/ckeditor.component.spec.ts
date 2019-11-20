@@ -5,7 +5,7 @@
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CKEditorComponent } from './ckeditor.component';
-import { whenEvent, whenDataReady } from '../test.tools';
+import { whenEvent, whenDataReady, setDataMultipleTimes } from '../test.tools';
 import { CKEditor4 } from './ckeditor';
 import EditorType = CKEditor4.EditorType;
 
@@ -53,7 +53,7 @@ describe( 'CKEditorComponent', () => {
 					fixture.detectChanges();
 
 					return whenEvent( 'ready', component ).then( () => {
-						expect( component.instance.elementMode ).toEqual( editorType == 'divarea' ? 1 : 3 );
+						expect( component.instance.elementMode ).toEqual( editorType == 'inline' ? 3 : 1 );
 					} );
 				} );
 
@@ -183,14 +183,19 @@ describe( 'CKEditorComponent', () => {
 						expect( component.instance.plugins.undo ).not.toBeUndefined();
 					} );
 
-					it( 'should register changes', () => {
+					it( 'should register changes', async done => {
 						const spy = jasmine.createSpy();
 
 						component.registerOnChange( spy );
-						component.instance.setData( '<p>Hello World!</p>' );
-						component.instance.setData( '</p>I am CKEditor for Angular!</p>' );
 
-						expect( spy ).toHaveBeenCalledTimes( 2 );
+						setDataMultipleTimes( component.instance, [
+							'<p>Hello World!</p>',
+							'<p>I am CKEditor for Angular!</p>'
+						] ).then( () => {
+							expect( spy ).toHaveBeenCalledTimes( 2 );
+
+							done();
+						} );
 					} );
 				} );
 
@@ -207,14 +212,19 @@ describe( 'CKEditorComponent', () => {
 						expect( component.instance.plugins.undo ).toBeUndefined();
 					} );
 
-					it( 'should register changes without undo plugin', () => {
+					it( 'should register changes without undo plugin', async done => {
 						const spy = jasmine.createSpy();
 
 						component.registerOnChange( spy );
-						component.instance.setData( '<p>Hello World!</p>' );
-						component.instance.setData( '</p>I am CKEditor for Angular!</p>' );
 
-						expect( spy ).toHaveBeenCalledTimes( 2 );
+						setDataMultipleTimes( component.instance, [
+							'<p>Hello World!</p>',
+							'<p>I am CKEditor for Angular!</p>'
+						] ).then( () => {
+							expect( spy ).toHaveBeenCalledTimes( 2 );
+
+							done();
+						} );
 					} );
 				} );
 			} );
@@ -346,17 +356,18 @@ describe( 'CKEditorComponent', () => {
 						expect( spy ).toHaveBeenCalled();
 					} );
 
-					it( 'onChange callback should be called when editor model changes', () => {
+					it( 'onChange callback should be called when editor model changes', async done => {
 						fixture.detectChanges();
 
 						const spy = jasmine.createSpy();
 						component.registerOnChange( spy );
 
-						component.instance.setData( 'initial' );
-						component.instance.setData( 'initial' );
-						component.instance.setData( 'modified' );
-
-						expect( spy ).toHaveBeenCalledTimes( 2 );
+						setDataMultipleTimes( component.instance, [
+							'initial', 'initial', 'modified'
+						] ).then( () => {
+							expect( spy ).toHaveBeenCalledTimes( 2 );
+							done();
+						} );
 					} );
 				} );
 			} );
