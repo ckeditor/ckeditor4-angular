@@ -4,7 +4,7 @@
 
 New Features:
 
-* [#6](https://github.com/ckeditor/ckeditor4-angular/issues/6): Added support for Classic (iframe-based) Editor.
+* [#6](https://github.com/ckeditor/ckeditor4-angular/issues/6): Added support for Classic (iframe-based) Editor. Starting from this version Classic Editor is used by default.
 * [#40](https://github.com/ckeditor/ckeditor4-angular/pull/40): Added support for Angular 5.
 
 Fixed Issues:
