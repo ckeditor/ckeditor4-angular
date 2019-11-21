@@ -12,30 +12,30 @@ import { By } from '@angular/platform-browser';
 import { CKEditorComponent } from '../../ckeditor/ckeditor.component';
 import { DebugElement } from '@angular/core';
 
-import { TestTools } from '../../test.tools';
-
-const whenEvent = TestTools.whenEvent;
+import { whenEvent } from '../../test.tools';
 
 describe( 'DemoFormComponent', () => {
 	let component: DemoFormComponent,
 		fixture: ComponentFixture<DemoFormComponent>,
 		ckeditorComponent: CKEditorComponent,
 		debugElement: DebugElement,
-		originalTimeout: number;
+		originalTimeout: number,
+		config: Object;
 
 	beforeEach( async( () => {
 		TestBed.configureTestingModule( {
 			declarations: [ DemoFormComponent ],
 			imports: [ FormsModule, CKEditorModule ]
-		} )
-			.compileComponents();
+		} ).compileComponents();
 	} ) );
 
-	beforeEach( ( done ) => {
+	beforeEach( done => {
 		fixture = TestBed.createComponent( DemoFormComponent );
 		component = fixture.componentInstance;
 		debugElement = fixture.debugElement.query( By.directive( CKEditorComponent ) );
 		ckeditorComponent = debugElement.componentInstance;
+
+		ckeditorComponent.config = config;
 
 		fixture.detectChanges();
 
@@ -45,10 +45,13 @@ describe( 'DemoFormComponent', () => {
 		whenEvent( 'ready', ckeditorComponent ).then( done );
 	} );
 
-	afterEach( ( done ) => {
+	afterEach( done => {
 		if ( ckeditorComponent.instance ) {
 			ckeditorComponent.instance.once( 'destroy', done );
 		}
+
+		config = {};
+
 		fixture.destroy();
 
 		jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
@@ -76,7 +79,7 @@ describe( 'DemoFormComponent', () => {
 	} );
 
 	// This test passes when run solo or testes as first, but throws a type error when run after other tests.
-	it( 'when change event is emitted should show form data preview', ( done: Function ) => {
+	it( 'when change event is emitted should show form data preview', done => {
 		whenEvent( 'change', ckeditorComponent ).then( () => {
 			fixture.detectChanges();
 			expect( component.formDataPreview ).toEqual( '{"name":"John","surname":"Doe","description":"<p>An unidentified person</p>\\n"}' );
@@ -87,37 +90,38 @@ describe( 'DemoFormComponent', () => {
 
 	} );
 
-	it( 'when reset button is clicked should reset form', ( done: Function ) => {
-		fixture.whenStable().then( () => {
-			const resetButton: HTMLButtonElement = fixture.debugElement.query( By.css( 'button[type=reset]' ) ).nativeElement;
-			resetButton.click();
+	it( 'when reset button is clicked should reset form', done => {
+		const resetButton: HTMLButtonElement = fixture.debugElement.query( By.css( 'button[type=reset]' ) ).nativeElement;
+		resetButton.click();
 
-			fixture.detectChanges();
-			expect( component.formDataPreview ).toEqual( '{"name":null,"surname":null,"description":null}' );
+		fixture.detectChanges();
+		expect( component.formDataPreview ).toEqual( '{"name":null,"surname":null,"description":null}' );
 
-			done();
-		} );
+		done();
 	} );
 
 	[ {
-		config: undefined,
+		newConfig: {},
 		msg: 'with undo plugin'
 	}, {
-		config: { removePlugins: 'undo' },
+		newConfig: { removePlugins: 'undo' },
 		msg: 'without undo plugin'
-	}].forEach( ( { config, msg } ) => {
-		describe( msg, () => {
-			beforeEach( () => {
-				ckeditorComponent.config = config;
-				fixture.detectChanges();
+	}].forEach( ( { newConfig, msg } ) => {
+		describe( 'should emit onChange event', () => {
+			beforeAll( () => {
+				config = newConfig;
 			} );
-			it( 'should emit onChange event', () => {
+
+			it( msg, done => {
 				const spy = spyOn( ckeditorComponent, 'onChange' );
 
-				ckeditorComponent.instance.setData( '<p>An unidentified person</p>' );
-				fixture.detectChanges();
+				whenEvent( 'dataChange', ckeditorComponent ).then( () => {
+					fixture.detectChanges();
+					expect( spy ).toHaveBeenCalledTimes( 1 );
+					done();
+				} );
 
-				expect( spy ).toHaveBeenCalledTimes( 1 );
+				ckeditorComponent.instance.setData( '<p>An unidentified person</p>' );
 			} );
 		} );
 	} );

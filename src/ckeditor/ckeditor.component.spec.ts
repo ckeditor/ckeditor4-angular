@@ -5,47 +5,55 @@
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CKEditorComponent } from './ckeditor.component';
-
-import { TestTools } from '../test.tools';
+import { whenEvent, whenDataReady, setDataMultipleTimes } from '../test.tools';
 import { CKEditor4 } from './ckeditor';
 import EditorType = CKEditor4.EditorType;
 
-const whenEvent = TestTools.whenEvent;
+declare var CKEDITOR: any;
 
 describe( 'CKEditorComponent', () => {
 	let component: CKEditorComponent,
-		fixture: ComponentFixture<CKEditorComponent>;
+		fixture: ComponentFixture<CKEditorComponent>,
+		config: Object;
 
 	beforeEach( async( () => {
 		TestBed.configureTestingModule( {
 			declarations: [ CKEditorComponent ]
-		} )
-			.compileComponents();
+		} ).compileComponents();
 	} ) );
 
 	beforeEach( () => {
 		fixture = TestBed.createComponent( CKEditorComponent );
 		component = fixture.componentInstance;
+
+		component.config = config;
+
+		fixture.detectChanges();
 	} );
 
 	afterEach( () => {
+		config = {};
 		fixture.destroy();
 	} );
 
-	[ EditorType.DIVAREA, EditorType.INLINE ].forEach( ( editorType ) => {
+	[
+		EditorType.DIVAREA,
+		EditorType.INLINE,
+		EditorType.CLASSIC
+	].forEach( editorType => {
 		describe( `type="${editorType}"`, () => {
 			beforeEach( () => {
 				component.type = editorType;
 			} );
 
 			describe( 'on initialization', () => {
-				const method = editorType === 'divarea' ? 'replace' : 'inline';
+				const method = editorType === 'inline' ? 'inline' : 'replace';
 
 				it( `should create editor with CKEDITOR.${method}`, () => {
 					fixture.detectChanges();
 
 					return whenEvent( 'ready', component ).then( () => {
-						expect( component.instance.elementMode ).toEqual( editorType == 'divarea' ? 1 : 3 );
+						expect( component.instance.elementMode ).toEqual( editorType == 'inline' ? 3 : 1 );
 					} );
 				} );
 
@@ -54,6 +62,13 @@ describe( 'CKEditorComponent', () => {
 
 					return whenEvent( 'ready', component ).then( () => {
 						expect( component.editorUrl ).toEqual( 'https://cdn.ckeditor.com/4.13.0/standard-all/ckeditor.js' );
+					} );
+				} );
+
+				it( 'should have proper editor type', () => {
+					whenEvent( 'ready', component ).then( () => {
+						fixture.detectChanges();
+						expect( component.instance.editable().isInline() ).toBe( component.type !== EditorType.CLASSIC );
 					} );
 				} );
 
@@ -73,7 +88,7 @@ describe( 'CKEditorComponent', () => {
 						fixture.detectChanges();
 
 						return whenEvent( 'ready', component ).then( () => {
-							expect( fixture.nativeElement.lastElementChild.firstElementChild.tagName ).toEqual( 'TEXTAREA' );
+							expect( fixture.nativeElement.firstElementChild.tagName ).toEqual( 'TEXTAREA' );
 						} );
 					} );
 				} );
@@ -87,36 +102,40 @@ describe( 'CKEditorComponent', () => {
 						fixture.detectChanges();
 
 						return whenEvent( 'ready', component ).then( () => {
-							expect( fixture.nativeElement.lastChild.tagName ).toEqual( 'DIV' );
+							// IE browsers use SPAN elements instead of DIV as a main CKEditor wrapper
+							// when replace() method for creation is used.
+							const expectedElement = CKEDITOR.env.ie && method !== 'inline' ? 'SPAN' : 'DIV';
+							expect( fixture.nativeElement.lastChild.tagName ).toEqual( expectedElement );
 						} );
 					} );
 				} );
 
+				const isDivarea = editorType === EditorType.DIVAREA;
+
 				[ {
-					config: undefined,
+					newConfig: undefined,
 					msg: 'without config',
 					warn: false
 				}, {
-					config: { extraPlugins: 'basicstyles,divarea,link' },
+					newConfig: { extraPlugins: 'basicstyles,divarea,link' },
 					msg: 'config.extraPlugins defined as a string',
 					warn: false
 				}, {
-					config: { extraPlugins: [ 'basicstyles', 'divarea', 'link' ] },
+					newConfig: { extraPlugins: [ 'basicstyles', 'divarea', 'link' ] },
 					msg: 'config.extraPlugins defined as an array',
 					warn: false
 				}, {
-					config: { removePlugins: 'basicstyles,divarea,link,divarea' },
+					newConfig: { removePlugins: 'basicstyles,divarea,link,divarea' },
 					msg: 'config.removePlugins defined as a string',
-					warn: true
+					warn: isDivarea
 				}, {
-					config: { removePlugins: [ 'basicstyles', 'divarea', 'link', 'divarea' ] },
+					newConfig: { removePlugins: [ 'basicstyles', 'divarea', 'link', 'divarea' ] },
 					msg: 'config.removePlugins defined as an array',
-					warn: true
-				}
-				].forEach( ( { config, msg, warn } ) => {
+					warn: isDivarea
+				} ].forEach( ( { newConfig, msg, warn } ) => {
 					describe( msg, () => {
-						beforeEach( () => {
-							component.config = config;
+						beforeAll( () => {
+							config = newConfig;
 						} );
 
 						it( `console ${warn ? 'should' : 'shouldn\'t'} warn`, () => {
@@ -131,18 +150,20 @@ describe( 'CKEditorComponent', () => {
 							} );
 						} );
 
-						it( 'editor should use divarea plugin', () => {
+						it( `editor ${ isDivarea ? 'should' : 'shouldn\'t' } use divarea plugin`, () => {
 							fixture.detectChanges();
 
 							return whenEvent( 'ready', component ).then( ( { editor } ) => {
-								expect( editor.plugins.divarea ).not.toBeUndefined();
+								isDivarea
+									? expect( editor.plugins.divarea ).not.toBeUndefined()
+									: expect( editor.plugins.divarea ).toBeUndefined();
 							} );
 						} );
 					} );
 				} );
 
 				describe( 'when set with config', () => {
-					beforeEach( ( done ) => {
+					beforeEach( done => {
 						component.config = {
 							readOnly: true,
 							width: 1000,
@@ -165,14 +186,19 @@ describe( 'CKEditorComponent', () => {
 						expect( component.instance.plugins.undo ).not.toBeUndefined();
 					} );
 
-					it( 'should register changes', () => {
+					it( 'should register changes', async done => {
 						const spy = jasmine.createSpy();
 
 						component.registerOnChange( spy );
-						component.instance.setData( '<p>Hello World!</p>' );
-						component.instance.setData( '</p>I am CKEditor for Angular!</p>' );
 
-						expect( spy ).toHaveBeenCalledTimes( 2 );
+						setDataMultipleTimes( component.instance, [
+							'<p>Hello World!</p>',
+							'<p>I am CKEditor for Angular!</p>'
+						] ).then( () => {
+							expect( spy ).toHaveBeenCalledTimes( 2 );
+
+							done();
+						} );
 					} );
 				} );
 
@@ -189,20 +215,25 @@ describe( 'CKEditorComponent', () => {
 						expect( component.instance.plugins.undo ).toBeUndefined();
 					} );
 
-					it( 'should register changes without undo plugin', () => {
+					it( 'should register changes without undo plugin', async done => {
 						const spy = jasmine.createSpy();
 
 						component.registerOnChange( spy );
-						component.instance.setData( '<p>Hello World!</p>' );
-						component.instance.setData( '</p>I am CKEditor for Angular!</p>' );
 
-						expect( spy ).toHaveBeenCalledTimes( 2 );
+						setDataMultipleTimes( component.instance, [
+							'<p>Hello World!</p>',
+							'<p>I am CKEditor for Angular!</p>'
+						] ).then( () => {
+							expect( spy ).toHaveBeenCalledTimes( 2 );
+
+							done();
+						} );
 					} );
 				} );
 			} );
 
 			describe( 'when component is ready', () => {
-				beforeEach( ( done ) => {
+				beforeEach( done => {
 					fixture.detectChanges();
 					whenEvent( 'ready', component ).then( done );
 				} );
@@ -253,23 +284,31 @@ describe( 'CKEditorComponent', () => {
 					const data = '<b>foo</b>',
 						expected = '<p><strong>foo</strong></p>\n';
 
-					it( 'should be configurable at the start of the component', () => {
+					it( 'should be configurable at the start of the component', async done => {
 						fixture.detectChanges();
-						component.data = data;
+
+						await whenDataReady( component.instance, () => component.data = data );
 
 						expect( component.data ).toEqual( expected );
 						expect( component.instance.getData() ).toEqual( expected );
+
+						done();
 					} );
 
-					it( 'should be writeable by ControlValueAccessor', () => {
+					it( 'should be writeable by ControlValueAccessor', async done => {
 						fixture.detectChanges();
-						component.writeValue( data );
+
+						const editor = component.instance;
+
+						await whenDataReady( editor, () => component.writeValue( data ) );
 
 						expect( component.instance.getData() ).toEqual( expected );
 
-						component.writeValue( '<p><i>baz</i></p>' );
+						await whenDataReady( editor, () => component.writeValue( '<p><i>baz</i></p>' ) );
 
 						expect( component.instance.getData() ).toEqual( '<p><em>baz</em></p>\n' );
+
+						done();
 					} );
 				} );
 
@@ -320,17 +359,18 @@ describe( 'CKEditorComponent', () => {
 						expect( spy ).toHaveBeenCalled();
 					} );
 
-					it( 'onChange callback should be called when editor model changes', () => {
+					it( 'onChange callback should be called when editor model changes', async done => {
 						fixture.detectChanges();
 
 						const spy = jasmine.createSpy();
 						component.registerOnChange( spy );
 
-						component.instance.setData( 'initial' );
-						component.instance.setData( 'initial' );
-						component.instance.setData( 'modified' );
-
-						expect( spy ).toHaveBeenCalledTimes( 2 );
+						setDataMultipleTimes( component.instance, [
+							'initial', 'initial', 'modified'
+						] ).then( () => {
+							expect( spy ).toHaveBeenCalledTimes( 2 );
+							done();
+						} );
 					} );
 				} );
 			} );

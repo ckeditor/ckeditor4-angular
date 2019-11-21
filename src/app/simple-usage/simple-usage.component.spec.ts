@@ -11,11 +11,10 @@ import { By } from '@angular/platform-browser';
 import { CKEditorComponent } from '../../ckeditor/ckeditor.component';
 import { DebugElement } from '@angular/core';
 
-import { TestTools } from '../../test.tools';
+import { whenEvent } from '../../test.tools';
 import { FormsModule } from '@angular/forms';
+import { getEditorNamespace } from '../../ckeditor/ckeditor.helpers';
 import Spy = jasmine.Spy;
-
-const whenEvent = TestTools.whenEvent;
 
 describe( 'SimpleUsageComponent', () => {
 	let component: SimpleUsageComponent,
@@ -31,7 +30,7 @@ describe( 'SimpleUsageComponent', () => {
 		} ).compileComponents();
 	} ) );
 
-	beforeEach( ( done ) => {
+	beforeEach( done => {
 		fixture = TestBed.createComponent( SimpleUsageComponent );
 		component = fixture.componentInstance;
 
@@ -46,9 +45,9 @@ describe( 'SimpleUsageComponent', () => {
 		whenEach( ckeditorComponent => whenEvent( 'ready', ckeditorComponent ) ).then( done );
 	} );
 
-	afterEach( ( done ) => {
+	afterEach( done => {
 		whenEach( ckeditorComponent =>
-			new Promise( ( res ) => {
+			new Promise( res => {
 				if ( ckeditorComponent.instance ) {
 					ckeditorComponent.instance.once( 'destroy', res );
 				}
@@ -93,13 +92,21 @@ describe( 'SimpleUsageComponent', () => {
 		} );
 
 		it( 'should be synced with editorData property', () => {
-			component.editorData = '<p>foo</p>\n';
+			getEditorNamespace( ckeditorComponents[ 0 ].editorUrl )
+				.then( CKEDITOR => {
+					if ( CKEDITOR.env.ie ) {
+						// Ignore on IE11/Edge for now since it throws "Permission denied" error (#72).
+						pending();
+					} else {
+						component.editorData = '<p>foo</p>\n';
 
-			fixture.detectChanges();
+						fixture.detectChanges();
 
-			each( ckeditorComponent => {
-				expect( ckeditorComponent.data ).toEqual( '<p>foo</p>\n' );
-			} );
+						each( ckeditorComponent => {
+							expect( ckeditorComponent.data ).toEqual( '<p>foo</p>\n' );
+						} );
+					}
+				} );
 		} );
 	} );
 
@@ -110,34 +117,38 @@ describe( 'SimpleUsageComponent', () => {
 		} );
 
 		it( 'ready should be called on ckeditorComponent.ready()', () => {
-			each( ckeditorComponent => {
+			each( ( ckeditorComponent, name ) => {
 				ckeditorComponent.ready.emit();
 
-				expect( spy ).toHaveBeenCalledWith( 'Divarea editor is ready.' );
+				expect( spy ).toHaveBeenCalledWith( `${ name } editor is ready.` );
 			} );
 		} );
 
 		it( 'change should be called on ckeditorComponent.change()', () => {
-			each( ckeditorComponent => {
+			each( ( ckeditorComponent, name ) => {
 				ckeditorComponent.change.emit();
 
-				expect( spy ).toHaveBeenCalledWith( 'Divarea editor model changed.' );
+				expect( spy ).toHaveBeenCalledWith( `${ name } editor model changed.` );
 			} );
 		} );
 
 		it( 'focus should be called on ckeditorComponent.focus()', () => {
-			each( ckeditorComponent => {
+			each( ( ckeditorComponent, name ) => {
 				ckeditorComponent.focus.emit();
 
-				expect( spy ).toHaveBeenCalledWith( 'Focused divarea editing view.' );
+				name = name.toLowerCase();
+
+				expect( spy ).toHaveBeenCalledWith( `Focused ${ name } editing view.` );
 			} );
 		} );
 
 		it( 'blur should be called on ckeditorComponent.blur()', () => {
-			each( ckeditorComponent => {
+			each( ( ckeditorComponent, name ) => {
 				ckeditorComponent.blur.emit();
 
-				expect( spy ).toHaveBeenCalledWith( 'Blurred divarea editing view.' );
+				name = name.toLowerCase();
+
+				expect( spy ).toHaveBeenCalledWith( `Blurred ${ name } editing view.` );
 			} );
 		} );
 	} );
@@ -147,6 +158,12 @@ describe( 'SimpleUsageComponent', () => {
 	}
 
 	function each( callback ) {
-		ckeditorComponents.forEach( item => callback( item ) );
+		ckeditorComponents.forEach( item => {
+			let name: String = item.type;
+
+			name = name[ 0 ].toUpperCase() + name.slice( 1 );
+
+			callback( item, name );
+		} );
 	}
 } );
