@@ -1,26 +1,26 @@
 {
-  "name": "ckeditor4-angular",
-  "version": "1.0.0",
-  "description": "Official CKEditor 4 component for Angular.",
-  "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "build-package": "node ./scripts/build-package.js",
-    "test": "node ./scripts/test.js",
-    "lint": "ng lint",
-    "e2e": "ng e2e",
-    "publish": "npm run build-package && npm publish dist/"
-  },
-  "author": "CKSource (https://cksource.com/)",
-  "license": "(GPL-2.0-or-later OR LGPL-2.1-or-later OR MPL-1.1-or-later)",
-  "homepage": "https://ckeditor.com/",
-  "bugs": "https://github.com/ckeditor/ckeditor4-angular/issues",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ckeditor/ckeditor4-angular.git"
-  },
-  "private": true,
+	"name": "ckeditor4-angular",
+	"version": "1.0.0",
+	"description": "Official CKEditor 4 component for Angular.",
+	"scripts": {
+		"ng": "ng",
+		"start": "ng serve",
+		"build": "ng build",
+		"build-package": "node ./scripts/build-package.js",
+		"test": "node ./scripts/test.js",
+		"lint": "ng lint",
+		"e2e": "ng e2e",
+		"publish": "npm run build-package && npm publish dist/"
+	},
+	"author": "CKSource (https://cksource.com/)",
+	"license": "(GPL-2.0-or-later OR LGPL-2.1-or-later OR MPL-1.1-or-later)",
+	"homepage": "https://ckeditor.com/",
+	"bugs": "https://github.com/ckeditor/ckeditor4-angular/issues",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ckeditor/ckeditor4-angular.git"
+	},
+	"private": true,
 	"dependencies": {
 		"@angular/animations": "^8.2.13",
 		"@angular/common": "^8.2.13",
