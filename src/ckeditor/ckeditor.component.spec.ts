@@ -57,11 +57,11 @@ describe( 'CKEditorComponent', () => {
 					} );
 				} );
 
-				it( 'should have editorUrl pointing to 4.13.0 version', () => {
+				it( 'should have editorUrl pointing to 4.13.1 version', () => {
 					fixture.detectChanges();
 
 					return whenEvent( 'ready', component ).then( () => {
-						expect( component.editorUrl ).toEqual( 'https://cdn.ckeditor.com/4.13.0/standard-all/ckeditor.js' );
+						expect( component.editorUrl ).toEqual( 'https://cdn.ckeditor.com/4.13.1/standard-all/ckeditor.js' );
 					} );
 				} );
 
