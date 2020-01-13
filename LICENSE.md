@@ -24,7 +24,7 @@ Where not otherwise indicated, all CKEditor content is authored by CKSource engi
 The following libraries are included in CKEditor 4 component for Angular under the following licenses:
 
 - load-script [MIT](https://github.com/eldargab/load-script#license)
-- tslib Copyright (c) 2012-2019 Microsoft [Apache-2.0](https://github.com/Microsoft/tslib/blob/master/LICENSE.txt)
+- tslib Copyright (c) 2012-2020 Microsoft [Apache-2.0](https://github.com/Microsoft/tslib/blob/master/LICENSE.txt)
 
 Trademarks
 ----------
