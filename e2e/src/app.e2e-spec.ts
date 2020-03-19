@@ -36,6 +36,11 @@ describe( 'workspace-project App', () => {
 			);
 		} );
 
+		fit( `in editor2 should update editors content`, testTyping( editables, 1 ) );
+		fit( `in editor2 should update editors content`, testTyping( editables, 1 ) );
+		fit( `in editor2 should update editors content`, testTyping( editables, 1 ) );
+		fit( `in editor2 should update editors content`, testTyping( editables, 1 ) );
+
 		describe( 'typing', () => {
 			it( `in editor1 should update editors content`, testTyping( editables, 0 ) );
 			it( `in editor2 should update editors content`, testTyping( editables, 1 ) );
