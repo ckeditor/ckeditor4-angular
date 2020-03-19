@@ -19,11 +19,6 @@ before_install:
   - 'export DISPLAY=:99.0'
 install:
   - npm install
-  - npm install webdriver-manager@12.1.7
-  # Use newer version of webdriver-manager to allow latest Chrome
-  # for E2E tests (https://github.com/angular/protractor/issues/5312#issuecomment-531940044).
-  - rm -rf ./node_modules/protractor/node_modules/webdriver-manager
-  - ln -s ./node_modules/webdriver-manager ./node_modules/protractor/node_modules/webdriver-manager
 script:
   - ng test && ng e2e
 env:
