@@ -16,6 +16,7 @@ console.log( output.toString() );
 
 // And copy markdown files.
 const filesToCopy = [
+	'CHANGELOG.md',
 	'LICENSE.md',
 	'README.md'
 ];
