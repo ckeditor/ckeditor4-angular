@@ -410,6 +410,49 @@ describe( 'CKEditorComponent', () => {
 
 						done();
 					} );
+
+					it( 'fileUploadRequest should emit component fileUploadRequest', () => {
+						fixture.detectChanges();
+
+						const spy = jasmine.createSpy();
+						component.fileUploadRequest.subscribe( spy );
+
+						const fileLoaderMock = {
+							fileLoader: {
+								file: Blob ? new Blob() : '',
+								fileName: 'fileName',
+								xhr: {
+									open: function() {},
+									send: function() {}
+								}
+							},
+							requestData: {}
+						};
+
+						component.instance.fire( 'fileUploadRequest', fileLoaderMock );
+
+						expect( spy ).toHaveBeenCalledTimes( 1 );
+					} );
+
+					it( 'fileUploadResponse should emit component fileUploadResponse', () => {
+						fixture.detectChanges();
+
+						const spy = jasmine.createSpy();
+						component.fileUploadResponse.subscribe( spy );
+
+						const data = {
+							fileLoader: {
+								xhr: { responseText: 'Not a JSON.' },
+								lang: {
+									filetools: { responseError: 'Error' }
+								}
+							}
+						};
+
+						component.instance.fire( 'fileUploadResponse', data );
+
+						expect( spy ).toHaveBeenCalledTimes( 1 );
+					} );
 				} );
 
 				describe( 'when control value accessor callbacks are set', () => {
