@@ -5,11 +5,18 @@
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CKEditorComponent } from './ckeditor.component';
-import { whenEvent, whenDataReady, setDataMultipleTimes } from '../test.tools';
+import {
+	fireDragEndEvent,
+	fireDragStartEvent, fireDropEvent, getWidgetById,
+	mockDropEvent, mockNativeDataTransfer,
+	mockPasteEvent,
+	setDataMultipleTimes,
+	whenDataPasted,
+	whenDataReady,
+	whenEvent
+} from '../test.tools';
 import { CKEditor4 } from './ckeditor';
 import EditorType = CKEditor4.EditorType;
-
-const { mockNativeDataTransfer, mockPasteEvent, whenEvent } = TestTools;
 
 declare var CKEDITOR: any;
 
@@ -348,79 +355,60 @@ describe( 'CKEditorComponent', () => {
 						expect( spy ).toHaveBeenCalledTimes( 1 );
 					} );
 
-					it( 'paste should emit component paste', () => {
+					it( 'paste should emit component paste', async done => {
+						const pasteEventMock = mockPasteEvent();
+						pasteEventMock.$.clipboardData.setData( 'text/html', '<p>bam</p>' );
+
 						fixture.detectChanges();
-						const event = mockPasteEvent();
-						event.$.clipboardData.setData( 'text/html', '<p>bam</p>' );
 
 						const spy = jasmine.createSpy();
 						component.paste.subscribe( spy );
+						const editable = component.instance.editable();
+						editable.fire( 'paste', pasteEventMock );
 
-						// const editable = component.instance.editable();
-						component.instance.fire( 'paste', event );
+						await whenDataPasted(component.instance)
 
 						expect( spy ).toHaveBeenCalledTimes( 1 );
+
+						done()
 					} );
 
-					it( 'dragend should emit component dragend', () => {
+					it( 'drag and drop events should emit component dragstart, drop and dragEnd', async done => {
 						fixture.detectChanges();
 
-						const spy = jasmine.createSpy();
-						component.dragEnd.subscribe( spy );
+						const spyDragStart = jasmine.createSpy();
+						component.dragStart.subscribe( spyDragStart );
 
-						component.instance.fire( 'dragend' );
+						const spyDrop = jasmine.createSpy();
+						component.drop.subscribe( spyDrop );
 
-						expect( spy ).toHaveBeenCalledTimes( 1 );
-					});
+						const spyDragEnd = jasmine.createSpy();
+						component.dragEnd.subscribe( spyDragEnd );
 
-					it( 'dragstart should emit component dragstart', () => {
-						fixture.detectChanges();
+						setDataMultipleTimes( component.instance, [
+							'<p><span data-widget="testwidget" id="w1">foo</span></p>',
+						] ).then( async () => {
+							const dropEvent = { data: mockDropEvent() };
+							const widget = getWidgetById( component.instance, 'w1' );
+							const range = component.instance.createRange()
 
-						const spy = jasmine.createSpy();
-						component.dragStart.subscribe( spy );
+							await fireDragStartEvent(component.instance, dropEvent, widget )
+							expect( spyDragStart ).toHaveBeenCalledTimes( 1 );
 
-						component.instance.fire( 'dragstart' );
+							CKEDITOR.plugins.clipboard.initDragDataTransfer( dropEvent );
+							// dropEvent.data.dataTransfer.setData( 'cke/widget-id', widget.id );
 
-						expect( spy ).toHaveBeenCalledTimes( 1 );
-					} );
+							range.setStartBefore( widget.wrapper );
+							// dropEvent.data.testRange = range;
 
-					it( 'drop should emit component drop', () => {
-						fixture.detectChanges();
+							await fireDropEvent( component.instance, dropEvent.data, range );
+							await fireDragEndEvent( component.instance, dropEvent.data, widget );
 
-						const spy = jasmine.createSpy();
-						component.drop.subscribe( spy );
+							expect( spyDrop ).toHaveBeenCalledTimes( 1 );
+							expect( spyDragEnd ).toHaveBeenCalledTimes( 1 );
+						} );
 
-						component.instance.fire( 'drop' );
-
-						expect( spy ).toHaveBeenCalledTimes( 1 );
-					} );
-
-					it('fileUploadRequest should emit component fileUploadRequest', () => {
-						component.config = {
-							extraPlugins: 'uploadimage'
-						};
-						fixture.detectChanges();
-
-						const spy = jasmine.createSpy();
-						component.fileUploadRequest.subscribe( spy );
-
-						component.instance.fire( 'fileUploadRequest' );
-
-						expect( spy ).toHaveBeenCalledTimes( 1 );
-					} );
-
-					it('fileUploadResponse should emit component fileUploadResponse', () => {
-						component.config = {
-							extraPlugins: 'uploadimage'
-						};
-						fixture.detectChanges();
-
-						const spy = jasmine.createSpy();
-						component.fileUploadResponse.subscribe( spy );
-
-						component.instance.fire( 'fileUploadResponse' );
-
-						expect( spy ).toHaveBeenCalledTimes( 1 );
+						done();
 					} );
 				} );
 

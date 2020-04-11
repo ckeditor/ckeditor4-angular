@@ -14,8 +14,14 @@
 		(ready)="onReady( $event, editor )"
 		(change)="onChange( $event, editor )"
 		(focus)="onFocus( $event, editor )"
-		(blur)="onBlur( $event, editor )">
-	</ckeditor>
+		(blur)="onBlur( $event, editor )"
+		(paste)="onPaste( $event, editor )"
+		(dragStart)="onDragStart( $event, editor )"
+		(dragEnd)="onDragEnd( $event, editor )"
+		(drop)="onDrop( $event, editor )"
+		(fileUploadRequest)="onFileUploadRequest( $event, editor )"
+		(fileUploadResponse)="onFileUploadResponse( $event, editor )"
+	></ckeditor>
 </div>
 
 <p>Note: editors have it's data synchronized, so every change in one of editors propagates to another.</p>
