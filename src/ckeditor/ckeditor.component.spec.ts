@@ -6,15 +6,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CKEditorComponent } from './ckeditor.component';
 import {
-	fireDragEndEvent,
-	fireDragStartEvent,
+	fireDragEvent,
 	fireDropEvent,
 	getWidgetById,
 	mockDropEvent,
-	mockNativeDataTransfer,
 	mockPasteEvent,
 	setDataMultipleTimes,
-	whenDataPasted,
 	whenDataReady,
 	whenEvent
 } from '../test.tools';
@@ -358,7 +355,7 @@ describe( 'CKEditorComponent', () => {
 						expect( spy ).toHaveBeenCalledTimes( 1 );
 					} );
 
-					it( 'paste should emit component paste', async done => {
+					it( 'paste should emit component paste', () => {
 						const pasteEventMock = mockPasteEvent();
 						pasteEventMock.$.clipboardData.setData( 'text/html', '<p>bam</p>' );
 
@@ -366,14 +363,14 @@ describe( 'CKEditorComponent', () => {
 
 						const spy = jasmine.createSpy();
 						component.paste.subscribe( spy );
+
 						const editable = component.instance.editable();
 						editable.fire( 'paste', pasteEventMock );
 
-						await whenDataPasted(component.instance)
-
-						expect( spy ).toHaveBeenCalledTimes( 1 );
-
-						done()
+						return whenEvent( 'paste', component ).then( () => {
+							expect( spy ).toHaveBeenCalledTimes( 1 );
+							expect( component.instance.getData() ).toEqual( '<p>bam</p>\n' );
+						} );
 					} );
 
 					it( 'drag and drop events should emit component dragstart, drop and dragEnd', async done => {
@@ -393,19 +390,17 @@ describe( 'CKEditorComponent', () => {
 						] ).then( async () => {
 							const dropEvent = { data: mockDropEvent() };
 							const widget = getWidgetById( component.instance, 'w1' );
-							const range = component.instance.createRange()
+							const range = component.instance.createRange();
 
-							await fireDragStartEvent(component.instance, dropEvent, widget )
+							await fireDragEvent( 'dragstart', component.instance, dropEvent, widget );
 							expect( spyDragStart ).toHaveBeenCalledTimes( 1 );
 
 							CKEDITOR.plugins.clipboard.initDragDataTransfer( dropEvent );
-							// dropEvent.data.dataTransfer.setData( 'cke/widget-id', widget.id );
 
 							range.setStartBefore( widget.wrapper );
-							// dropEvent.data.testRange = range;
 
 							await fireDropEvent( component.instance, dropEvent.data, range );
-							await fireDragEndEvent( component.instance, dropEvent.data, widget );
+							await fireDragEvent( 'dragend', component.instance, dropEvent.data, widget );
 
 							expect( spyDrop ).toHaveBeenCalledTimes( 1 );
 							expect( spyDragEnd ).toHaveBeenCalledTimes( 1 );
