@@ -147,40 +147,35 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	@Output() dataChange = new EventEmitter<CKEditor4.EventInfo>();
 
 	/**
-	 * Facade for the native drop event. Fired when the native drop event occurs.
-	 * It corresponds with the `editor#dragend`
-	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-dragend
-	 * event.
-	 */
-	@Output() dragEnd = new EventEmitter<CKEditor4.EventInfo>();
-
-	/**
-	 * Facade for the native drop event. Fired when the native drop event occurs.
-	 * It corresponds with the `editor#dragstart`
+	 * Fires when the native drop event occurs. It corresponds with the `editor#dragstart`
 	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-dragstart
 	 * event.
 	 */
 	@Output() dragStart = new EventEmitter<CKEditor4.EventInfo>();
 
 	/**
-	 * Facade for the native drop event. Fired when the native drop event occurs.
-	 * It corresponds with the `editor#drop`
+	 * Fires when the native drop event occurs. It corresponds with the `editor#dragend`
+	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-dragend
+	 * event.
+	 */
+	@Output() dragEnd = new EventEmitter<CKEditor4.EventInfo>();
+
+	/**
+	 * Fires when the native drop event occurs. It corresponds with the `editor#drop`
 	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-drop
 	 * event.
 	 */
 	@Output() drop = new EventEmitter<CKEditor4.EventInfo>();
 
 	/**
-	 * Fires when the file loader response is received. It corresponds with the
-	 * `editor#fileUploadResponse`
+	 * Fires when the file loader response is received. It corresponds with the `editor#fileUploadResponse`
 	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-fileUploadResponse
 	 * event.
 	 */
 	@Output() fileUploadResponse = new EventEmitter<CKEditor4.EventInfo>();
 
 	/**
-	 * Fires when the file loader should send XHR. It corresponds with the
-	 * `editor#fileUploadRequest`
+	 * Fires when the file loader should send XHR. It corresponds with the `editor#fileUploadRequest`
 	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-fileUploadRequest
 	 * event.
 	 */
@@ -410,10 +405,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		let { extraPlugins, removePlugins } = config;
 
 		extraPlugins = this.removePlugin( extraPlugins, 'divarea' ) || '';
-		extraPlugins = extraPlugins.concat( typeof extraPlugins === 'string'
-			? ',divarea'
-			: 'divarea'
-		);
+		extraPlugins = extraPlugins.concat( typeof extraPlugins === 'string' ? ',divarea' : 'divarea' );
 
 		if ( removePlugins && removePlugins.includes( 'divarea' ) ) {
 
