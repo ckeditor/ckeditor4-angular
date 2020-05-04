@@ -197,6 +197,13 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	@Output() paste = new EventEmitter<CKEditor4.EventInfo>();
 
 	/**
+	 * Fires after the `paste` event if content was modified. It corresponds with the `editor#afterPaste`
+	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-afterPaste
+	 * event.
+	 */
+	@Output() afterPaste = new EventEmitter<CKEditor4.EventInfo>();
+
+	/**
 	 * Fires when the editor is ready. It corresponds with the `editor#instanceReady`
 	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-instanceReady
 	 * event.
@@ -324,6 +331,12 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		editor.on( 'paste', evt => {
 			this.ngZone.run( () => {
 				this.paste.emit( evt );
+			} );
+		} );
+
+		editor.on( 'afterPaste', evt => {
+			this.ngZone.run( () => {
+				this.afterPaste.emit( evt );
 			} );
 		} );
 

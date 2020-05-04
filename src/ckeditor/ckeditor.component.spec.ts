@@ -373,6 +373,24 @@ describe( 'CKEditorComponent', () => {
 						} );
 					} );
 
+					it( 'afterPaste should emit component afterPaste', () => {
+						const pasteEventMock = mockPasteEvent();
+						pasteEventMock.$.clipboardData.setData( 'text/html', '<p>bam</p>' );
+
+						fixture.detectChanges();
+
+						const spy = jasmine.createSpy();
+						component.afterPaste.subscribe( spy );
+
+						const editable = component.instance.editable();
+						editable.fire( 'paste', pasteEventMock );
+
+						return whenEvent( 'afterPaste', component ).then( () => {
+							expect( spy ).toHaveBeenCalledTimes( 1 );
+							expect( component.instance.getData() ).toEqual( '<p>bam</p>\n' );
+						} );
+					} );
+
 					it( 'drag and drop events should emit component dragstart, drop and dragEnd', async done => {
 						fixture.detectChanges();
 
