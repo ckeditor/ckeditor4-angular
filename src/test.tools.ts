@@ -33,7 +33,7 @@ export function setDataMultipleTimes( editor: any, data: Array<string> ) {
 
 export function mockPasteEvent() {
 	const dataTransfer = mockNativeDataTransfer();
-	let target = new CKEDITOR.dom.node( 'targetMock' );
+	let target = new CKEDITOR.dom.element( 'div' );
 
 	return {
 		$: {
@@ -51,8 +51,8 @@ export function mockPasteEvent() {
 }
 
 export function mockDropEvent() {
-	const dataTransfer = this.mockNativeDataTransfer();
-	let target = new CKEDITOR.dom.text( 'targetMock' );
+	const dataTransfer = mockNativeDataTransfer();
+	let target = new CKEDITOR.dom.element( 'div' );
 
 	target.isReadOnly = function() {
 		return false;
@@ -72,33 +72,10 @@ export function mockDropEvent() {
 	};
 }
 
-export function fireDragEvent( eventName: string, editor: any, evt: any, widgetOrNode: any ) {
+export function fireDragEvent( eventName: string, editor: any, evt: any ) {
 	const dropTarget = CKEDITOR.plugins.clipboard.getDropTarget( editor );
-	const dragTarget = getDragEventTarget( widgetOrNode );
-
-	// Use realistic target which is the drag handler or the element.
-	evt.setTarget( dragTarget );
 
 	dropTarget.fire( eventName, evt );
-}
-
-export function fireDropEvent( editor: any, evt: any, dropRange: any ) {
-	const dropTarget = CKEDITOR.plugins.clipboard.getDropTarget( editor );
-
-	// If drop range is known use a realistic target. If no, then use a mock.
-	evt.setTarget( dropRange ? dropRange.startContainer : new CKEDITOR.dom.text( 'targetMock' ) );
-
-	dropTarget.fire( 'drop', evt );
-}
-
-export function getWidgetById( editor: any, id: string, byElement = false ) {
-	const widget = editor.widgets.getByElement( editor.document.getById( id ) );
-
-	if ( widget && byElement ) {
-		return widget.element.$.id == id ? widget : null;
-	}
-
-	return widget;
 }
 
 function setDataHelper( editor: any, data: Array<string>, done: Function ) {
@@ -112,14 +89,6 @@ function setDataHelper( editor: any, data: Array<string>, done: Function ) {
 	} else {
 		setTimeout( done, 100 );
 	}
-}
-
-function getDragEventTarget( widgetOrNode ) {
-	if ( !widgetOrNode.dragHandlerContainer ) {
-		return widgetOrNode;
-	}
-
-	return widgetOrNode.dragHandlerContainer.findOne( 'img' );
 }
 
 function mockNativeDataTransfer() {
