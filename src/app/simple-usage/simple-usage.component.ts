@@ -48,30 +48,30 @@ You learn to appreciate each and every single one of the differences while you b
 	}
 
 	onPaste( event: CKEditor4.EventInfo, editorName: string ): void {
-		console.log( `Pasted ${editorName.toLowerCase()} editing view.` );
+		console.log( `Pasted into ${editorName.toLowerCase()} editing view.` );
 	}
 
 	onAfterPaste( event: CKEditor4.EventInfo, editorName: string ): void {
-		console.log( `After paste  ${editorName.toLowerCase()} editing view.` );
+		console.log( `After pasted fired in ${editorName.toLowerCase()} editing view.` );
 	}
 
 	onDragStart( event: CKEditor4.EventInfo, editorName: string ): void {
-		console.log( `Drag started ${editorName.toLowerCase()} editing view.` );
+		console.log( `Drag started in ${editorName.toLowerCase()} editing view.` );
 	}
 
 	onDragEnd( event: CKEditor4.EventInfo, editorName: string ): void {
-		console.log( `Drag ended ${editorName.toLowerCase()} editing view.` );
+		console.log( `Drag ended in ${editorName.toLowerCase()} editing view.` );
 	}
 
 	onDrop( event: CKEditor4.EventInfo, editorName: string ): void {
-		console.log( `Dropped ${editorName.toLowerCase()} editing view.` );
+		console.log( `Dropped in ${editorName.toLowerCase()} editing view.` );
 	}
 
 	onFileUploadRequest( event: CKEditor4.EventInfo, editorName: string ): void {
-		console.log( `File upload requested ${editorName.toLowerCase()} editing view.` );
+		console.log( `File upload requested in ${editorName.toLowerCase()} editor.` );
 	}
 
 	onFileUploadResponse( event: CKEditor4.EventInfo, editorName: string ): void {
-		console.log( `File upload responded ${editorName.toLowerCase()} editing view.` );
+		console.log( `File upload responded in ${editorName.toLowerCase()} editor.` );
 	}
 }
