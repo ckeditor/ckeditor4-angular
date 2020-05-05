@@ -115,11 +115,11 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	}
 
 	/**
-	 * Fires when the editing view of the editor is blurred. It corresponds with the `editor#blur`
-	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-blur
+	 * Fires when the editor is ready. It corresponds with the `editor#instanceReady`
+	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-instanceReady
 	 * event.
 	 */
-	@Output() blur = new EventEmitter<CKEditor4.EventInfo>();
+	@Output() ready = new EventEmitter<CKEditor4.EventInfo>();
 
 	/**
 	 * Fires when the editor data is loaded, e.g. after calling setData()
@@ -204,11 +204,11 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	@Output() afterPaste = new EventEmitter<CKEditor4.EventInfo>();
 
 	/**
-	 * Fires when the editor is ready. It corresponds with the `editor#instanceReady`
-	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-instanceReady
+	 * Fires when the editing view of the editor is blurred. It corresponds with the `editor#blur`
+	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-blur
 	 * event.
 	 */
-	@Output() ready = new EventEmitter<CKEditor4.EventInfo>();
+	@Output() blur = new EventEmitter<CKEditor4.EventInfo>();
 
 	/**
 	 * The instance of the editor created by this component.
