@@ -147,11 +147,61 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	@Output() dataChange = new EventEmitter<CKEditor4.EventInfo>();
 
 	/**
+	 * Fires when the native drop event occurs. It corresponds with the `editor#dragstart`
+	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-dragstart
+	 * event.
+	 */
+	@Output() dragStart = new EventEmitter<CKEditor4.EventInfo>();
+
+	/**
+	 * Fires when the native drop event occurs. It corresponds with the `editor#dragend`
+	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-dragend
+	 * event.
+	 */
+	@Output() dragEnd = new EventEmitter<CKEditor4.EventInfo>();
+
+	/**
+	 * Fires when the native drop event occurs. It corresponds with the `editor#drop`
+	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-drop
+	 * event.
+	 */
+	@Output() drop = new EventEmitter<CKEditor4.EventInfo>();
+
+	/**
+	 * Fires when the file loader response is received. It corresponds with the `editor#fileUploadResponse`
+	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-fileUploadResponse
+	 * event.
+	 */
+	@Output() fileUploadResponse = new EventEmitter<CKEditor4.EventInfo>();
+
+	/**
+	 * Fires when the file loader should send XHR. It corresponds with the `editor#fileUploadRequest`
+	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-fileUploadRequest
+	 * event.
+	 */
+	@Output() fileUploadRequest = new EventEmitter<CKEditor4.EventInfo>();
+
+	/**
 	 * Fires when the editing view of the editor is focused. It corresponds with the `editor#focus`
 	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-focus
 	 * event.
 	 */
 	@Output() focus = new EventEmitter<CKEditor4.EventInfo>();
+
+	/**
+	 * Fires after the user initiated a paste action, but before the data is inserted.
+	 * It corresponds with the `editor#paste`
+	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-paste
+	 * event.
+	 */
+	@Output() paste = new EventEmitter<CKEditor4.EventInfo>();
+
+	/**
+	 * Fires after the `paste` event if content was modified. It corresponds with the `editor#afterPaste`
+	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-afterPaste
+	 * event.
+	 */
+	@Output() afterPaste = new EventEmitter<CKEditor4.EventInfo>();
 
 	/**
 	 * Fires when the editing view of the editor is blurred. It corresponds with the `editor#blur`
@@ -275,6 +325,48 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		editor.on( 'focus', evt => {
 			this.ngZone.run( () => {
 				this.focus.emit( evt );
+			} );
+		} );
+
+		editor.on( 'paste', evt => {
+			this.ngZone.run( () => {
+				this.paste.emit( evt );
+			} );
+		} );
+
+		editor.on( 'afterPaste', evt => {
+			this.ngZone.run( () => {
+				this.afterPaste.emit( evt );
+			} );
+		} );
+
+		editor.on( 'dragend', evt => {
+			this.ngZone.run( () => {
+				this.dragEnd.emit( evt );
+			} );
+		});
+
+		editor.on( 'dragstart', evt => {
+			this.ngZone.run( () => {
+				this.dragStart.emit( evt );
+			} );
+		} );
+
+		editor.on( 'drop', evt => {
+			this.ngZone.run( () => {
+				this.drop.emit( evt );
+			} );
+		} );
+
+		editor.on( 'fileUploadRequest', evt => {
+			this.ngZone.run( () => {
+				this.fileUploadRequest.emit(evt);
+			} );
+		} );
+
+		editor.on( 'fileUploadResponse', evt => {
+			this.ngZone.run(() => {
+				this.fileUploadResponse.emit(evt);
 			} );
 		} );
 

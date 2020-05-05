@@ -5,7 +5,14 @@
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CKEditorComponent } from './ckeditor.component';
-import { whenEvent, whenDataReady, setDataMultipleTimes } from '../test.tools';
+import {
+	fireDragEvent,
+	mockDropEvent,
+	mockPasteEvent,
+	setDataMultipleTimes,
+	whenDataReady,
+	whenEvent
+} from '../test.tools';
 import { CKEditor4 } from './ckeditor';
 import EditorType = CKEditor4.EditorType;
 
@@ -342,6 +349,123 @@ describe( 'CKEditorComponent', () => {
 						component.blur.subscribe( spy );
 
 						component.instance.fire( 'blur' );
+
+						expect( spy ).toHaveBeenCalledTimes( 1 );
+					} );
+
+					it( 'paste should emit component paste', () => {
+						const pasteEventMock = mockPasteEvent();
+						pasteEventMock.$.clipboardData.setData( 'text/html', '<p>bam</p>' );
+
+						fixture.detectChanges();
+
+						const spy = jasmine.createSpy();
+						component.paste.subscribe( spy );
+
+						const editable = component.instance.editable();
+						editable.fire( 'paste', pasteEventMock );
+
+						return whenEvent( 'paste', component ).then( () => {
+							expect( spy ).toHaveBeenCalledTimes( 1 );
+							expect( component.instance.getData() ).toEqual( '<p>bam</p>\n' );
+						} );
+					} );
+
+					it( 'afterPaste should emit component afterPaste', () => {
+						const pasteEventMock = mockPasteEvent();
+						pasteEventMock.$.clipboardData.setData( 'text/html', '<p>bam</p>' );
+
+						fixture.detectChanges();
+
+						const spy = jasmine.createSpy();
+						component.afterPaste.subscribe( spy );
+
+						const editable = component.instance.editable();
+						editable.fire( 'paste', pasteEventMock );
+
+						return whenEvent( 'afterPaste', component ).then( () => {
+							expect( spy ).toHaveBeenCalledTimes( 1 );
+							expect( component.instance.getData() ).toEqual( '<p>bam</p>\n' );
+						} );
+					} );
+
+					it( 'drag/drop events should emit component dragStart, dragEnd and drop', async done => {
+						fixture.detectChanges();
+
+						const spyDragStart = jasmine.createSpy( 'dragstart' );
+						component.dragStart.subscribe( spyDragStart );
+
+						const spyDragEnd = jasmine.createSpy( 'dragend' );
+						component.dragEnd.subscribe( spyDragEnd );
+
+						const spyDrop = jasmine.createSpy( 'drop' );
+						component.drop.subscribe( spyDrop );
+
+						whenDataReady( component.instance, () => {
+							const dropEvent = mockDropEvent();
+							const paragraph = component.instance.editable().findOne( 'p' );
+
+							component.instance.getSelection().selectElement( paragraph );
+
+							fireDragEvent( 'dragstart', component.instance, dropEvent );
+
+							expect( spyDragStart ).toHaveBeenCalledTimes( 1 );
+
+							fireDragEvent( 'dragend', component.instance, dropEvent );
+
+							expect( spyDragEnd ).toHaveBeenCalledTimes( 1 );
+
+							// There is some issue in Firefox with simulating drag-drop flow. The drop event
+							// is not fired making this assertion fail. Let's skip it for now.
+							if ( !CKEDITOR.env.gecko ) {
+								fireDragEvent( 'drop', component.instance, dropEvent );
+
+								expect( spyDrop ).toHaveBeenCalledTimes( 1 );
+							}
+
+							done();
+						} );
+					} );
+
+					it( 'fileUploadRequest should emit component fileUploadRequest', () => {
+						fixture.detectChanges();
+
+						const spy = jasmine.createSpy();
+						component.fileUploadRequest.subscribe( spy );
+
+						const fileLoaderMock = {
+							fileLoader: {
+								file: Blob ? new Blob() : '',
+								fileName: 'fileName',
+								xhr: {
+									open: function() {},
+									send: function() {}
+								}
+							},
+							requestData: {}
+						};
+
+						component.instance.fire( 'fileUploadRequest', fileLoaderMock );
+
+						expect( spy ).toHaveBeenCalledTimes( 1 );
+					} );
+
+					it( 'fileUploadResponse should emit component fileUploadResponse', () => {
+						fixture.detectChanges();
+
+						const spy = jasmine.createSpy();
+						component.fileUploadResponse.subscribe( spy );
+
+						const data = {
+							fileLoader: {
+								xhr: { responseText: 'Not a JSON.' },
+								lang: {
+									filetools: { responseError: 'Error' }
+								}
+							}
+						};
+
+						component.instance.fire( 'fileUploadResponse', data );
 
 						expect( spy ).toHaveBeenCalledTimes( 1 );
 					} );
