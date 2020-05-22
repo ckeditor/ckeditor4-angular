@@ -4,14 +4,14 @@
 
 New Features:
 
-* [#7](https://github.com/ckeditor/ckeditor4-angular/issues/7): CKEditor 4 component now exposes more CKEditor 4 native events. Thanks to [Eduard Zintz](https://github.com/ezintz)! New exposed events are:
-	* [paste](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-paste)
-	* [afterPaste](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-afterPaste)
-	* [dragStat](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-dragstart)
-	* [dragEnd](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-dragend)
-	* [drop](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-drop)
-	* [fileUploadRequest](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-fileUploadRequest)
-	* [fileUploadResponse](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-fileUploadResponse)
+* [#7](https://github.com/ckeditor/ckeditor4-angular/issues/7): The CKEditor 4 Angular component now exposes more CKEditor 4 native events. Thanks to [Eduard Zintz](https://github.com/ezintz)! The newly exposed events are:
+	* [`paste`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-paste)
+	* [`afterPaste`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-afterPaste)
+	* [`dragStat`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-dragstart)
+	* [`dragEnd`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-dragend)
+	* [`drop`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-drop)
+	* [`fileUploadRequest`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-fileUploadRequest)
+	* [`fileUploadResponse`](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-fileUploadResponse)
 
 ## ckeditor4-angular 1.1.0
 
