@@ -3,6 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
+import waitUntil from 'wait-until-promise';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CKEditorComponent } from './ckeditor.component';
 import {
@@ -12,10 +13,7 @@ import {
 	setDataMultipleTimes,
 	whenDataReady,
 	whenEvent
-	
 } from '../test.tools';
-
-import waitUntil from 'wait-until-promise';
 import { CKEditor4 } from './ckeditor';
 import EditorType = CKEditor4.EditorType;
 
@@ -25,10 +23,10 @@ describe( 'CKEditorComponent', () => {
 	let component: CKEditorComponent,
 		fixture: ComponentFixture<CKEditorComponent>,
 		config: Object;
-	
+
 	beforeEach( async( () => {
 		TestBed.configureTestingModule( {
-			declarations: [ CKEditorComponent,  ]
+			declarations: [ CKEditorComponent ]
 		} ).compileComponents();
 	} ) );
 
@@ -242,18 +240,19 @@ describe( 'CKEditorComponent', () => {
 			} );
 
 			describe( 'on destroy', () => {
+				it ( 'should not have call runOutsideAngular when destroy before DOM loaded', done => {
+					spyOn( fixture.ngZone, 'runOutsideAngular' );
 
-				it ('should not have call runOutsideAngular when distroy fast', done => {
-					spyOn(fixture.ngZone, 'runOutsideAngular');
 					fixture.detectChanges();
-					waitUntil(() => {
+
+					waitUntil( () => {
 						fixture.destroy();
 						return true;
-					}, 200)
-					.then(() => {
-						expect(fixture.ngZone.runOutsideAngular).toHaveBeenCalledTimes(1);
-					})
-					.then(done());					;
+					}, 200 )
+					.then( () => {
+						expect( fixture.ngZone.runOutsideAngular ).toHaveBeenCalledTimes( 1 );
+					} )
+					.then( done() );
 				} );
 			} );
 
