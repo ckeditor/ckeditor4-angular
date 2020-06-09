@@ -405,9 +405,9 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		this.ngZone.run( () => {
 			const newData = this.instance.getData();
 
-			if ( event.name == 'change' ) {
+			if ( event.name === 'change' ) {
 				this.change.emit( event );
-			} else if ( event.name == 'dataReady' ) {
+			} else if ( event.name === 'dataReady' ) {
 				this.dataReady.emit( event );
 			}
 
