@@ -255,7 +255,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		getEditorNamespace( this.editorUrl ).then( () => {
 			// Check if component instance was destroyed before `ngAfterViewInit` call (#110).
 			// Here, `this.instance` is still not initialized and so additional flag is needed.
-			if( this._destroyed ) {
+			if ( this._destroyed ) {
 				return;
 			}
 
