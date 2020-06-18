@@ -10,8 +10,12 @@
 		"test": "node ./scripts/test.js",
 		"lint": "ng lint",
 		"e2e": "ng e2e",
-		"publish": "npm run build-package && npm publish dist/",
-		"bump": "node ./scripts/bump.js"
+		"bump": "node ./scripts/bump.js",
+		"publish:dry": "npm publish dist/ --dry-run",
+		"publish": "npm publish dist/",
+		"preversion": "npm test",
+		"version": "npm run build-package && git add -f dist/",
+		"postversion": "git rm -r --cached dist/ && git commit -m \"Clean after release [ci skip]\" && git push origin && git push origin --tags"
 	},
 	"author": "CKSource (https://cksource.com/)",
 	"license": "(GPL-2.0-or-later OR LGPL-2.1-or-later OR MPL-1.1-or-later)",
