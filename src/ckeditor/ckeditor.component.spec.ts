@@ -64,7 +64,7 @@ describe( 'CKEditorComponent', () => {
 					} );
 				} );
 
-				it( 'should have editorUrl pointing to 4.14.0 version', () => {
+				it( 'should have editorUrl pointing to the latest CKEditor 4 version', () => {
 					fixture.detectChanges();
 
 					return whenEvent( 'ready', component ).then( () => {

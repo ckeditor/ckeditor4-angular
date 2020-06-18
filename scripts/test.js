@@ -1,3 +1,10 @@
+/**
+ * @license Copyright (c) 2003-2020, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md.
+ */
+
+'use strict';
+
 // This script is a workaround for Angular CLI not allowing to run tests with custom options.
 // Manually running `karma start ./src/karma.conf.js` doesn't work either.
 // Some of the plugins check if test is run by Angular CLI, and if not, they throw errors.

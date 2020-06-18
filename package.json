@@ -10,7 +10,8 @@
 		"test": "node ./scripts/test.js",
 		"lint": "ng lint",
 		"e2e": "ng e2e",
-		"publish": "npm run build-package && npm publish dist/"
+		"publish": "npm run build-package && npm publish dist/",
+		"bump": "node ./scripts/bump.js"
 	},
 	"author": "CKSource (https://cksource.com/)",
 	"license": "(GPL-2.0-or-later OR LGPL-2.1-or-later OR MPL-1.1-or-later)",
