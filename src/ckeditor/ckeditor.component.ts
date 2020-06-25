@@ -239,6 +239,8 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 
 	private _data: string = null;
 
+	private _destroyed: boolean = false;
+
 	/**
 	 * CKEditor 4 script url address. Script will be loaded only if CKEDITOR namespace is missing.
 	 *
@@ -251,11 +253,19 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 
 	ngAfterViewInit(): void {
 		getEditorNamespace( this.editorUrl ).then( () => {
+			// Check if component instance was destroyed before `ngAfterViewInit` call (#110).
+			// Here, `this.instance` is still not initialized and so additional flag is needed.
+			if ( this._destroyed ) {
+				return;
+			}
+
 			this.ngZone.runOutsideAngular( this.createEditor.bind( this ) );
 		} ).catch( window.console.error );
 	}
 
 	ngOnDestroy(): void {
+		this._destroyed = true;
+
 		this.ngZone.runOutsideAngular( () => {
 			if ( this.instance ) {
 				this.instance.destroy();
@@ -395,9 +405,9 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		this.ngZone.run( () => {
 			const newData = this.instance.getData();
 
-			if ( event.name == 'change' ) {
+			if ( event.name === 'change' ) {
 				this.change.emit( event );
-			} else if ( event.name == 'dataReady' ) {
+			} else if ( event.name === 'dataReady' ) {
 				this.dataReady.emit( event );
 			}
 

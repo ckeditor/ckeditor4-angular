@@ -1,5 +1,11 @@
 # CKEditor 4 Angular Integration Changelog
 
+## ckeditor4-angular 1.2.2
+
+Fixed Issues:
+
+* [#110](https://github.com/ckeditor/ckeditor4-angular/issues/110): Fixed: Integration throws an error when CKEditor 4 component is removed from the DOM before CKEditor 4 is loaded. Thanks to [Benjamin Hugot](https://github.com/bhugot)!
+
 ## ckeditor4-angular 1.2.1
 
 Other Changes:

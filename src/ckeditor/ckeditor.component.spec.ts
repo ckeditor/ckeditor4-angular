@@ -3,6 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
+import waitUntil from 'wait-until-promise';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CKEditorComponent } from './ckeditor.component';
 import {
@@ -32,7 +33,6 @@ describe( 'CKEditorComponent', () => {
 	beforeEach( () => {
 		fixture = TestBed.createComponent( CKEditorComponent );
 		component = fixture.componentInstance;
-
 		component.config = config;
 
 		fixture.detectChanges();
@@ -236,6 +236,34 @@ describe( 'CKEditorComponent', () => {
 							done();
 						} );
 					} );
+				} );
+			} );
+
+			describe( 'on destroy', () => {
+				it ( 'should not have call runOutsideAngular when destroy before DOM loaded', done => {
+					spyOn( fixture.ngZone, 'runOutsideAngular' );
+
+					fixture.detectChanges();
+
+					waitUntil( () => {
+						fixture.destroy();
+						return true;
+					}, 0 ).then( () => {
+						expect( fixture.ngZone.runOutsideAngular ).toHaveBeenCalledTimes( 1 );
+					} ).then( done );
+				} );
+
+				it ( 'should not have call runOutsideAngular when destroy before DOM loaded', done => {
+					spyOn( fixture.ngZone, 'runOutsideAngular' );
+
+					fixture.detectChanges();
+
+					waitUntil( () => {
+						fixture.destroy();
+						return true;
+					}, 200 ).then( () => {
+						expect( fixture.ngZone.runOutsideAngular ).toHaveBeenCalledTimes( 1 );
+					} ).then( done );
 				} );
 			} );
 
