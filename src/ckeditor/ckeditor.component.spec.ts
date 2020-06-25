@@ -248,11 +248,22 @@ describe( 'CKEditorComponent', () => {
 					waitUntil( () => {
 						fixture.destroy();
 						return true;
-					}, 200 )
-					.then( () => {
+					}, 0 ).then( () => {
 						expect( fixture.ngZone.runOutsideAngular ).toHaveBeenCalledTimes( 1 );
-					} )
-					.then( done() );
+					} ).then( done );
+				} );
+
+				it ( 'should not have call runOutsideAngular when destroy before DOM loaded', done => {
+					spyOn( fixture.ngZone, 'runOutsideAngular' );
+
+					fixture.detectChanges();
+
+					waitUntil( () => {
+						fixture.destroy();
+						return true;
+					}, 200 ).then( () => {
+						expect( fixture.ngZone.runOutsideAngular ).toHaveBeenCalledTimes( 1 );
+					} ).then( done );
 				} );
 			} );
 
