@@ -382,39 +382,45 @@ describe( 'CKEditorComponent', () => {
 					} );
 
 					it( 'paste should emit component paste', () => {
-						const pasteEventMock = mockPasteEvent();
-						pasteEventMock.$.clipboardData.setData( 'text/html', '<p>bam</p>' );
-
 						fixture.detectChanges();
 
 						const spy = jasmine.createSpy();
 						component.paste.subscribe( spy );
 
 						const editable = component.instance.editable();
-						editable.fire( 'paste', pasteEventMock );
+						const editor = editable.getEditor( false );
 
-						return whenEvent( 'paste', component ).then( () => {
+						const eventPromise =  whenEvent( 'paste', component ).then( () => {
 							expect( spy ).toHaveBeenCalledTimes( 1 );
 							expect( component.instance.getData() ).toEqual( '<p>bam</p>\n' );
 						} );
+
+						editor.fire( 'paste', {
+							dataValue: '<p>bam</p>'
+						} );
+
+						return eventPromise;
 					} );
 
 					it( 'afterPaste should emit component afterPaste', () => {
-						const pasteEventMock = mockPasteEvent();
-						pasteEventMock.$.clipboardData.setData( 'text/html', '<p>bam</p>' );
-
 						fixture.detectChanges();
 
 						const spy = jasmine.createSpy();
 						component.afterPaste.subscribe( spy );
 
 						const editable = component.instance.editable();
-						editable.fire( 'paste', pasteEventMock );
+						const editor = editable.getEditor( false );
 
-						return whenEvent( 'afterPaste', component ).then( () => {
+						const eventPromise = whenEvent( 'afterPaste', component ).then( () => {
 							expect( spy ).toHaveBeenCalledTimes( 1 );
 							expect( component.instance.getData() ).toEqual( '<p>bam</p>\n' );
 						} );
+
+						editor.fire( 'paste', {
+							dataValue: '<p>bam</p>'
+						} );
+
+						return eventPromise;
 					} );
 
 					it( 'drag/drop events should emit component dragStart, dragEnd and drop', async done => {
