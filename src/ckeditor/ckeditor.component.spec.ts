@@ -132,11 +132,11 @@ describe( 'CKEditorComponent', () => {
 					msg: 'config.extraPlugins defined as an array',
 					warn: false
 				}, {
-					newConfig: { removePlugins: 'basicstyles,divarea,link,divarea' },
+					newConfig: { removePlugins: 'basicstyles,divarea,link' },
 					msg: 'config.removePlugins defined as a string',
 					warn: isDivarea
 				}, {
-					newConfig: { removePlugins: [ 'basicstyles', 'divarea', 'link', 'divarea' ] },
+					newConfig: { removePlugins: [ 'basicstyles', 'divarea', 'link' ] },
 					msg: 'config.removePlugins defined as an array',
 					warn: isDivarea
 				} ].forEach( ( { newConfig, msg, warn } ) => {
