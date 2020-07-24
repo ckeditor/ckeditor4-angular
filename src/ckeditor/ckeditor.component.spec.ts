@@ -9,7 +9,6 @@ import { CKEditorComponent } from './ckeditor.component';
 import {
 	fireDragEvent,
 	mockDropEvent,
-	mockPasteEvent,
 	setDataMultipleTimes,
 	whenDataReady,
 	whenEvent
