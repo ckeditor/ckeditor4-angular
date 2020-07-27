@@ -140,7 +140,7 @@ describe( 'CKEditorComponent', () => {
 					warn: isDivarea
 				} ].forEach( ( { newConfig, msg, warn } ) => {
 					describe( msg, () => {
-						beforeAll( () => {
+						beforeEach( () => {
 							config = newConfig;
 						} );
 
