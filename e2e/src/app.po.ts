@@ -36,13 +36,13 @@ export class AppPage {
 		return el.getAttribute( 'innerHTML' ).then( str => str.replace( /\u200B/g, '' ) );
 	}
 
-	async updateValue( el: WebElement, keys: string[] ) {
+	async updateValue( el: WebElement, text: string ) {
+		await el.clear();
 		await el.click();
-		await this.selectAll();
-		// Since Chrome 77 with webdirver-manager@12.1.7 protractor.sendKeys() doesn't
-		// clear current selection, we have to clean it manually (#51).
-		await this.delete();
-		await el.sendKeys( ...keys );
+
+		for ( let i = 0; i < text.length; i++ ) {
+			await el.sendKeys( text.charAt( i ) );
+		}
 	}
 
 	selectAll() {
