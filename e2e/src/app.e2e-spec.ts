@@ -27,7 +27,7 @@ describe( 'workspace-project App', () => {
 			expect( page.getParagraphText() ).toEqual( 'CKEditor 4 integration with Angular' );
 		} );
 
-		it( 'should display editor with initial content', async () => {
+		it( 'should display editor with initial content', () => {
 			editables.forEach( editable => expect( page.getHtmlString( editable ) )
 				.toBe( '<p>Getting used to an entirely different culture can be challeng' +
 					'ing. While it’s also nice to learn about cultures online or from books, nothing comes close to experiencing cultural d' +
@@ -51,7 +51,7 @@ describe( 'workspace-project App', () => {
 			editables = [ await page.getEditable() ];
 		} );
 
-		it( 'should display editor with initial content', async () => {
+		it( 'should display editor with initial content', () => {
 			expect( page.getHtmlString( editables[ 0 ] ) )
 				.toBe( '<p>A <strong>really</strong> nice fellow.</p>' );
 		} );

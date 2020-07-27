@@ -14,7 +14,7 @@ export class AppPage {
 		return element( by.css( 'app-root h1' ) ).getText();
 	}
 
-	waitForElement( el: ElementFinder ) {
+	async waitForElement( el: ElementFinder ) {
 		return browser.wait( protractor.ExpectedConditions.presenceOf( el ) ).then( () => el );
 	}
 
@@ -22,7 +22,7 @@ export class AppPage {
 		return this.getElementByCss( '.cke_editable:not(.cke_editable_inline)' );
 	}
 
-	getInlineEditable() {
+	async getInlineEditable() {
 		return this.getElementByCss( '.cke_editable_inline' );
 	}
 
@@ -32,7 +32,7 @@ export class AppPage {
 		return el;
 	}
 
-	getHtmlString( el: WebElement ) {
+	async getHtmlString( el: WebElement ) {
 		return el.getAttribute( 'innerHTML' ).then( str => str.replace( /\u200B/g, '' ) );
 	}
 
