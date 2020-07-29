@@ -66,7 +66,7 @@
 		"ng-packagr": "^5.7.1",
 		"protractor": "^5.4.3",
 		"ts-node": "~8.4.1",
-		"tsickle": "^0.37.0",
+		"tsickle": "^0.39.0",
 		"tslint": "~5.20.0",
 		"typescript": "~3.5.3",
 		"wait-until-promise": "^1.0.0"
