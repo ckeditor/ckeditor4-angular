@@ -27,7 +27,7 @@ module.exports = function ( config ) {
 		logLevel: config.LOG_INFO,
 		autoWatch: true,
 		browsers: getBrowsers(),
-		singleRun: false,
+		singleRun: !options.watch,
 
 		concurrency: 2,
 		captureTimeout: 60000,
