@@ -14,7 +14,7 @@ export class AppPage {
 		return element( by.css( 'app-root h1' ) ).getText();
 	}
 
-	waitForElement( el: ElementFinder ) {
+	async waitForElement( el: ElementFinder ) {
 		return browser.wait( protractor.ExpectedConditions.presenceOf( el ) ).then( () => el );
 	}
 
@@ -22,7 +22,7 @@ export class AppPage {
 		return this.getElementByCss( '.cke_editable:not(.cke_editable_inline)' );
 	}
 
-	getInlineEditable() {
+	async getInlineEditable() {
 		return this.getElementByCss( '.cke_editable_inline' );
 	}
 
@@ -32,24 +32,16 @@ export class AppPage {
 		return el;
 	}
 
-	getHtmlString( el: WebElement ) {
-		return el.getAttribute( 'innerHTML' ).then( str => str.replace( /\u200B/g, '' ) );
+	async getHtmlString( el: WebElement ) {
+		return el.getAttribute( 'innerHTML' );
 	}
 
-	async updateValue( el: WebElement, keys: string[] ) {
+	async updateValue( el: WebElement, text: string ) {
+		await el.clear();
 		await el.click();
-		await this.selectAll();
-		// Since Chrome 77 with webdirver-manager@12.1.7 protractor.sendKeys() doesn't
-		// clear current selection, we have to clean it manually (#51).
-		await this.delete();
-		await el.sendKeys( ...keys );
-	}
 
-	selectAll() {
-		return browser.executeScript( 'document.execCommand( "selectAll", false, null )' );
-	}
-
-	delete() {
-		return browser.executeScript( 'document.execCommand( "delete", false, null )' );
+		for ( let i = 0; i < text.length; i++ ) {
+			await el.sendKeys( text.charAt( i ) );
+		}
 	}
 }

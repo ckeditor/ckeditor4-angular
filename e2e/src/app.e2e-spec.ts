@@ -27,7 +27,7 @@ describe( 'workspace-project App', () => {
 			expect( page.getParagraphText() ).toEqual( 'CKEditor 4 integration with Angular' );
 		} );
 
-		it( 'should display editor with initial content', async () => {
+		it( 'should display editor with initial content', () => {
 			editables.forEach( editable => expect( page.getHtmlString( editable ) )
 				.toBe( '<p>Getting used to an entirely different culture can be challeng' +
 					'ing. While it’s also nice to learn about cultures online or from books, nothing comes close to experiencing cultural d' +
@@ -37,8 +37,8 @@ describe( 'workspace-project App', () => {
 		} );
 
 		describe( 'typing', () => {
-			it( `in editor1 should update editors content`, testTyping( editables, 0 ) );
-			it( `in editor2 should update editors content`, testTyping( editables, 1 ) );
+			it( `in editor1 should update editors content`, testTyping( 0 ) );
+			it( `in editor2 should update editors content`, testTyping( 1 ) );
 		} );
 	} );
 
@@ -51,27 +51,23 @@ describe( 'workspace-project App', () => {
 			editables = [ await page.getEditable() ];
 		} );
 
-		it( 'should display editor with initial content', async () => {
+		it( 'should display editor with initial content', () => {
 			expect( page.getHtmlString( editables[ 0 ] ) )
 				.toBe( '<p>A <strong>really</strong> nice fellow.</p>' );
 		} );
 
-		it( `typing should update editor content`, testTyping( editables, 0 ) );
+		it( `typing should update editor content`, testTyping( 0 ) );
 	} );
 
-	function testTyping( elements, elementIndex: number ) {
+	function testTyping( elementIndex: number ) {
 		return async function() {
-			const keys = [
-				'Foo! ',
-				protractor.Key.chord( protractor.Key.CONTROL, 'b' ),
-				'Bar?'
-			];
+			const text = 'Foo! Bar?';
 
-			await page.updateValue( editables[ elementIndex ], keys );
+			await page.updateValue( editables[ elementIndex ], text );
 
 			editables.forEach( item => {
 				expect( page.getHtmlString( item ) )
-					.toBe( '<p>Foo!&nbsp;<strong>Bar?</strong></p>' );
+					.toBe( '<p>Foo! Bar?</p>' );
 			} );
 		};
 	}
