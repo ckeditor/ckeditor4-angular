@@ -33,7 +33,7 @@ export class AppPage {
 	}
 
 	async getHtmlString( el: WebElement ) {
-		return el.getAttribute( 'innerHTML' ).then( str => str.replace( /\u200B/g, '' ) );
+		return el.getAttribute( 'innerHTML' );
 	}
 
 	async updateValue( el: WebElement, text: string ) {
@@ -43,13 +43,5 @@ export class AppPage {
 		for ( let i = 0; i < text.length; i++ ) {
 			await el.sendKeys( text.charAt( i ) );
 		}
-	}
-
-	selectAll() {
-		return browser.executeScript( 'document.execCommand( "selectAll", false, null )' );
-	}
-
-	delete() {
-		return browser.executeScript( 'document.execCommand( "delete", false, null )' );
 	}
 }
