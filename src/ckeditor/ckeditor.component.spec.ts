@@ -4,12 +4,11 @@
  */
 
 import waitUntil from 'wait-until-promise';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CKEditorComponent } from './ckeditor.component';
 import {
 	fireDragEvent,
 	mockDropEvent,
-	mockPasteEvent,
 	setDataMultipleTimes,
 	whenDataReady,
 	whenEvent
@@ -24,11 +23,11 @@ describe( 'CKEditorComponent', () => {
 		fixture: ComponentFixture<CKEditorComponent>,
 		config: Object;
 
-	beforeEach( async( () => {
-		TestBed.configureTestingModule( {
+	beforeEach( () => {
+		return TestBed.configureTestingModule( {
 			declarations: [ CKEditorComponent ]
 		} ).compileComponents();
-	} ) );
+	} )
 
 	beforeEach( () => {
 		fixture = TestBed.createComponent( CKEditorComponent );
@@ -73,9 +72,10 @@ describe( 'CKEditorComponent', () => {
 				} );
 
 				it( 'should have proper editor type', () => {
-					whenEvent( 'ready', component ).then( () => {
+					return whenEvent( 'ready', component ).then( () => {
 						fixture.detectChanges();
-						expect( component.instance.editable().isInline() ).toBe( component.type !== EditorType.CLASSIC );
+						expect( component.instance.editable().isInline() )
+							.toBe( component.type !== EditorType.CLASSIC );
 					} );
 				} );
 
@@ -170,14 +170,15 @@ describe( 'CKEditorComponent', () => {
 				} );
 
 				describe( 'when set with config', () => {
-					beforeEach( done => {
+					beforeEach( () => {
 						component.config = {
 							readOnly: true,
 							width: 1000,
 							height: 1000
 						};
 						fixture.detectChanges();
-						whenEvent( 'ready', component ).then( done );
+
+						return whenEvent( 'ready', component );
 					} );
 
 					it( 'editor should be readOnly', () => {
@@ -193,84 +194,80 @@ describe( 'CKEditorComponent', () => {
 						expect( component.instance.plugins.undo ).not.toBeUndefined();
 					} );
 
-					it( 'should register changes', async done => {
+					it( 'should register changes', () => {
 						const spy = jasmine.createSpy();
 
 						component.registerOnChange( spy );
 
-						setDataMultipleTimes( component.instance, [
+						return setDataMultipleTimes( component.instance, [
 							'<p>Hello World!</p>',
 							'<p>I am CKEditor for Angular!</p>'
 						] ).then( () => {
 							expect( spy ).toHaveBeenCalledTimes( 2 );
-
-							done();
 						} );
 					} );
 				} );
 
 				describe( 'when set without undo plugin', () => {
-					beforeEach( ( done ) => {
+					beforeEach( () => {
 						component.config = {
 							removePlugins: 'undo'
 						};
 						fixture.detectChanges();
-						whenEvent( 'ready', component ).then( done );
+						return whenEvent( 'ready', component );
 					} );
 
 					it( 'editor should not have undo plugin', () => {
 						expect( component.instance.plugins.undo ).toBeUndefined();
 					} );
 
-					it( 'should register changes without undo plugin', async done => {
+					it( 'should register changes without undo plugin', () => {
 						const spy = jasmine.createSpy();
 
 						component.registerOnChange( spy );
 
-						setDataMultipleTimes( component.instance, [
+						return setDataMultipleTimes( component.instance, [
 							'<p>Hello World!</p>',
 							'<p>I am CKEditor for Angular!</p>'
 						] ).then( () => {
 							expect( spy ).toHaveBeenCalledTimes( 2 );
-
-							done();
 						} );
 					} );
 				} );
 			} );
 
 			describe( 'on destroy', () => {
-				it ( 'should not have call runOutsideAngular when destroy before DOM loaded', done => {
+				it ( 'should not have call runOutsideAngular when destroy before DOM loaded', () => {
 					spyOn( fixture.ngZone, 'runOutsideAngular' );
 
 					fixture.detectChanges();
 
-					waitUntil( () => {
+					return waitUntil( () => {
 						fixture.destroy();
 						return true;
 					}, 0 ).then( () => {
 						expect( fixture.ngZone.runOutsideAngular ).toHaveBeenCalledTimes( 1 );
-					} ).then( done );
+					} );
 				} );
 
-				it ( 'should not have call runOutsideAngular when destroy before DOM loaded', done => {
+				it ( 'should not have call runOutsideAngular when destroy before DOM loaded', () => {
 					spyOn( fixture.ngZone, 'runOutsideAngular' );
 
 					fixture.detectChanges();
 
-					waitUntil( () => {
+					return waitUntil( () => {
 						fixture.destroy();
 						return true;
 					}, 200 ).then( () => {
 						expect( fixture.ngZone.runOutsideAngular ).toHaveBeenCalledTimes( 1 );
-					} ).then( done );
+					} );
 				} );
 			} );
 
 			describe( 'when component is ready', () => {
-				beforeEach( done => {
+				beforeEach( () => {
 					fixture.detectChanges();
-					whenEvent( 'ready', component ).then( done );
+					return whenEvent( 'ready', component );
 				} );
 
 				it( 'should be initialized', () => {
@@ -319,18 +316,16 @@ describe( 'CKEditorComponent', () => {
 					const data = '<b>foo</b>',
 						expected = '<p><strong>foo</strong></p>\n';
 
-					it( 'should be configurable at the start of the component', async done => {
+					it( 'should be configurable at the start of the component', async () => {
 						fixture.detectChanges();
 
 						await whenDataReady( component.instance, () => component.data = data );
 
 						expect( component.data ).toEqual( expected );
 						expect( component.instance.getData() ).toEqual( expected );
-
-						done();
 					} );
 
-					it( 'should be writeable by ControlValueAccessor', async done => {
+					it( 'should be writeable by ControlValueAccessor', async () => {
 						fixture.detectChanges();
 
 						const editor = component.instance;
@@ -342,8 +337,6 @@ describe( 'CKEditorComponent', () => {
 						await whenDataReady( editor, () => component.writeValue( '<p><i>baz</i></p>' ) );
 
 						expect( component.instance.getData() ).toEqual( '<p><em>baz</em></p>\n' );
-
-						done();
 					} );
 				} );
 
@@ -423,7 +416,7 @@ describe( 'CKEditorComponent', () => {
 						return eventPromise;
 					} );
 
-					it( 'drag/drop events should emit component dragStart, dragEnd and drop', async done => {
+					it( 'drag/drop events should emit component dragStart, dragEnd and drop', done => {
 						fixture.detectChanges();
 
 						const spyDragStart = jasmine.createSpy( 'dragstart' );
@@ -517,17 +510,16 @@ describe( 'CKEditorComponent', () => {
 						expect( spy ).toHaveBeenCalled();
 					} );
 
-					it( 'onChange callback should be called when editor model changes', async done => {
+					it( 'onChange callback should be called when editor model changes', () => {
 						fixture.detectChanges();
 
 						const spy = jasmine.createSpy();
 						component.registerOnChange( spy );
 
-						setDataMultipleTimes( component.instance, [
+						return setDataMultipleTimes( component.instance, [
 							'initial', 'initial', 'modified'
 						] ).then( () => {
 							expect( spy ).toHaveBeenCalledTimes( 2 );
-							done();
 						} );
 					} );
 				} );
