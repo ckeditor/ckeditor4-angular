@@ -21,9 +21,10 @@ describe( 'getEditorNamespace', () => {
 	} );
 
 	it( 'typeError thrown when empty string passed', () => {
-		expect( () => {
-			getEditorNamespace( '' );
-		} ).toThrowError( 'CKEditor URL must be a non-empty string.' );
+		return getEditorNamespace( '' ).catch( err => {
+			expect( err instanceof Error );
+			expect( err.message ).toEqual( 'CKEditor URL must be a non-empty string.' );
+		} );
 	} );
 
 	it( 'returns promise even if namespace is present', () => {
@@ -52,6 +53,11 @@ describe( 'getEditorNamespace', () => {
 	} );
 
 	it( 'returns the same promise', () => {
-		expect( getEditorNamespace( fakeScript ) ).toBe( getEditorNamespace( fakeScript ) );
+		const promise1 =  getEditorNamespace( fakeScript );
+		const promise2 =  getEditorNamespace( fakeScript );
+
+		expect( promise1 ).toBe( promise2 );
+
+		return Promise.all( [ promise1, promise2 ] )
 	} );
 } );
