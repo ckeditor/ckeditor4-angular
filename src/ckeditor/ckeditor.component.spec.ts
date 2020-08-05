@@ -416,7 +416,7 @@ describe( 'CKEditorComponent', () => {
 						return eventPromise;
 					} );
 
-					it( 'drag/drop events should emit component dragStart, dragEnd and drop', done => {
+					it( 'drag/drop events should emit component dragStart, dragEnd and drop', () => {
 						fixture.detectChanges();
 
 						const spyDragStart = jasmine.createSpy( 'dragstart' );
@@ -428,30 +428,26 @@ describe( 'CKEditorComponent', () => {
 						const spyDrop = jasmine.createSpy( 'drop' );
 						component.drop.subscribe( spyDrop );
 
-						whenDataReady( component.instance, () => {
-							const dropEvent = mockDropEvent();
-							const paragraph = component.instance.editable().findOne( 'p' );
+						const dropEvent = mockDropEvent();
+						const paragraph = component.instance.editable().findOne( 'p' );
 
-							component.instance.getSelection().selectElement( paragraph );
+						component.instance.getSelection().selectElement( paragraph );
 
-							fireDragEvent( 'dragstart', component.instance, dropEvent );
+						fireDragEvent( 'dragstart', component.instance, dropEvent );
 
-							expect( spyDragStart ).toHaveBeenCalledTimes( 1 );
+						expect( spyDragStart ).toHaveBeenCalledTimes( 1 );
 
-							fireDragEvent( 'dragend', component.instance, dropEvent );
+						fireDragEvent( 'dragend', component.instance, dropEvent );
 
-							expect( spyDragEnd ).toHaveBeenCalledTimes( 1 );
+						expect( spyDragEnd ).toHaveBeenCalledTimes( 1 );
 
-							// There is some issue in Firefox with simulating drag-drop flow. The drop event
-							// is not fired making this assertion fail. Let's skip it for now.
-							if ( !CKEDITOR.env.gecko ) {
-								fireDragEvent( 'drop', component.instance, dropEvent );
+						// There is some issue in Firefox with simulating drag-drop flow. The drop event
+						// is not fired making this assertion fail. Let's skip it for now.
+						if ( !CKEDITOR.env.gecko ) {
+							fireDragEvent( 'drop', component.instance, dropEvent );
 
-								expect( spyDrop ).toHaveBeenCalledTimes( 1 );
-							}
-
-							done();
-						} );
+							expect( spyDrop ).toHaveBeenCalledTimes( 1 );
+						}
 					} );
 
 					it( 'fileUploadRequest should emit component fileUploadRequest', () => {
