@@ -31,25 +31,6 @@ export function setDataMultipleTimes( editor: any, data: Array<string> ) {
 	} );
 }
 
-export function mockPasteEvent() {
-	const dataTransfer = mockNativeDataTransfer();
-	let target = new CKEDITOR.dom.element( 'div' );
-
-	return {
-		$: {
-			ctrlKey: true,
-			clipboardData: ( CKEDITOR.env.ie && CKEDITOR.env.version < 16 ) ? undefined : dataTransfer
-		},
-		preventDefault: function() {},
-		getTarget: function() {
-			return target;
-		},
-		setTarget: function( t: any ) {
-			target = t;
-		}
-	};
-}
-
 export function mockDropEvent() {
 	const dataTransfer = mockNativeDataTransfer();
 	let target = new CKEDITOR.dom.element( 'div' );
