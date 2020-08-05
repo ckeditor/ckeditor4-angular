@@ -9,8 +9,6 @@ declare let CKEDITOR: any;
 
 describe( 'getEditorNamespace', () => {
 	const fakeScript = 'data:text/javascript;base64,d2luZG93LkNLRURJVE9SID0ge307';
-	let isIe10 = navigator.userAgent.toLowerCase().indexOf( 'trident/' ) > -1;
-	isIe10 = isIe10 && document[ 'documentMode' ] === 10;
 
 	beforeEach( () => {
 		delete window[ 'CKEDITOR' ];
@@ -38,13 +36,11 @@ describe( 'getEditorNamespace', () => {
 		} );
 	} );
 
-	if ( !isIe10 ) { // Ignore unstable test on IE10.
-		it( 'load script and resolves with loaded namespace', () => {
-			return getEditorNamespace( fakeScript ).then( namespace => {
-				expect( namespace ).toBe( CKEDITOR );
-			} );
+	it( 'load script and resolves with loaded namespace', () => {
+		return getEditorNamespace( fakeScript ).then( namespace => {
+			expect( namespace ).toBe( CKEDITOR );
 		} );
-	}
+	} );
 
 	it( 'rejects with error when script cannot be loaded', () => {
 		return getEditorNamespace( 'non-existent.js' ).catch( err => {
