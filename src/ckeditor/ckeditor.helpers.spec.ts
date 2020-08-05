@@ -49,8 +49,8 @@ describe( 'getEditorNamespace', () => {
 	} );
 
 	it( 'returns the same promise', () => {
-		const promise1 =  getEditorNamespace( fakeScript );
-		const promise2 =  getEditorNamespace( fakeScript );
+		const promise1 = getEditorNamespace( fakeScript );
+		const promise2 = getEditorNamespace( fakeScript );
 
 		expect( promise1 ).toBe( promise2 );
 
