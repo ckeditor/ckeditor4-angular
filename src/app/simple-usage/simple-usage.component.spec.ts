@@ -92,7 +92,7 @@ describe( 'SimpleUsageComponent', () => {
 		} );
 
 		it( 'should be synced with editorData property', () => {
-			getEditorNamespace( ckeditorComponents[ 0 ].editorUrl )
+			return getEditorNamespace( ckeditorComponents[ 0 ].editorUrl )
 				.then( CKEDITOR => {
 					if ( CKEDITOR.env.ie ) {
 						// Ignore on IE11/Edge for now since it throws "Permission denied" error (#72).

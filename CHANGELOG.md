@@ -1,5 +1,11 @@
 # CKEditor 4 Angular Integration Changelog
 
+## ckeditor4-angular 1.2.3
+
+Other Changes:
+
+* [#98](https://github.com/ckeditor/ckeditor4-angular/issues/98): Updated repository dependencies (no changes in the actual `ckeditor4-angular` package).
+
 ## ckeditor4-angular 1.2.2
 
 Fixed Issues:
