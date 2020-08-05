@@ -5,6 +5,7 @@
 Other Changes:
 
 * [#98](https://github.com/ckeditor/ckeditor4-angular/issues/98): Updated repository dependencies (no changes in the actual `ckeditor4-angular` package).
+* [#128](https://github.com/ckeditor/ckeditor4-angular/issues/128): Improve the stability of `getEditorNamespace()` method.
 
 ## ckeditor4-angular 1.2.2
 
