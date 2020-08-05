@@ -383,7 +383,7 @@ describe( 'CKEditorComponent', () => {
 						const editable = component.instance.editable();
 						const editor = editable.getEditor( false );
 
-						const eventPromise =  whenEvent( 'paste', component ).then( () => {
+						const eventPromise = whenEvent( 'paste', component ).then( () => {
 							expect( spy ).toHaveBeenCalledTimes( 1 );
 							expect( component.instance.getData() ).toEqual( '<p>bam</p>\n' );
 						} );
