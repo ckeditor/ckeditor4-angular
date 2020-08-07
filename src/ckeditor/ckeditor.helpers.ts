@@ -10,7 +10,7 @@ let promise;
 
 export function getEditorNamespace( editorURL: string ): Promise<{ [ key: string ]: any; }> {
 	if ( editorURL.length < 1 ) {
-		throw new TypeError( 'CKEditor URL must be a non-empty string.' );
+		return Promise.reject( new TypeError( 'CKEditor URL must be a non-empty string.' ) );
 	}
 
 	if ( 'CKEDITOR' in window ) {
@@ -22,8 +22,9 @@ export function getEditorNamespace( editorURL: string ): Promise<{ [ key: string
 					scriptReject( err );
 				} else {
 					scriptResolve( CKEDITOR );
-					promise = undefined;
 				}
+
+				promise = undefined;
 			} );
 		} );
 	}
