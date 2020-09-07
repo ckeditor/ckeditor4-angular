@@ -1,9 +1,10 @@
 # CKEditor 4 Angular Integration Changelog
 
-## ckeditor4-angular 1.2.3
+## ckeditor4-angular 1.3.0
 
 Other Changes:
 
+* Updated default CDN CKEditor 4 dependency to [4.15.0](https://github.com/ckeditor/ckeditor4/blob/master/CHANGES.md#ckeditor-415).
 * [#98](https://github.com/ckeditor/ckeditor4-angular/issues/98): Updated repository dependencies (no changes in the actual `ckeditor4-angular` package).
 * [#128](https://github.com/ckeditor/ckeditor4-angular/issues/128): Improve the stability of `getEditorNamespace()` method.
 
