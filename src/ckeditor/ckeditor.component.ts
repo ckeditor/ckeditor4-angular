@@ -55,8 +55,8 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	/**
 	 * The type of the editor interface.
 	 *
-	 * By default editor interface will be initialized as `divarea` editor which is an inline editor with fixed UI.
-	 * You can change interface type by choosing between `divarea` and `inline` editor interface types.
+	 * By default editor interface will be initialized as `classic` editor.
+	 * You can also choose to create an editor with `inline` or `divarea` interface type instead.
 	 *
 	 * See https://ckeditor.com/docs/ckeditor4/latest/guide/dev_uitypes.html
 	 * and https://ckeditor.com/docs/ckeditor4/latest/examples/fixedui.html
