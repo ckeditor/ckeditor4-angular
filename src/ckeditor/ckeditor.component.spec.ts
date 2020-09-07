@@ -118,6 +118,7 @@ describe( 'CKEditorComponent', () => {
 				} );
 
 				const isDivarea = editorType === EditorType.DIVAREA;
+				const isInline = editorType === EditorType.INLINE;
 
 				[ {
 					newConfig: undefined,
@@ -132,16 +133,23 @@ describe( 'CKEditorComponent', () => {
 					msg: 'config.extraPlugins defined as an array',
 					warn: false
 				}, {
-					newConfig: { removePlugins: 'basicstyles,divarea,link,divarea' },
+					newConfig: { removePlugins: 'basicstyles,divarea,link' },
 					msg: 'config.removePlugins defined as a string',
 					warn: isDivarea
 				}, {
-					newConfig: { removePlugins: [ 'basicstyles', 'divarea', 'link', 'divarea' ] },
+					newConfig: { removePlugins: [ 'basicstyles', 'divarea', 'link' ] },
 					msg: 'config.removePlugins defined as an array',
 					warn: isDivarea
-				} ].forEach( ( { newConfig, msg, warn } ) => {
+				}, {
+					newConfig: { removePlugins: 'basicstyles,floatingspace,link' },
+					msg: 'config.removePlugins defined as a string',
+					warn: isInline
+				}, {
+					newConfig: { removePlugins: [ 'basicstyles', 'floatingspace', 'link' ] },
+					msg: 'config.removePlugins defined as an array',
+					warn: isInline
+				}, ].forEach( ( { newConfig, msg, warn } ) => {
 					describe( msg, () => {
-						beforeEach( () => {
 						beforeAll( () => {
 							config = newConfig;
 						} );
@@ -167,6 +175,17 @@ describe( 'CKEditorComponent', () => {
 									: expect( editor.plugins.divarea ).toBeUndefined();
 							} );
 						} );
+
+						if ( isInline ) {
+							it( `editor should include floatingspace plugin`, () => {
+								fixture.detectChanges();
+
+								return whenEvent( 'ready', component ).then( ( { editor } ) => {
+									console.log(editor.plugins);
+									expect( editor.plugins.floatingspace ).not.toBeUndefined()
+								} );
+							} );
+						}
 					} );
 				} );
 
