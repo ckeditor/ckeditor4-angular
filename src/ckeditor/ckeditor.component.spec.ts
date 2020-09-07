@@ -142,6 +142,7 @@ describe( 'CKEditorComponent', () => {
 				} ].forEach( ( { newConfig, msg, warn } ) => {
 					describe( msg, () => {
 						beforeEach( () => {
+						beforeAll( () => {
 							config = newConfig;
 						} );
 
