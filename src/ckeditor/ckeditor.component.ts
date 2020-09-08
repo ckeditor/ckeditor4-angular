@@ -291,7 +291,11 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		this.elementRef.nativeElement.appendChild( element );
 
 		if ( this.type === CKEditor4.EditorType.DIVAREA ) {
-			this.config = this.ensureDivareaPlugin( this.config || {} );
+			this.config = this.ensurePlugin( this.config || {}, 'divarea' );
+		}
+
+		if ( this.type === CKEditor4.EditorType.INLINE ) {
+			this.config = this.ensurePlugin( this.config || {}, 'floatingspace' );
 		}
 
 		const instance: CKEditor4.Editor = this.type === CKEditor4.EditorType.INLINE
@@ -424,17 +428,16 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		} );
 	}
 
-	private ensureDivareaPlugin( config: CKEditor4.Config ): CKEditor4.Config {
+	private ensurePlugin( config: CKEditor4.Config, pluginName: string ): CKEditor4.Config {
 		let { extraPlugins, removePlugins } = config;
 
-		extraPlugins = this.removePlugin( extraPlugins, 'divarea' ) || '';
-		extraPlugins = extraPlugins.concat( typeof extraPlugins === 'string' ? ',divarea' : 'divarea' );
+		extraPlugins = this.removePlugin( extraPlugins, pluginName ) || '';
+		extraPlugins = extraPlugins.concat( typeof extraPlugins === 'string' ? ( ',' + pluginName ) : pluginName );
 
-		if ( removePlugins && removePlugins.includes( 'divarea' ) ) {
+		if ( removePlugins && removePlugins.includes( pluginName ) ) {
+			removePlugins = this.removePlugin( removePlugins, pluginName );
 
-			removePlugins = this.removePlugin( removePlugins, 'divarea' );
-
-			console.warn( '[CKEDITOR] divarea plugin is required to initialize editor using Angular integration.' );
+			console.warn( '[CKEDITOR] `' + pluginName + '` plugin is required to initialize ' + this.type + ' editor. It was automatically added to the build.' );
 		}
 
 		return Object.assign( {}, config, { extraPlugins, removePlugins } );
