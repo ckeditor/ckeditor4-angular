@@ -291,11 +291,13 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		this.elementRef.nativeElement.appendChild( element );
 
 		if ( this.type === CKEditor4.EditorType.DIVAREA ) {
-			this.config = this.ensurePlugin( this.config || {}, 'divarea' );
+			this.ensurePlugin( 'divarea' );
+		} else if ( this.config ) {
+			this.config.extraPlugins = this.removePlugin( this.config.extraPlugins, 'divarea' );
 		}
 
 		if ( this.type === CKEditor4.EditorType.INLINE ) {
-			this.config = this.ensurePlugin( this.config || {}, 'floatingspace' );
+			this.ensurePlugin( 'floatingspace' );
 		}
 
 		const instance: CKEditor4.Editor = this.type === CKEditor4.EditorType.INLINE
@@ -428,8 +430,12 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		} );
 	}
 
-	private ensurePlugin( config: CKEditor4.Config, pluginName: string ): CKEditor4.Config {
-		let { extraPlugins, removePlugins } = config;
+	private ensurePlugin( pluginName: string ) {
+		if ( !this.config ) {
+			this.config = {};
+		}
+
+		let { extraPlugins, removePlugins } = this.config;
 
 		extraPlugins = this.removePlugin( extraPlugins, pluginName ) || '';
 		extraPlugins = extraPlugins.concat( typeof extraPlugins === 'string' ? ( ',' + pluginName ) : pluginName );
@@ -440,7 +446,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 			console.warn( '[CKEDITOR] `' + pluginName + '` plugin is required to initialize ' + this.type + ' editor. It was automatically added to the build.' );
 		}
 
-		return Object.assign( {}, config, { extraPlugins, removePlugins } );
+		Object.assign ( this.config, { extraPlugins, removePlugins } );
 	}
 
 	private removePlugin( plugins: string | string[], toRemove: string ): string | string[] {
