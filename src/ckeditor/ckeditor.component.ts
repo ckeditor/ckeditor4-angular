@@ -421,42 +421,4 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		} );
 	}
 
-	private ensurePlugin( pluginName: string ) {
-		if ( !this.config ) {
-			this.config = {};
-		}
-
-		let { extraPlugins, removePlugins } = this.config;
-
-		extraPlugins = this.removePlugin( extraPlugins, pluginName ) || '';
-		extraPlugins = extraPlugins.concat( typeof extraPlugins === 'string' ? ( ',' + pluginName ) : pluginName );
-
-		if ( removePlugins && removePlugins.includes( pluginName ) ) {
-			removePlugins = this.removePlugin( removePlugins, pluginName );
-
-			console.warn( '[CKEDITOR] `' + pluginName + '` plugin is required to initialize ' + this.type + ' editor. It was automatically added to the build.' );
-		}
-
-		Object.assign ( this.config, { extraPlugins, removePlugins } );
-	}
-
-	private removePlugin( plugins: string | string[], toRemove: string ): string | string[] {
-		if ( !plugins ) {
-			return null;
-		}
-
-		const isString = typeof plugins === 'string';
-
-		if ( isString ) {
-			plugins = ( plugins as string ).split( ',' );
-		}
-
-		plugins = ( plugins as string[] ).filter( plugin => plugin !== toRemove );
-
-		if ( isString ) {
-			plugins = ( plugins as string[] ).join( ',' );
-		}
-
-		return plugins;
-	}
 }
