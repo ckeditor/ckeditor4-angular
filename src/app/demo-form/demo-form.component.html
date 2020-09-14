@@ -17,8 +17,7 @@
 	<ckeditor
 		[(ngModel)]="model.description"
 		id="description"
-		name="description"
-		type="divarea">
+		name="description">
 	</ckeditor>
 
 	<p *ngIf="description && description.dirty" class="alert">Description is "dirty".</p>

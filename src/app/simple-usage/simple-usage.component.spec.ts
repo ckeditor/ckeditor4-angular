@@ -110,7 +110,6 @@ describe( 'SimpleUsageComponent', () => {
 		} );
 	} );
 
-
 	describe( 'listeners', () => {
 		beforeEach( () => {
 			spy = spyOn( console, 'log' );
