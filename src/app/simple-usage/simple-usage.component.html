@@ -10,6 +10,7 @@
 		[readOnly]="isReadOnly"
 		[hidden]="isHidden"
 		type="{{ editor | lowercase }}"
+		[config]="{ extraPlugins: 'divarea' }"
 
 		(ready)="onReady( $event, editor )"
 		(change)="onChange( $event, editor )"
