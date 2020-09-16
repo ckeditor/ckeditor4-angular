@@ -43,7 +43,6 @@ describe( 'CKEditorComponent', () => {
 	} );
 
 	[
-		EditorType.DIVAREA,
 		EditorType.INLINE,
 		EditorType.CLASSIC
 	].forEach( editorType => {
@@ -113,58 +112,6 @@ describe( 'CKEditorComponent', () => {
 							// when replace() method for creation is used.
 							const expectedElement = CKEDITOR.env.ie && method !== 'inline' ? 'SPAN' : 'DIV';
 							expect( fixture.nativeElement.lastChild.tagName ).toEqual( expectedElement );
-						} );
-					} );
-				} );
-
-				const isDivarea = editorType === EditorType.DIVAREA;
-
-				[ {
-					newConfig: undefined,
-					msg: 'without config',
-					warn: false
-				}, {
-					newConfig: { extraPlugins: 'basicstyles,divarea,link' },
-					msg: 'config.extraPlugins defined as a string',
-					warn: false
-				}, {
-					newConfig: { extraPlugins: [ 'basicstyles', 'divarea', 'link' ] },
-					msg: 'config.extraPlugins defined as an array',
-					warn: false
-				}, {
-					newConfig: { removePlugins: 'basicstyles,divarea,link,divarea' },
-					msg: 'config.removePlugins defined as a string',
-					warn: isDivarea
-				}, {
-					newConfig: { removePlugins: [ 'basicstyles', 'divarea', 'link', 'divarea' ] },
-					msg: 'config.removePlugins defined as an array',
-					warn: isDivarea
-				} ].forEach( ( { newConfig, msg, warn } ) => {
-					describe( msg, () => {
-						beforeEach( () => {
-							config = newConfig;
-						} );
-
-						it( `console ${warn ? 'should' : 'shouldn\'t'} warn`, () => {
-							const spy = spyOn( console, 'warn' );
-
-							fixture.detectChanges();
-
-							return whenEvent( 'ready', component ).then( () => {
-								warn
-									? expect( spy ).toHaveBeenCalled()
-									: expect( spy ).not.toHaveBeenCalled();
-							} );
-						} );
-
-						it( `editor ${ isDivarea ? 'should' : 'shouldn\'t' } use divarea plugin`, () => {
-							fixture.detectChanges();
-
-							return whenEvent( 'ready', component ).then( ( { editor } ) => {
-								isDivarea
-									? expect( editor.plugins.divarea ).not.toBeUndefined()
-									: expect( editor.plugins.divarea ).toBeUndefined();
-							} );
 						} );
 					} );
 				} );

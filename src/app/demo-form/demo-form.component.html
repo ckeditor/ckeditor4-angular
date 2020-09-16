@@ -18,7 +18,7 @@
 		[(ngModel)]="model.description"
 		id="description"
 		name="description"
-		type="divarea">
+		[config]="{ extraPlugins: 'divarea' }">
 	</ckeditor>
 
 	<p *ngIf="description && description.dirty" class="alert">Description is "dirty".</p>

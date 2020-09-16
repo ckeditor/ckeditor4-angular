@@ -1,5 +1,11 @@
 # CKEditor 4 Angular Integration Changelog
 
+## ckeditor-angular 2.0.0
+
+API Changes:
+
+* [#130](https://github.com/ckeditor/ckeditor4-angular/issues/130): `DIVAREA` editor type has been deprecated. Use [`divarea` plugin](https://ckeditor.com/cke4/addon/divarea) instead.
+
 ## ckeditor4-angular 1.3.0
 
 Other Changes:

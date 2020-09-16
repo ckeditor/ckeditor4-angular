@@ -27,7 +27,6 @@ export namespace CKEditor4 {
 	 * to learn more.
 	 */
 	export const enum EditorType {
-		DIVAREA = 'divarea',
 		INLINE = 'inline',
 		CLASSIC = 'classic'
 	}

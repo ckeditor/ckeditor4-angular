@@ -17,7 +17,7 @@
  // (window as any).__Zone_disable_on_property = true; // disable patch onProperty such as onclick
  // (window as any).__zone_symbol__BLACK_LISTED_EVENTS = ['scroll', 'mousemove']; // disable patch specified eventNames
 
- /*
+/**
  * in IE/Edge developer tools, the addEventListener will also be wrapped by zone.js
  * with the following flag, it will bypass `zone.js` patch for IE/Edge
  */
@@ -25,8 +25,7 @@
 
 /***************************************************************************************************
  * Browser Polyfills
- * IE11 needs those in general. Currently we use only some of them in tests using console and ensuring that 'divarea' plugin is loaded,
- * but they may come in handy later.
+ * IE11 needs those in general. Currently we use only some of them, but they may come in handy later.
  */
 
 import 'core-js/es/symbol';

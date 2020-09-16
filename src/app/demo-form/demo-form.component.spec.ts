@@ -87,7 +87,6 @@ describe( 'DemoFormComponent', () => {
 		} );
 
 		ckeditorComponent.instance.setData( '<p>An unidentified person</p>' );
-
 	} );
 
 	it( 'when reset button is clicked should reset form', done => {

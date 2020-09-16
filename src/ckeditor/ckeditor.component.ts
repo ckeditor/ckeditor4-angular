@@ -40,6 +40,7 @@ declare let CKEDITOR: any;
 export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValueAccessor {
 	/**
 	 * The configuration of the editor.
+	 *
 	 * See https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html
 	 * to learn more.
 	 */
@@ -55,8 +56,8 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	/**
 	 * The type of the editor interface.
 	 *
-	 * By default editor interface will be initialized as `divarea` editor which is an inline editor with fixed UI.
-	 * You can change interface type by choosing between `divarea` and `inline` editor interface types.
+	 * By default editor interface will be initialized as `classic` editor.
+	 * You can also choose to create an editor with `inline` interface type instead.
 	 *
 	 * See https://ckeditor.com/docs/ckeditor4/latest/guide/dev_uitypes.html
 	 * and https://ckeditor.com/docs/ckeditor4/latest/examples/fixedui.html
@@ -84,7 +85,6 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		}
 
 		this._data = data;
-
 	}
 
 	get data(): string {
@@ -92,8 +92,9 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	}
 
 	/**
-	 * When set `true`, the editor becomes read-only.
-	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#property-readOnly
+	 * When set to `true`, the editor becomes read-only.
+	 *
+	 * See https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#property-readOnly
 	 * to learn more.
 	 */
 	@Input() set readOnly( isReadOnly: boolean ) {
@@ -147,14 +148,14 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	@Output() dataChange = new EventEmitter<CKEditor4.EventInfo>();
 
 	/**
-	 * Fires when the native drop event occurs. It corresponds with the `editor#dragstart`
+	 * Fires when the native dragStart event occurs. It corresponds with the `editor#dragstart`
 	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-dragstart
 	 * event.
 	 */
 	@Output() dragStart = new EventEmitter<CKEditor4.EventInfo>();
 
 	/**
-	 * Fires when the native drop event occurs. It corresponds with the `editor#dragend`
+	 * Fires when the native dragEnd event occurs. It corresponds with the `editor#dragend`
 	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-dragend
 	 * event.
 	 */
@@ -182,7 +183,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	@Output() fileUploadRequest = new EventEmitter<CKEditor4.EventInfo>();
 
 	/**
-	 * Fires when the editing view of the editor is focused. It corresponds with the `editor#focus`
+	 * Fires when the editing area of the editor is focused. It corresponds with the `editor#focus`
 	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-focus
 	 * event.
 	 */
@@ -289,10 +290,6 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	private createEditor(): void {
 		const element = document.createElement( this.tagName );
 		this.elementRef.nativeElement.appendChild( element );
-
-		if ( this.type === CKEditor4.EditorType.DIVAREA ) {
-			this.config = this.ensureDivareaPlugin( this.config || {} );
-		}
 
 		const instance: CKEditor4.Editor = this.type === CKEditor4.EditorType.INLINE
 			? CKEDITOR.inline( element, this.config )
@@ -424,39 +421,4 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		} );
 	}
 
-	private ensureDivareaPlugin( config: CKEditor4.Config ): CKEditor4.Config {
-		let { extraPlugins, removePlugins } = config;
-
-		extraPlugins = this.removePlugin( extraPlugins, 'divarea' ) || '';
-		extraPlugins = extraPlugins.concat( typeof extraPlugins === 'string' ? ',divarea' : 'divarea' );
-
-		if ( removePlugins && removePlugins.includes( 'divarea' ) ) {
-
-			removePlugins = this.removePlugin( removePlugins, 'divarea' );
-
-			console.warn( '[CKEDITOR] divarea plugin is required to initialize editor using Angular integration.' );
-		}
-
-		return Object.assign( {}, config, { extraPlugins, removePlugins } );
-	}
-
-	private removePlugin( plugins: string | string[], toRemove: string ): string | string[] {
-		if ( !plugins ) {
-			return null;
-		}
-
-		const isString = typeof plugins === 'string';
-
-		if ( isString ) {
-			plugins = ( plugins as string ).split( ',' );
-		}
-
-		plugins = ( plugins as string[] ).filter( plugin => plugin !== toRemove );
-
-		if ( isString ) {
-			plugins = ( plugins as string[] ).join( ',' );
-		}
-
-		return plugins;
-	}
 }
