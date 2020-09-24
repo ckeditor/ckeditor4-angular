@@ -2,9 +2,9 @@
 
 ## ckeditor-angular 2.0.0
 
-API Changes:
+Breaking Changes:
 
-* [#130](https://github.com/ckeditor/ckeditor4-angular/issues/130): `DIVAREA` editor type has been deprecated. Use [`divarea` plugin](https://ckeditor.com/cke4/addon/divarea) instead.
+* [#130](https://github.com/ckeditor/ckeditor4-angular/issues/130): `DIVAREA` editor type has been deprecated. Use [Div Editing Area](https://ckeditor.com/cke4/addon/divarea) plugin instead (see [migration guide](https://ckeditor.com/docs/ckeditor4/latest/guide/dev_angular.html#using-the-div-based-editor-type)).
 
 ## ckeditor4-angular 1.3.0
 
