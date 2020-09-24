@@ -1,0 +1,29 @@
+/**
+ * @license Copyright (c) 2003-2020, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md.
+ */
+import loadScript from 'load-script';
+let promise;
+export function getEditorNamespace(editorURL) {
+    if (editorURL.length < 1) {
+        return Promise.reject(new TypeError('CKEditor URL must be a non-empty string.'));
+    }
+    if ('CKEDITOR' in window) {
+        return Promise.resolve(CKEDITOR);
+    }
+    else if (!promise) {
+        promise = new Promise((scriptResolve, scriptReject) => {
+            loadScript(editorURL, err => {
+                if (err) {
+                    scriptReject(err);
+                }
+                else {
+                    scriptResolve(CKEDITOR);
+                }
+                promise = undefined;
+            });
+        });
+    }
+    return promise;
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiY2tlZGl0b3IuaGVscGVycy5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy9ja2VkaXRvci9ja2VkaXRvci5oZWxwZXJzLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBOzs7R0FHRztBQUVILE9BQU8sVUFBVSxNQUFNLGFBQWEsQ0FBQztBQUdyQyxJQUFJLE9BQU8sQ0FBQztBQUVaLE1BQU0sVUFBVSxrQkFBa0IsQ0FBRSxTQUFpQjtJQUNwRCxJQUFLLFNBQVMsQ0FBQyxNQUFNLEdBQUcsQ0FBQyxFQUFHO1FBQzNCLE9BQU8sT0FBTyxDQUFDLE1BQU0sQ0FBRSxJQUFJLFNBQVMsQ0FBRSwwQ0FBMEMsQ0FBRSxDQUFFLENBQUM7S0FDckY7SUFFRCxJQUFLLFVBQVUsSUFBSSxNQUFNLEVBQUc7UUFDM0IsT0FBTyxPQUFPLENBQUMsT0FBTyxDQUFFLFFBQVEsQ0FBRSxDQUFDO0tBQ25DO1NBQU0sSUFBSyxDQUFDLE9BQU8sRUFBRztRQUN0QixPQUFPLEdBQUcsSUFBSSxPQUFPLENBQUUsQ0FBRSxhQUFhLEVBQUUsWUFBWSxFQUFHLEVBQUU7WUFDeEQsVUFBVSxDQUFFLFNBQVMsRUFBRSxHQUFHLENBQUMsRUFBRTtnQkFDNUIsSUFBSyxHQUFHLEVBQUc7b0JBQ1YsWUFBWSxDQUFFLEdBQUcsQ0FBRSxDQUFDO2lCQUNwQjtxQkFBTTtvQkFDTixhQUFhLENBQUUsUUFBUSxDQUFFLENBQUM7aUJBQzFCO2dCQUVELE9BQU8sR0FBRyxTQUFTLENBQUM7WUFDckIsQ0FBQyxDQUFFLENBQUM7UUFDTCxDQUFDLENBQUUsQ0FBQztLQUNKO0lBRUQsT0FBTyxPQUFPLENBQUM7QUFDaEIsQ0FBQyIsInNvdXJjZXNDb250ZW50IjpbIi8qKlxuICogQGxpY2Vuc2UgQ29weXJpZ2h0IChjKSAyMDAzLTIwMjAsIENLU291cmNlIC0gRnJlZGVyaWNvIEtuYWJiZW4uIEFsbCByaWdodHMgcmVzZXJ2ZWQuXG4gKiBGb3IgbGljZW5zaW5nLCBzZWUgTElDRU5TRS5tZC5cbiAqL1xuXG5pbXBvcnQgbG9hZFNjcmlwdCBmcm9tICdsb2FkLXNjcmlwdCc7XG5cbmRlY2xhcmUgbGV0IENLRURJVE9SOiBhbnk7XG5sZXQgcHJvbWlzZTtcblxuZXhwb3J0IGZ1bmN0aW9uIGdldEVkaXRvck5hbWVzcGFjZSggZWRpdG9yVVJMOiBzdHJpbmcgKTogUHJvbWlzZTx7IFsga2V5OiBzdHJpbmcgXTogYW55OyB9PiB7XG5cdGlmICggZWRpdG9yVVJMLmxlbmd0aCA8IDEgKSB7XG5cdFx0cmV0dXJuIFByb21pc2UucmVqZWN0KCBuZXcgVHlwZUVycm9yKCAnQ0tFZGl0b3IgVVJMIG11c3QgYmUgYSBub24tZW1wdHkgc3RyaW5nLicgKSApO1xuXHR9XG5cblx0aWYgKCAnQ0tFRElUT1InIGluIHdpbmRvdyApIHtcblx0XHRyZXR1cm4gUHJvbWlzZS5yZXNvbHZlKCBDS0VESVRPUiApO1xuXHR9IGVsc2UgaWYgKCAhcHJvbWlzZSApIHtcblx0XHRwcm9taXNlID0gbmV3IFByb21pc2UoICggc2NyaXB0UmVzb2x2ZSwgc2NyaXB0UmVqZWN0ICkgPT4ge1xuXHRcdFx0bG9hZFNjcmlwdCggZWRpdG9yVVJMLCBlcnIgPT4ge1xuXHRcdFx0XHRpZiAoIGVyciApIHtcblx0XHRcdFx0XHRzY3JpcHRSZWplY3QoIGVyciApO1xuXHRcdFx0XHR9IGVsc2Uge1xuXHRcdFx0XHRcdHNjcmlwdFJlc29sdmUoIENLRURJVE9SICk7XG5cdFx0XHRcdH1cblxuXHRcdFx0XHRwcm9taXNlID0gdW5kZWZpbmVkO1xuXHRcdFx0fSApO1xuXHRcdH0gKTtcblx0fVxuXG5cdHJldHVybiBwcm9taXNlO1xufVxuIl19
