@@ -1,6 +1,6 @@
 # CKEditor 4 Angular Integration Changelog
 
-## ckeditor-angular 2.0.0
+## ckeditor4-angular 2.0.0
 
 Breaking Changes:
 
