@@ -62,7 +62,7 @@ jobs:
       - name: Create PR
         if: env.HAS_CHANGES == 1
         # https://github.com/marketplace/actions/initialize-pull-request
-        uses: gha-utilities/init-pull-request@v0.2.0
+        uses: gha-utilities/init-pull-request@v0.1.9
         with:
           verbose: true
           pull_request_token: ${{ secrets.GITHUB_TOKEN }}
