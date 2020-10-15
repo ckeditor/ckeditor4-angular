@@ -28,7 +28,7 @@ jobs:
       - name: Is update possible
         run: |
           echo "BRANCH_NAME=deps-update_${{ matrix.deps }}" >> $GITHUB_ENV
-          if [[ $(git ls-remote --heads | grep ${{ env.BRANCH_NAME }} | wc -c) -ne 0 ]]; then
+          if [[ $(git ls-remote --heads | grep deps-update_${{ matrix.deps }} | wc -c) -ne 0 ]]; then
             echo "BRANCH_NAME=0" >> $GITHUB_ENV
           fi
 
