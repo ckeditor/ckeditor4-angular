@@ -32,7 +32,7 @@ jobs:
           git checkout -b deps-update_${{ matrix.deps }}
           npm-check -y --${{ matrix.deps }}
 
-      - name: Push changes
+      - name: Add changes
         run: |
           if [[ $(git diff origin/master | wc -c) -ne 0 ]]; then
             git config --local user.email "ckeditor-bot@cksource.com"
@@ -49,3 +49,16 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: deps-update_${{ matrix.deps }}
+
+        - name: Create PR
+          if: env.HAS_CHANGES == 1
+          # https://github.com/marketplace/actions/initialize-pull-request
+          uses: gha-utilities/init-pull-request@v0.2.0
+            with:
+              verbose: true
+              pull_request_token: ${{ secrets.GITHUB_TOKEN }}
+              head: deps-update_${{ matrix.deps }}
+              base: master
+              title: 'Update NPM ${{ matrix.deps }} dependencies'
+              body: >
+                Updated NPM ${{ matrix.deps }} dependencies.
