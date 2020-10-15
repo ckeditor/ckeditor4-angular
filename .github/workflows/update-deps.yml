@@ -1,0 +1,52 @@
+name: Update NPM dependencies
+
+on:
+  schedule:
+  - cron: "0 14,15,16 * * *"
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        deps: [production, dev-only]
+
+    steps:
+      - name: Fetch changes
+        # https://github.com/marketplace/actions/checkout
+        uses: actions/checkout@v2
+        with:
+          ref: master
+
+      - name: Setup
+        # https://github.com/marketplace/actions/setup-node-js-environment
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: '12'
+        run: |
+          npm i
+          npm install -g npm-check
+
+      - name: Update dependencies
+        run: |
+          git checkout -b deps-update_${{ matrix.deps }}
+          npm-check -y --${{ matrix.deps }}
+
+      - name: Push changes
+        run: |
+          if [[ $(git diff origin/master | wc -c) -ne 0 ]]; then
+            git config --local user.email "ckeditor-bot@cksource.com"
+            git config --local user.name "CKEditor Bot"
+            git add package*.json
+            git commit -m "Update NPM ${{ matrix.deps }} dependencies."
+            echo "HAS_CHANGES=1" >> $GITHUB_ENV
+          fi
+
+      - name: Push changes
+        if: env.HAS_CHANGES == 1
+        # https://github.com/marketplace/actions/github-push
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: deps-update_${{ matrix.deps }}
