@@ -2,7 +2,7 @@ name: Update NPM dependencies
 
 on:
   schedule:
-  - cron: "*/10 12,13,14 * * *"
+  - cron: "0 5 * * 1"
 
 jobs:
   update:
