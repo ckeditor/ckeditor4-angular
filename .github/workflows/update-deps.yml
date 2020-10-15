@@ -37,7 +37,7 @@ jobs:
         run: |
           npm i
           npm install -g npm-check
-          git checkout -b deps-update_${{ matrix.deps }}
+          git checkout -b ${{ env.BRANCH_NAME }}
           npm-check -y --${{ matrix.deps }}
 
       - name: Add changes
@@ -57,17 +57,15 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: deps-update_${{ matrix.deps }}
+          branch: ${{ env.BRANCH_NAME }}
 
       - name: Create PR
         if: env.HAS_CHANGES == 1
-        # https://github.com/marketplace/actions/initialize-pull-request
-        uses: gha-utilities/init-pull-request@v0.1.9
+        # https://github.com/marketplace/actions/github-pull-request-action
+        uses: repo-sync/pull-request@v2
         with:
-          verbose: true
-          pull_request_token: ${{ secrets.GITHUB_TOKEN }}
-          head: deps-update_${{ matrix.deps }}
-          base: master
-          title: 'Update NPM ${{ matrix.deps }} dependencies'
-          body: >
-            Updated NPM ${{ matrix.deps }} dependencies.
+          source_branch: "${{ env.BRANCH_NAME }}"
+          destination_branch: "master"
+          pr_title: "Update NPM ${{ matrix.deps }} dependencies"
+          pr_body: "Updated NPM ${{ matrix.deps }} dependencies."
+          github_token: ${{ secrets.GITHUB_TOKEN }}
