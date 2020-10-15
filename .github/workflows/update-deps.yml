@@ -25,7 +25,15 @@ jobs:
         with:
           node-version: '12'
 
+      - name: Is update possible
+        run: |
+          echo "BRANCH_NAME=deps-update_${{ matrix.deps }}" >> $GITHUB_ENV
+          if [[ $(git ls-remote --heads | grep ${{ env.BRANCH_NAME }} | wc -c) -ne 0 ]]; then
+            echo "BRANCH_NAME=0" >> $GITHUB_ENV
+          fi
+
       - name: Update dependencies
+        if: env.BRANCH_NAME != 0
         run: |
           npm i
           npm install -g npm-check
@@ -33,6 +41,7 @@ jobs:
           npm-check -y --${{ matrix.deps }}
 
       - name: Add changes
+        if: env.BRANCH_NAME != 0
         run: |
           if [[ $(git diff origin/master | wc -c) -ne 0 ]]; then
             git config --local user.email "ckeditor-bot@cksource.com"
