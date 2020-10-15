@@ -21,7 +21,7 @@ jobs:
 
       - name: Setup node
         # https://github.com/marketplace/actions/setup-node-js-environment
-        uses: actions/setup-node@v2-beta
+        uses: actions/setup-node@v1
         with:
           node-version: '12'
 
