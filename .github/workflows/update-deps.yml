@@ -19,17 +19,16 @@ jobs:
         with:
           ref: master
 
-      - name: Setup
+      - name: Setup node
         # https://github.com/marketplace/actions/setup-node-js-environment
         uses: actions/setup-node@v2-beta
         with:
           node-version: '12'
-        run: |
-          npm i
-          npm install -g npm-check
 
       - name: Update dependencies
         run: |
+          npm i
+          npm install -g npm-check
           git checkout -b deps-update_${{ matrix.deps }}
           npm-check -y --${{ matrix.deps }}
 
