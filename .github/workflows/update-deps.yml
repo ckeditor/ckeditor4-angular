@@ -2,7 +2,7 @@ name: Update NPM dependencies
 
 on:
   schedule:
-  - cron: "*/5 * * * *"
+  - cron: "*/10 * * * *"
 
 jobs:
   update:
@@ -19,15 +19,15 @@ jobs:
         # GITHUB_USEREMAIL - GH user email which will be used to push changes.
         # [BRANCH_MAIN] - Main branch name (optional), if not set GITHUB_REF will be used.
         run: |
-          if [[ -z ${{ secrets.GITHUB_USERNAME }} ]]; then
+          if [[ -z "${{ secrets.GITHUB_USERNAME }}" ]]; then
             echo "Expected 'GITHUB_USERNAME' secret variable to be set. Current value '${{ secrets.GITHUB_USERNAME }}'"
             exit 1
           fi
-          if [[ -z ${{ secrets.GITHUB_USEREMAIL }} ]]; then
+          if [[ -z "${{ secrets.GITHUB_USEREMAIL }}" ]]; then
             echo "Expected 'GITHUB_USEREMAIL' secret variable to be set. Current value '${{ secrets.GITHUB_USEREMAIL }}'"
             exit 1
           fi
-          if [[ -z ${{ secrets.BRANCH_MAIN }} ]]; then
+          if [[ -z "${{ secrets.BRANCH_MAIN }}" ]]; then
             echo "BRANCH_MAIN=${{ env.GITHUB_REF }}" >> $GITHUB_ENV
           else
             echo "BRANCH_MAIN=${{ secrets.BRANCH_MAIN }}" >> $GITHUB_ENV
