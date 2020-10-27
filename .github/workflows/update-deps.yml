@@ -32,7 +32,7 @@ jobs:
             echo "BRANCH_NAME=0" >> $GITHUB_ENV
           fi
 
-      - name: Update dependencies
+      - name: Update NPM dependencies
         if: env.BRANCH_NAME != 0
         run: |
           npm i
