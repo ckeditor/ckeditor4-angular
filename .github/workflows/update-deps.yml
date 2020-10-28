@@ -13,6 +13,16 @@ jobs:
         deps: [production, dev-only]
 
     steps:
+      - name: Setup node
+        # https://github.com/marketplace/actions/setup-node-js-environment
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+
+      - name: Fetch changes
+        # https://github.com/marketplace/actions/checkout
+        uses: actions/checkout@v2
+
       - name: Check env variables
         # Expected secrets variables:
         # BOT_USERNAME - GH user name which will be used to push changes.
@@ -28,22 +38,11 @@ jobs:
             exit 1
           fi
           if [[ -z "${{ secrets.BRANCH_MAIN }}" ]]; then
-            echo "BRANCH_MAIN=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')" >> $GITHUB_ENV
+            # Since 'Fetch changes' step fetches default branch, we just get branch name (which will be default one).
+            echo "BRANCH_MAIN=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
           else
             echo "BRANCH_MAIN=${{ secrets.BRANCH_MAIN }}" >> $GITHUB_ENV
           fi
-
-      - name: Fetch changes
-        # https://github.com/marketplace/actions/checkout
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ env.BRANCH_MAIN }}
-
-      - name: Setup node
-        # https://github.com/marketplace/actions/setup-node-js-environment
-        uses: actions/setup-node@v1
-        with:
-          node-version: '12'
 
       - name: Check if update branch already exists
         run: |
