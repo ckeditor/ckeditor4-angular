@@ -17,7 +17,7 @@ jobs:
         # Expected secrets variables:
         # BOT_USERNAME - GH user name which will be used to push changes.
         # BOT_EMAIL - GH user email which will be used to push changes.
-        # [BRANCH_MAIN] - Main branch name (optional), if not set GITHUB_REF will be used.
+        # [BRANCH_MAIN] - Target branch name (optional), if not set default branch will be used.
         run: |
           if [[ -z "${{ secrets.BOT_USERNAME }}" ]]; then
             echo "Expected 'BOT_USERNAME' secret variable to be set. Current value '${{ secrets.BOT_USERNAME }}'"
@@ -28,7 +28,8 @@ jobs:
             exit 1
           fi
           if [[ -z "${{ secrets.BRANCH_MAIN }}" ]]; then
-            echo "BRANCH_MAIN=${{ env.GITHUB_REF }}" >> $GITHUB_ENV
+            DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
+            echo "BRANCH_MAIN=${{ DEFAULT_BRANCH }}" >> $GITHUB_ENV
           else
             echo "BRANCH_MAIN=${{ secrets.BRANCH_MAIN }}" >> $GITHUB_ENV
           fi
