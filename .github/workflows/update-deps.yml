@@ -48,7 +48,7 @@ jobs:
       - name: Check if update branch already exists
         run: |
           echo "BRANCH_UPDATE=deps-update_${{ env.BRANCH_MAIN }}_${{ matrix.deps }}" >> $GITHUB_ENV
-          if [[ $(git ls-remote --heads | grep deps-update_${{ matrix.deps }} | wc -c) -ne 0 ]]; then
+          if [[ $(git ls-remote --heads | grep deps-update_${{ env.BRANCH_MAIN }}_${{ matrix.deps }} | wc -c) -ne 0 ]]; then
             echo "BRANCH_UPDATE=0" >> $GITHUB_ENV
           fi
 
