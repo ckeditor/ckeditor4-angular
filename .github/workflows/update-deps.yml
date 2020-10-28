@@ -28,8 +28,7 @@ jobs:
             exit 1
           fi
           if [[ -z "${{ secrets.BRANCH_MAIN }}" ]]; then
-            DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
-            echo "BRANCH_MAIN=${{ DEFAULT_BRANCH }}" >> $GITHUB_ENV
+            echo "BRANCH_MAIN=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')" >> $GITHUB_ENV
           else
             echo "BRANCH_MAIN=${{ secrets.BRANCH_MAIN }}" >> $GITHUB_ENV
           fi
