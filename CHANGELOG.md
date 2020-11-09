@@ -1,5 +1,11 @@
 # CKEditor 4 Angular Integration Changelog
 
+## ckeditor4-angular 2.0.1
+
+Other Changes:
+
+* Updated default CDN CKEditor 4 dependency to [4.15.1](https://github.com/ckeditor/ckeditor4/blob/master/CHANGES.md#ckeditor-4151).
+
 ## ckeditor4-angular 2.0.0
 
 Breaking Changes:
