@@ -4,16 +4,16 @@
  */
 
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { CKEditorModule } from '../../ckeditor/ckeditor.module';
-import { SimpleUsageComponent } from './simple-usage.component';
-import { By } from '@angular/platform-browser';
-import { CKEditorComponent } from '../../ckeditor/ckeditor.component';
 import { DebugElement } from '@angular/core';
-
-import { whenEvent } from '../../test.tools';
 import { FormsModule } from '@angular/forms';
-import { getEditorNamespace } from '../../ckeditor/ckeditor.helpers';
+import { By } from '@angular/platform-browser';
+
+import { SimpleUsageComponent } from './simple-usage.component';
+import { getEditorNamespace } from 'ckeditor4-integrations-common';
+import { CKEditorModule } from '../../ckeditor/ckeditor.module';
+import { CKEditorComponent } from '../../ckeditor/ckeditor.component';
+import { whenEvent } from '../../test.tools';
+
 import Spy = jasmine.Spy;
 
 describe( 'SimpleUsageComponent', () => {

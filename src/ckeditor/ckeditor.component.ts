@@ -47,6 +47,13 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	@Input() config?: CKEditor4.Config;
 
 	/**
+	 * CKEditor 4 script url address. Script will be loaded only if CKEDITOR namespace is missing.
+	 *
+	 * Defaults to 'https://cdn.ckeditor.com/4.16.0/standard-all/ckeditor.js'
+	 */
+	@Input() editorUrl = 'https://cdn.ckeditor.com/4.16.0/standard-all/ckeditor.js';
+
+	/**
 	 * Tag name of the editor component.
 	 *
 	 * The default tag is `textarea`.
@@ -248,13 +255,6 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	private _data: string = null;
 
 	private _destroyed: boolean = false;
-
-	/**
-	 * CKEditor 4 script url address. Script will be loaded only if CKEDITOR namespace is missing.
-	 *
-	 * Defaults to 'https://cdn.ckeditor.com/4.16.0/standard-all/ckeditor.js'
-	 */
-	@Input() editorUrl = 'https://cdn.ckeditor.com/4.16.0/standard-all/ckeditor.js';
 
 	constructor( private elementRef: ElementRef, private ngZone: NgZone ) {}
 
