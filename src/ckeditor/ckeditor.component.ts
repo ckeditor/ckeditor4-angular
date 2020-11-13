@@ -19,7 +19,7 @@ import {
 	NG_VALUE_ACCESSOR
 } from '@angular/forms';
 
-import { getEditorNamespace } from './ckeditor.helpers';
+import { getEditorNamespace } from 'ckeditor4-integrations-common';
 
 import { CKEditor4 } from './ckeditor';
 
@@ -114,6 +114,13 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 
 		return this._readOnly;
 	}
+
+	/**
+	 * Fired when the CKEDITOR https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR.html namespace
+	 * is loaded. It only triggers once for each editor component. Can be used for convenient changes
+	 * in the namespace, e.g. for adding external plugins.
+	 */
+	@Output() namespaceLoaded = new EventEmitter<CKEditor4.EventInfo>();
 
 	/**
 	 * Fires when the editor is ready. It corresponds with the `editor#instanceReady`
@@ -249,11 +256,12 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	 */
 	@Input() editorUrl = 'https://cdn.ckeditor.com/4.16.0/standard-all/ckeditor.js';
 
-	constructor( private elementRef: ElementRef, private ngZone: NgZone ) {
-	}
+	constructor( private elementRef: ElementRef, private ngZone: NgZone ) {}
 
 	ngAfterViewInit(): void {
-		getEditorNamespace( this.editorUrl ).then( () => {
+		getEditorNamespace( this.editorUrl, namespace => {
+			this.namespaceLoaded.emit( namespace );
+		} ).then( () => {
 			// Check if component instance was destroyed before `ngAfterViewInit` call (#110).
 			// Here, `this.instance` is still not initialized and so additional flag is needed.
 			if ( this._destroyed ) {
@@ -372,7 +380,7 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		} );
 
 		editor.on( 'fileUploadResponse', evt => {
-			this.ngZone.run(() => {
+			this.ngZone.run( () => {
 				this.fileUploadResponse.emit(evt);
 			} );
 		} );

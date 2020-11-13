@@ -74,4 +74,8 @@ You learn to appreciate each and every single one of the differences while you b
 	onFileUploadResponse( event: CKEditor4.EventInfo, editorName: string ): void {
 		console.log( `File upload responded in ${editorName.toLowerCase()} editor.` );
 	}
+
+	onNamespaceLoaded( event: CKEditor4.EventInfo, editorName: string ): void {
+		console.log( `Namespace loaded in ${editorName.toLowerCase()} editor.` );
+	}
 }
