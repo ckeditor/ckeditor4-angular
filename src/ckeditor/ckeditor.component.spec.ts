@@ -18,6 +18,42 @@ import EditorType = CKEditor4.EditorType;
 
 declare var CKEDITOR: any;
 
+describe( 'CKEditor namespace', () => {
+	beforeEach( () => {
+		delete window[ 'CKEDITOR' ];
+
+		return TestBed.configureTestingModule( {
+			declarations: [ CKEditorComponent ]
+		} ).compileComponents();
+	} )
+
+	function createComponent( spy ) {
+		return new Promise( resolve => {
+			const fix = TestBed.createComponent( CKEditorComponent );
+			const comp = fix.componentInstance;
+
+			comp.namespaceLoaded.subscribe( spy );
+			comp.ready.subscribe( () => resolve( comp ) );
+
+			fix.detectChanges();
+		} );
+	}
+
+	it ( 'should be loaded and trigger namespaceLoaded event only once', () => {
+		const spy = jasmine.createSpy();
+
+		return Promise.resolve(
+			createComponent( spy )
+		).then ( () => {
+			createComponent( spy )
+		} ).then( () => {
+			createComponent( spy )
+		} ).then( () => {
+			expect( spy ).toHaveBeenCalledTimes( 1 );
+		} );
+	} );
+} );
+
 describe( 'CKEditorComponent', () => {
 	let component: CKEditorComponent,
 		fixture: ComponentFixture<CKEditorComponent>,
