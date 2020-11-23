@@ -19,28 +19,44 @@ import EditorType = CKEditor4.EditorType;
 declare var CKEDITOR: any;
 
 describe( 'CKEditor namespace', () => {
-	beforeEach( () => {
-		delete window[ 'CKEDITOR' ];
+	let fixtures = [];
 
+	beforeEach( () => {
 		return TestBed.configureTestingModule( {
 			declarations: [ CKEditorComponent ]
 		} ).compileComponents();
-	} )
+	} );
+
+	afterEach( () => {
+		let wrapper;
+
+		while ( ( wrapper = fixtures.pop() ) ) {
+			wrapper.destroy();
+		}
+
+		if ( window[ 'CKEDITOR' ] ) {
+			delete window[ 'CKEDITOR' ];
+		}
+	} );
 
 	function createComponent( spy ) {
 		return new Promise( resolve => {
-			const fix = TestBed.createComponent( CKEditorComponent );
-			const comp = fix.componentInstance;
+			const fixture = TestBed.createComponent( CKEditorComponent );
+			const component = fixture.componentInstance;
 
-			comp.namespaceLoaded.subscribe( spy );
-			comp.ready.subscribe( () => resolve( comp ) );
+			fixtures.push( fixture );
 
-			fix.detectChanges();
+			component.namespaceLoaded.subscribe( spy );
+			component.ready.subscribe( () => resolve( component ) );
+
+			fixture.detectChanges();
 		} );
 	}
 
-	it ( 'should be loaded and trigger namespaceLoaded event only once', () => {
+	it( 'should be loaded and trigger namespaceLoaded event only once', () => {
 		const spy = jasmine.createSpy();
+
+		delete window[ 'CKEDITOR' ];
 
 		return Promise.resolve(
 			createComponent( spy )
@@ -50,6 +66,28 @@ describe( 'CKEditor namespace', () => {
 			createComponent( spy )
 		} ).then( () => {
 			expect( spy ).toHaveBeenCalledTimes( 1 );
+		} );
+	} );
+
+	it( 'should allow modifying global config between editors', () => {
+		const changeLang = lang => {
+			return ( namespace => {
+				namespace.config.language = lang;
+			} );
+		};
+
+		const expectedLang = 'fr';
+
+		delete window[ 'CKEDITOR' ];
+
+		return createComponent( changeLang( expectedLang ) ).then( ( component1: CKEditorComponent ) => {
+			expect( component1.instance.config.language ).toEqual( expectedLang );
+			return createComponent( changeLang( 'en' ) );
+		} ).then( ( component2: CKEditorComponent ) => {
+			expect( component2.instance.config.language ).toEqual( expectedLang );
+			return createComponent( {} );
+		} ).then( ( component3: CKEditorComponent ) => {
+			expect( component3.instance.config.language ).toEqual( expectedLang );
 		} );
 	} );
 } );
