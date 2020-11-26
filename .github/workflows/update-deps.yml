@@ -25,16 +25,16 @@ jobs:
 
       - name: Check env variables
         # Expected secrets variables:
-        # BOT_USERNAME - GH user name which will be used to push changes.
-        # BOT_EMAIL - GH user email which will be used to push changes.
+        # GH_BOT_USERNAME - GH user name which will be used to push changes.
+        # GH_BOT_EMAIL - GH user email which will be used to push changes.
         # [BRANCH_MAIN] - Target branch name (optional), if not set default branch will be used.
         run: |
-          if [[ -z "${{ secrets.BOT_USERNAME }}" ]]; then
-            echo "Expected 'BOT_USERNAME' secret variable to be set. Current value '${{ secrets.BOT_USERNAME }}'"
+          if [[ -z "${{ secrets.GH_BOT_USERNAME }}" ]]; then
+            echo "Expected 'GH_BOT_USERNAME' secret variable to be set."
             exit 1
           fi
-          if [[ -z "${{ secrets.BOT_EMAIL }}" ]]; then
-            echo "Expected 'BOT_EMAIL' secret variable to be set. Current value '${{ secrets.BOT_EMAIL }}'"
+          if [[ -z "${{ secrets.GH_BOT_EMAIL }}" ]]; then
+            echo "Expected 'GH_BOT_EMAIL' secret variable to be set."
             exit 1
           fi
           if [[ -z "${{ secrets.BRANCH_MAIN }}" ]]; then
@@ -63,8 +63,8 @@ jobs:
         if: env.BRANCH_UPDATE != 0
         run: |
           if [[ $(git diff origin/${{ env.BRANCH_MAIN }} | wc -c) -ne 0 ]]; then
-            git config --local user.email "${{ secrets.BOT_EMAIL }}"
-            git config --local user.name "${{ secrets.BOT_USERNAME }}"
+            git config --local user.email "${{ secrets.GH_BOT_EMAIL }}"
+            git config --local user.name "${{ secrets.GH_BOT_USERNAME }}"
             git add package*.json
             git commit -m "Update NPM ${{ matrix.deps }} dependencies."
             echo "HAS_CHANGES=1" >> $GITHUB_ENV
