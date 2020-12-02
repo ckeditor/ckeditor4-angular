@@ -9,7 +9,7 @@ export function whenEvent( evtName: string, component: CKEditorComponent ) {
 }
 
 export function whenDataReady( editor: any, callback?: Function ) {
-	return new Promise( res => {
+	return new Promise<void>( res => {
 		editor.once( 'dataReady', () => {
 			res();
 		}, null, null, 9999 );
@@ -19,7 +19,7 @@ export function whenDataReady( editor: any, callback?: Function ) {
 }
 
 export function setDataMultipleTimes( editor: any, data: Array<string> ) {
-	return new Promise( res => {
+	return new Promise<void>( res => {
 		if ( !editor.editable().isInline() ) {
 			// Due to setData() issue with iframe based editor, subsequent setData() calls
 			// should be performed asynchronously (https://github.com/ckeditor/ckeditor4/issues/3669).
