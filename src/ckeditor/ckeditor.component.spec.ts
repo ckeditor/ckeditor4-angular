@@ -22,6 +22,10 @@ describe( 'CKEditor namespace', () => {
 	let fixtures = [];
 
 	beforeEach( () => {
+		if ( window[ 'CKEDITOR' ] ) {
+			delete window[ 'CKEDITOR' ];
+		}
+
 		return TestBed.configureTestingModule( {
 			declarations: [ CKEditorComponent ]
 		} ).compileComponents();
@@ -56,8 +60,6 @@ describe( 'CKEditor namespace', () => {
 	it( 'should be loaded and trigger namespaceLoaded event only once', () => {
 		const spy = jasmine.createSpy();
 
-		delete window[ 'CKEDITOR' ];
-
 		return Promise.resolve(
 			createComponent( spy )
 		).then ( () => {
@@ -77,8 +79,6 @@ describe( 'CKEditor namespace', () => {
 		};
 
 		const expectedLang = 'fr';
-
-		delete window[ 'CKEDITOR' ];
 
 		return createComponent( changeLang( expectedLang ) ).then( ( component1: CKEditorComponent ) => {
 			expect( component1.instance.config.language ).toEqual( expectedLang );
