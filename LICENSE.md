@@ -2,7 +2,7 @@ Software License Agreement
 ==========================
 
 **CKEditor 4 WYSIWYG editor Angular component** – https://github.com/ckeditor/ckeditor4-angular <br>
-Copyright (c) 2003-2020, [CKSource](https://cksource.com/) Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2021, [CKSource](https://cksource.com/) Frederico Knabben. All rights reserved.
 
 Licensed under the terms of any of the following licenses at your
 choice:
