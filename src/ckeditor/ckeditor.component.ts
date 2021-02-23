@@ -124,8 +124,8 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 
 	/**
 	 * Fired when the CKEDITOR https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR.html namespace
-	 * is loaded. It only triggers once for each editor component. Can be used for convenient changes
-	 * in the namespace, e.g. for adding external plugins.
+	 * is loaded. It only triggers once, no matter how many CKEditor 4 components are initialised.
+	 * Can be used for convenient changes in the namespace, e.g. for adding external plugins.
 	 */
 	@Output() namespaceLoaded = new EventEmitter<CKEditor4.EventInfo>();
 
@@ -226,17 +226,6 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	@Output() blur = new EventEmitter<CKEditor4.EventInfo>();
 
 	/**
-	 * The instance of the editor created by this component.
-	 */
-	instance: any;
-
-	/**
-	 * If the component is read–only before the editor instance is created, it remembers that state,
-	 * so the editor can become read–only once it is ready.
-	 */
-	private _readOnly: boolean = null;
-
-	/**
 	 * A callback executed when the content of the editor changes. Part of the
 	 * `ControlValueAccessor` (https://angular.io/api/forms/ControlValueAccessor) interface.
 	 *
@@ -251,6 +240,17 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	 * Note: Unset unless the component uses the `ngModel`.
 	 */
 	onTouched?: () => void;
+
+	/**
+	 * The instance of the editor created by this component.
+	 */
+	instance: any;
+
+	/**
+	 * If the component is read–only before the editor instance is created, it remembers that state,
+	 * so the editor can become read–only once it is ready.
+	 */
+	private _readOnly: boolean = null;
 
 	private _data: string = null;
 

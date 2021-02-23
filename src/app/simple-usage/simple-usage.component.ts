@@ -76,6 +76,6 @@ You learn to appreciate each and every single one of the differences while you b
 	}
 
 	onNamespaceLoaded( event: CKEditor4.EventInfo, editorName: string ): void {
-		console.log( `Namespace loaded in ${editorName.toLowerCase()} editor.` );
+		console.log( `Namespace loaded by ${editorName.toLowerCase()} editor.` );
 	}
 }
