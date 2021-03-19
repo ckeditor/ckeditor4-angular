@@ -1,5 +1,11 @@
 # CKEditor 4 Angular Integration Changelog
 
+## ckeditor4-angular 2.2.0
+
+New Features:
+
+* [#143](https://github.com/ckeditor/ckeditor4-angular/issues/143): Exposed `namespaceLoaded` event fired when [`CKEDITOR` namespace](https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR.html) is loaded, which can be used for its easier customization.
+
 ## ckeditor4-angular 2.1.0
 
 Other Changes:

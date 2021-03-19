@@ -3,14 +3,14 @@
  * For licensing, see LICENSE.md.
  */
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-
-import { CKEditorModule } from '../../ckeditor/ckeditor.module';
-import { DemoFormComponent } from './demo-form.component';
-import { By } from '@angular/platform-browser';
-import { CKEditorComponent } from '../../ckeditor/ckeditor.component';
 import { DebugElement } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { DemoFormComponent } from './demo-form.component';
+import { CKEditorModule } from '../../ckeditor/ckeditor.module';
+import { CKEditorComponent } from '../../ckeditor/ckeditor.component';
 
 import { whenEvent } from '../../test.tools';
 
@@ -105,7 +105,7 @@ describe( 'DemoFormComponent', () => {
 	}, {
 		newConfig: { removePlugins: 'undo' },
 		msg: 'without undo plugin'
-	}].forEach( ( { newConfig, msg } ) => {
+	} ].forEach( ( { newConfig, msg } ) => {
 		describe( 'should emit onChange event', () => {
 			beforeAll( () => {
 				config = newConfig;
