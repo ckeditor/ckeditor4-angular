@@ -41,6 +41,6 @@
 		"dest": "../../dist"
 	},
 	"dependencies": {
-		"load-script": "^1.0.0"
+		"ckeditor4-integrations-common": "^0.2.0"
 	}
 }
