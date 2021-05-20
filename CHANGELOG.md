@@ -6,6 +6,10 @@ Fixed Issues:
 
 * [#191](https://github.com/ckeditor/ckeditor4-angular/issues/191): Fixed: Cannot find module `ckeditor4-integrations-common` error after upgrading to `2.2.0`.
 
+Other Changes:
+
+* Updated default CDN CKEditor 4 dependency to [4.16.1](https://github.com/ckeditor/ckeditor4/blob/master/CHANGES.md#ckeditor-4161).
+
 ## ckeditor4-angular 2.2.0
 
 New Features:
