@@ -23,7 +23,7 @@ const testedBrowser = argv.browser || 'Chrome';
 const angularVersion = argv.angular || 'current';
 
 const PACKAGE_PATH = resolvePath( __dirname, '..' );
-const TESTS_PATH = resolvePath( PACKAGE_PATH, 'angular-tests' );
+const TESTS_PATH = resolvePath( PACKAGE_PATH, '..', 'angular-tests' );
 
 const versionsPassed = [];
 const versionsFailed = [];
@@ -35,7 +35,11 @@ try {
 
 	cleanupTestDir();
 
-	getVersionsToTest().forEach( version => {
+	// getVersionsToTest().forEach( version => {
+	// 	prepareTestDir( version );
+	// 	// testVersion( version );
+	// } );
+	['6.2.9'].forEach( version => {
 		prepareTestDir( version );
 		// testVersion( version );
 	} );
@@ -52,29 +56,11 @@ try {
 }
 
 /**
- * Removes test directory and its content, then re-creates empty test dir and copies init files.
+ * Removes test directory and its content, then re-creates empty test dir.
  */
 function cleanupTestDir() {
-	const filesToCopy = [
-		'package.json',
-		// 'webpack.config.js',
-		'karma.conf.js',
-		'scripts/test-transpiler.js',
-		'src/ckeditor.jsx',
-		'tests/browser/ckeditor.jsx',
-		'tests/server/ckeditor.jsx',
-		'tests/utils/polyfill.js'
-	];
-
 	rmdirSyncRecursive( TESTS_PATH );
 	mkdirSync( TESTS_PATH );
-	mkdirSync( `${TESTS_PATH}/src` );
-	mkdirSync( `${TESTS_PATH}/tests` );
-	mkdirSync( `${TESTS_PATH}/scripts` );
-
-	// copyFiles( filesToCopy, PACKAGE_PATH, TESTS_PATH );
-
-	// execNpmCommand( 'install --legacy-peer-deps', TESTS_PATH );
 }
 
 /**
@@ -212,15 +198,27 @@ function getCurrentAngularVersion() {
 /**
  * Prepares test dir by copying required files and installing dependencies.
  *
- * @param {string} version React version to test
+ * @param {string} version Angular version to test
  */
 function prepareTestDir( version ) {
-	console.log( `--- Preparing package environment for React v${ version } ---` );
+	console.log( `--- Preparing package environment for Angular v${ version } ---` );
+
+	// copyFiles( filesToCopy, PACKAGE_PATH, TESTS_PATH );
 
 	execNpmCommand(
-		`install react@${ version } react-dom@${ version } --legacy-peer-deps`,
+		`init -y`,
+		TESTS_PATH
+	)
+
+	execNpmCommand(
+		`i @angular/cli@${ version }`,
 		TESTS_PATH
 	);
+
+	execNpxCommand(
+		`ng new cke4-angular-tester`,
+		TESTS_PATH
+	)
 }
 
 
@@ -238,6 +236,39 @@ function execNpmCommand( command, cwd = __dirname ) {
 	return execSync( cmd, {
 		encoding: 'utf-8',
 		cwd
+	} );
+}
+
+/**
+ * Executes npx command.
+ *
+ * @param {string} command command to execute
+ * @param {string} cwd dir where to execute command
+ * @returns {string|Buffer}
+ */
+function execNpxCommand( command, cwd = __dirname ) {
+	const cmd = `npx ${command}`;
+
+	return execSync( cmd, {
+		encoding: 'utf-8',
+		cwd
+	} );
+}
+
+
+/**
+ * Copies files from source to dest.
+ *
+ * @param {string} files list of files
+ * @param {string} src source path
+ * @param {string} dest destination path
+ */
+ function copyFiles( files, src, dest ) {
+	files.forEach( file => {
+		const srcPath = resolvePath( src, file );
+		const destPath = resolvePath( dest, file );
+
+		copyFileSync( srcPath, destPath );
 	} );
 }
 
