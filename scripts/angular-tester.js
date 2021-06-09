@@ -1,7 +1,8 @@
 /* eslint-env node */
 
 const { execSync } = require( 'child_process' );
-const { mkdirSync, rmdirSync, copyFileSync } = require( 'fs' );
+const { mkdirSync, rmdirSync, copyFileSync, readFileSync, writeFileSync, unlinkSync } = require( 'fs' );
+const { copySync } = require( 'fs-extra' );
 const { resolve: resolvePath } = require( 'path' );
 const satisfiesSemver = require( 'semver/functions/satisfies' );
 const semverMajor = require( 'semver/functions/major' );
@@ -35,14 +36,14 @@ try {
 
 	cleanupTestDir();
 
-	// getVersionsToTest().forEach( version => {
-	// 	prepareTestDir( version );
-	// 	// testVersion( version );
-	// } );
-	['6.2.9'].forEach( version => {
+	getVersionsToTest().forEach( version => {
 		prepareTestDir( version );
 		// testVersion( version );
 	} );
+	// [ '7.3.10' ].forEach( version => {
+	// 	prepareTestDir( version );
+	// 	// testVersion( version );
+	// } );
 
 	if ( Object.keys( errorLogs ).length === 0 ) {
 		console.log( '--- Done without errors. Have a nice day! ---' );
@@ -188,7 +189,7 @@ function isLatestPatch( index, array ) {
 /**
  * Gets currently installed version of Angular.
  *
- * @returns {string} React version
+ * @returns {string} Angular version
  */
 function getCurrentAngularVersion() {
 	return require( '@angular/cli/package.json' ).version;
@@ -201,9 +202,14 @@ function getCurrentAngularVersion() {
  * @param {string} version Angular version to test
  */
 function prepareTestDir( version ) {
-	console.log( `--- Preparing package environment for Angular v${ version } ---` );
+	console.log( `--- Preparing package environment for Angular v${version} ---` );
 
-	// copyFiles( filesToCopy, PACKAGE_PATH, TESTS_PATH );
+	const filesToCopy = [
+		'src/app',
+		'src/ckeditor',
+		'src/karma.conf.js',
+		'src/test.tools.ts'
+	];
 
 	execNpmCommand(
 		`init -y`,
@@ -211,7 +217,7 @@ function prepareTestDir( version ) {
 	)
 
 	execNpmCommand(
-		`i @angular/cli@${ version }`,
+		`i @angular/cli@${version}`,
 		TESTS_PATH
 	);
 
@@ -219,6 +225,31 @@ function prepareTestDir( version ) {
 		`ng new cke4-angular-tester`,
 		TESTS_PATH
 	)
+
+	execNpmCommand(
+		`i ckeditor4-integrations-common wait-until-promise karma-firefox-launcher karma-spec-reporter`,
+		resolvePath( TESTS_PATH, 'cke4-angular-tester' )
+	);
+
+	execNpmCommand(
+		`i ckeditor4-integrations-common wait-until-promise karma-firefox-launcher karma-spec-reporter zone.js@0.10.3`,
+		resolvePath( TESTS_PATH, 'cke4-angular-tester' )
+	);
+
+	unlinkSync( resolvePath(TESTS_PATH, 'cke4-angular-tester/src/app/app.component.spec.ts') );
+
+	copyFiles( filesToCopy, PACKAGE_PATH, resolvePath( TESTS_PATH, 'cke4-angular-tester' ) );
+
+	let res = readFileSync( resolvePath( TESTS_PATH, 'cke4-angular-tester/src/app/demo-form/demo-form.component.ts' ), { encoding: 'utf-8' } );
+	let result = res.replace( /, { static: true }/g, '' );
+
+	writeFileSync( resolvePath( TESTS_PATH, 'cke4-angular-tester/src/app/demo-form/demo-form.component.ts' ), result );
+
+	execNpxCommand(
+		`ng test`,
+		resolvePath( TESTS_PATH, 'cke4-angular-tester' )
+	);
+
 }
 
 
@@ -257,18 +288,18 @@ function execNpxCommand( command, cwd = __dirname ) {
 
 
 /**
- * Copies files from source to dest.
+ * Copies files and directories from source to dest.
  *
- * @param {string} files list of files
+ * @param {string} files list of files and dirs
  * @param {string} src source path
  * @param {string} dest destination path
  */
- function copyFiles( files, src, dest ) {
+function copyFiles( files, src, dest ) {
 	files.forEach( file => {
 		const srcPath = resolvePath( src, file );
 		const destPath = resolvePath( dest, file );
 
-		copyFileSync( srcPath, destPath );
+		copySync( srcPath, destPath );
 	} );
 }
 
