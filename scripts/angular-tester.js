@@ -1,7 +1,7 @@
 /* eslint-env node */
 
 const { execSync } = require( 'child_process' );
-const { mkdirSync, rmdirSync, copyFileSync, readFileSync, writeFileSync, unlinkSync } = require( 'fs' );
+const { mkdirSync, rmdirSync, unlinkSync } = require( 'fs' );
 const { copySync } = require( 'fs-extra' );
 const { resolve: resolvePath } = require( 'path' );
 const satisfiesSemver = require( 'semver/functions/satisfies' );
