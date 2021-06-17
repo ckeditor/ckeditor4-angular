@@ -22,6 +22,7 @@ const semverMajor = require( 'semver/functions/major' );
 const argv = require( 'minimist' )( process.argv.slice( 2 ) );
 const testedBrowser = argv.browser || 'Chrome';
 const angularVersion = argv.angular || 'current';
+const noRebuild = argv.nr || false;
 
 const PACKAGE_PATH = resolvePath( __dirname, '..' );
 const TESTS_PATH = resolvePath( PACKAGE_PATH, '..', 'angular-tests' );
@@ -34,15 +35,21 @@ try {
 	console.log( '--- Ultimate CKEditor 4 - Angular Integration Tester ---' );
 	console.log( `Running tests for: ${testedBrowser}` );
 
-	cleanupTestDir();
+	if ( !noRebuild ) {
+		cleanupTestDir();
+	}
 
 	getVersionsToTest().forEach( version => {
-		prepareTestDir( version );
-		// testVersion( version );
+		if ( !noRebuild ) {
+			prepareTestDir( version );
+		}
+		testVersion( version );
 	} );
 	// [ '7.3.10' ].forEach( version => {
-	// 	prepareTestDir( version );
-	// 	// testVersion( version );
+	// 	if ( !noRebuild ) {
+	// 		prepareTestDir( version );
+	// 	}
+	// 	testVersion( version );
 	// } );
 
 	if ( Object.keys( errorLogs ).length === 0 ) {
@@ -100,7 +107,6 @@ function getVersionsToTest() {
  */
 function getAllAngularVersions() {
 	const packageInfo = require( '../package.json' );
-	console.log( packageInfo );
 	const availableVersions = getVersions();
 	const semverRange = getAngularVersion( packageInfo );
 	const versionsInRange = getVersionsInRange( semverRange, availableVersions );
