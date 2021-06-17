@@ -210,11 +210,14 @@ function getCurrentAngularVersion() {
 function prepareTestDir( version ) {
 	console.log( `--- Preparing package environment for Angular v${version} ---` );
 
+	cleanupTestDir();
+
 	const filesToCopy = [
-		'src/app',
-		'src/ckeditor',
-		'src/karma.conf.js',
-		'src/test.tools.ts'
+		[ 'app', 'app' ],
+		[ 'ckeditor', 'ckeditor' ],
+		[ 'test.tools.ts', 'test.tools.ts' ],
+		[ 'assets/karma.conf.js', 'karma.conf.js' ],
+		[ 'assets/demo-form.component.ts', 'app/demo-form/demo-form.component.ts' ]
 	];
 
 	execNpmCommand(
@@ -237,27 +240,18 @@ function prepareTestDir( version ) {
 		resolvePath( TESTS_PATH, 'cke4-angular-tester' )
 	);
 
-	execNpmCommand(
-		`i ckeditor4-integrations-common wait-until-promise karma-firefox-launcher karma-spec-reporter zone.js@0.10.3`,
-		resolvePath( TESTS_PATH, 'cke4-angular-tester' )
-	);
+	if ( [ 6, 7 ].indexOf( semverMajor( version ) ) >= 0 ) {
+		console.log( 'this Angular version needs update of zone.js' );
+		execNpmCommand(
+			`i zone.js@0.10.3`,
+			resolvePath( TESTS_PATH, 'cke4-angular-tester' )
+		);
+	}
 
-	unlinkSync( resolvePath(TESTS_PATH, 'cke4-angular-tester/src/app/app.component.spec.ts') );
+	unlinkSync( resolvePath( TESTS_PATH, 'cke4-angular-tester/src/app/app.component.spec.ts' ) );
 
-	copyFiles( filesToCopy, PACKAGE_PATH, resolvePath( TESTS_PATH, 'cke4-angular-tester' ) );
-
-	let res = readFileSync( resolvePath( TESTS_PATH, 'cke4-angular-tester/src/app/demo-form/demo-form.component.ts' ), { encoding: 'utf-8' } );
-	let result = res.replace( /, { static: true }/g, '' );
-
-	writeFileSync( resolvePath( TESTS_PATH, 'cke4-angular-tester/src/app/demo-form/demo-form.component.ts' ), result );
-
-	execNpxCommand(
-		`ng test`,
-		resolvePath( TESTS_PATH, 'cke4-angular-tester' )
-	);
-
+	copyFiles( filesToCopy, resolvePath( PACKAGE_PATH, 'src' ), resolvePath( TESTS_PATH, 'cke4-angular-tester/src' ) );
 }
-
 
 
 /**
@@ -275,6 +269,7 @@ function execNpmCommand( command, cwd = __dirname ) {
 		cwd
 	} );
 }
+
 
 /**
  * Executes npx command.
@@ -302,14 +297,40 @@ function execNpxCommand( command, cwd = __dirname ) {
  */
 function copyFiles( files, src, dest ) {
 	files.forEach( file => {
-		const srcPath = resolvePath( src, file );
-		const destPath = resolvePath( dest, file );
+		const srcPath = resolvePath( src, file[ 0 ] );
+		const destPath = resolvePath( dest, file[ 1 ] );
 
 		copySync( srcPath, destPath );
 	} );
 }
 
 
+/**
+ * Runs tests for requested Angular version and environment (see `--browser` arg).
+ *
+ * @param {string} version Angular version to test
+ */
+function testVersion( version ) {
+	try {
+		console.log( `--- Testing Angular v${version} ---` );
+
+		process.env.REQUESTED_ANGULAR_VERSION = version;
+		execNpmCommand(
+			`run test`,
+			resolvePath( TESTS_PATH, 'cke4-angular-tester' )
+		);
+		versionsPassed.push( version );
+	} catch ( error ) {
+		console.error();
+		console.error( '--- Errors occured during testing version ' + version + '. See the logs at the bottom. ---' );
+		console.error();
+
+		versionsFailed.push( version );
+		errorLogs[ version ] = error.stdout;
+
+		// throw error;
+	}
+}
 
 function logResults( errorLogs ) {
 	console.log( '---------------------------------------------------------------------------' );
