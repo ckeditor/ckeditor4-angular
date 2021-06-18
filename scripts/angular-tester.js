@@ -6,6 +6,7 @@ const { copySync } = require( 'fs-extra' );
 const { resolve: resolvePath } = require( 'path' );
 const satisfiesSemver = require( 'semver/functions/satisfies' );
 const semverMajor = require( 'semver/functions/major' );
+const chalk = require( 'chalk' );
 
 /**
  *
@@ -21,7 +22,7 @@ const semverMajor = require( 'semver/functions/major' );
  */
 const argv = require( 'minimist' )( process.argv.slice( 2 ) );
 const testedBrowser = argv.browser || 'Chrome';
-const angularVersion = argv.angular || 'current';
+const testedNgVersions = getVersionsToTest();
 const noRebuild = argv.nr || false;
 
 const PACKAGE_PATH = resolvePath( __dirname, '..' );
@@ -32,15 +33,17 @@ const versionsFailed = [];
 const errorLogs = {};
 
 try {
-	console.log( '--- Ultimate CKEditor 4 - Angular Integration Tester ---' );
-	console.log( `Running tests for: ${testedBrowser}` );
+	console.log( chalk.green.bold( '----- Ultimate CKEditor4-Angular Integration Tester -----\n' ) );
+	console.log( `Running tests for: ${ chalk.cyan( testedBrowser ) }` );
+	console.log( `Angular versions to be tested: ${ chalk.cyan( testedNgVersions ) }\n` );
 
-	if ( !noRebuild ) {
-		cleanupTestDir();
-	}
+	console.log( chalk.bgBlue.bold( '--- Preparing testing directory ---\n' ) );
 
-	getVersionsToTest().forEach( version => {
-		if ( !noRebuild ) {
+	testedNgVersions.forEach( version => {
+		if ( noRebuild ) {
+			console.log( chalk.yellow( '`no-rebuild` option detected; using existing testing directory.\n' ) );
+		} else {
+			cleanupTestDir();
 			prepareTestDir( version );
 		}
 		testVersion( version );
@@ -55,13 +58,13 @@ try {
 	'1.7.4' - not lts */
 
 	if ( Object.keys( errorLogs ).length === 0 ) {
-		console.log( '--- Done without errors. Have a nice day! ---' );
+		console.log( chalk.green.bold( '----- Done without errors. Have a nice day! -----' ) );
 	} else {
-		logResults( errorLogs );
+		logErrors( errorLogs );
 	}
 } catch ( error ) {
-	console.log( error );
-	console.log( '--- Unexpected error occured during testing - see the log above. ---' );
+	console.log( chalk.red( error ) );
+	console.log( chalk.red( '----- Unexpected error occured during testing - see the log above. -----' ) );
 	process.exit( 1 );
 }
 
@@ -69,6 +72,8 @@ try {
  * Removes test directory and its content, then re-creates empty test dir.
  */
 function cleanupTestDir() {
+	console.log( chalk.magenta( 'Recreating the testing directory...\n' ) );
+
 	rmdirSyncRecursive( TESTS_PATH );
 	mkdirSync( TESTS_PATH );
 }
@@ -92,13 +97,13 @@ function rmdirSyncRecursive( path ) {
  * @returns {string[]} list of versions to be tested
  */
 function getVersionsToTest() {
-	switch ( angularVersion ) {
+	switch ( argv.angular ) {
 		case 'all':
 			return getAllAngularVersions();
-		case 'current':
+		case undefined:
 			return [ getCurrentAngularVersion() ];
 		default:
-			return [ angularVersion ];
+			return [ argv.angular ];
 	}
 }
 
@@ -168,7 +173,7 @@ function getLatestPatches( versions ) {
 		return acc;
 	}, [] );
 
-	console.log( 'Versions that will be tested (' + latestPatches.length + '):', latestPatches );
+	console.log( `Versions that will be tested ( ${ chalk.cyan( latestPatches.length ) } ): ${ chalk.cyan( latestPatches ) }` );
 
 	return latestPatches;
 }
@@ -210,9 +215,7 @@ function getCurrentAngularVersion() {
  * @param {string} version Angular version to test
  */
 function prepareTestDir( version ) {
-	console.log( `--- Preparing package environment for Angular v${version} ---` );
-
-	cleanupTestDir();
+	console.log( chalk.bgBlue.bold( `--- Preparing environment for ${ chalk.italic( '@angular/cli@' + version ) } ---\n` ) );
 
 	const filesToCopy = [
 		{ src: 'app', dest: 'app', versions: 'all' },
@@ -224,36 +227,39 @@ function prepareTestDir( version ) {
 		{ src: 'assets/demo-form.component.ts', dest: 'app/demo-form/demo-form.component.ts', versions: [ 6, 7 ] }
 	];
 
+	console.log( chalk.magenta( `Initializing ${ chalk.italic( 'package.json' ) } file...\n` ) );
 	execNpmCommand(
 		`init -y`,
 		TESTS_PATH
 	)
 
+	console.log( chalk.magenta( `Installing ${ chalk.italic( '@angular/cli' ) } locally...\n` ) );
 	execNpmCommand(
 		`i @angular/cli@${version}`,
 		TESTS_PATH
 	);
 
+	console.log( chalk.magenta( 'Initializing Angular project...\n' ) );
 	execNpxCommand(
 		`ng new cke4-angular-tester`,
 		TESTS_PATH
 	)
 
+	console.log( chalk.magenta( 'Installing other required packages...\n' ) );
 	execNpmCommand(
 		`i ckeditor4-integrations-common wait-until-promise karma-firefox-launcher karma-spec-reporter`,
 		resolvePath( TESTS_PATH, 'cke4-angular-tester' )
 	);
 
 	if ( [ 6, 7 ].indexOf( semverMajor( version ) ) >= 0 ) {
-		console.log( 'this Angular version needs update of zone.js' );
 		execNpmCommand(
 			`i zone.js@0.10.3`,
 			resolvePath( TESTS_PATH, 'cke4-angular-tester' )
 		);
 	}
 
+	console.log( chalk.magenta( 'Copying integration and tests files...\n' ) );
 	unlinkSync( resolvePath( TESTS_PATH, 'cke4-angular-tester/src/app/app.component.spec.ts' ) );
-
 	copyFiles( {
 		files: filesToCopy,
 		src: resolvePath( PACKAGE_PATH, 'src' ),
@@ -325,9 +331,9 @@ function copyFiles( options ) {
  */
 function testVersion( version ) {
 	try {
-		console.log( `--- Testing Angular v${version} ---` );
-
-		process.env.REQUESTED_ANGULAR_VERSION = version;
+		console.log( chalk.bgBlue.bold( `--- Testing ${ chalk.italic( '@angular/cli@' + version ) } ---\n` ) );
+		// process.env.REQUESTED_ANGULAR_VERSION = version;
+		console.log( chalk.magenta( 'Executing tests...' ) );
 		execNpmCommand(
 			`run test`,
 			resolvePath( TESTS_PATH, 'cke4-angular-tester' )
@@ -335,7 +341,7 @@ function testVersion( version ) {
 		versionsPassed.push( version );
 	} catch ( error ) {
 		console.error();
-		console.error( '--- Errors occured during testing version ' + version + '. See the logs at the bottom. ---' );
+		console.error( chalk.yellow( '--- Errors occured during testing version ' + version + '. See the logs at the bottom after testing is finished. ---' ) );
 		console.error();
 
 		versionsFailed.push( version );
@@ -345,22 +351,21 @@ function testVersion( version ) {
 	}
 }
 
-function logResults( errorLogs ) {
-	console.log( '---------------------------------------------------------------------------' );
-	console.log( '------------------------- Logs of failed versions -------------------------' );
-	console.log( '---------------------------------------------------------------------------' );
+function logErrors( errorLogs ) {
+	console.log( chalk.red( '---------------------------------------------------------------------------' ) );
+	console.log( chalk.red( '------------------------- Logs of failed versions -------------------------' ) );
+	console.log( chalk.red( '---------------------------------------------------------------------------' ) );
 	console.log();
 
 	for ( const key in errorLogs ) {
-		console.log( '--- ' + key + ' ---', errorLogs[ key ] );
+		console.log( chalk.magenta ( '--- ' + key + ' ---'), chalk.yellow( errorLogs[ key ] ) );
 	}
 
-	console.log( '--- Some versions failed. See the logs above. ---' );
-	console.log( 'Successful tests:' );
-	console.log( versionsPassed );
-	console.log();
-	console.log( 'Failed tests:' );
-	console.log( versionsFailed );
+	console.log( chalk.red( '----- Testing done. Some versions failed. See the logs above. -----\n' ) );
+	console.log( 'Successfully tested versions:' );
+	console.log( chalk.green( versionsPassed + '\n' ) );
+	console.log( 'Unsuccessfully tested versions:' );
+	console.log( chalk.red( versionsFailed ) + '\n' );
 
 	process.exit( 1 );
 }
