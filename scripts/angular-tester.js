@@ -58,13 +58,17 @@ try {
 	'1.7.4' - not lts */
 
 	if ( Object.keys( errorLogs ).length === 0 ) {
+		console.log( chalk.green.bold( '-------------------------------------------------' ) );
 		console.log( chalk.green.bold( '----- Done without errors. Have a nice day! -----' ) );
+		console.log( chalk.green.bold( '-------------------------------------------------' ) );
 	} else {
 		logErrors( errorLogs );
 	}
 } catch ( error ) {
 	console.log( chalk.red( error ) );
+	console.log( chalk.red( '------------------------------------------------------------------------' ) );
 	console.log( chalk.red( '----- Unexpected error occured during testing - see the log above. -----' ) );
+	console.log( chalk.red( '------------------------------------------------------------------------' ) );
 	process.exit( 1 );
 }
 
@@ -335,7 +339,7 @@ function testVersion( version ) {
 		// process.env.REQUESTED_ANGULAR_VERSION = version;
 		console.log( chalk.magenta( 'Executing tests...' ) );
 		execNpmCommand(
-			`run test`,
+			`run test -- --browsers ${ testedBrowser }`,
 			resolvePath( TESTS_PATH, 'cke4-angular-tester' )
 		);
 		versionsPassed.push( version );
