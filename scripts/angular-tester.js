@@ -45,12 +45,13 @@ try {
 		}
 		testVersion( version );
 	} );
-	// [ '7.3.10' ].forEach( version => {
-	// 	if ( !noRebuild ) {
-	// 		prepareTestDir( version );
-	// 	}
-	// 	testVersion( version );
-	// } );
+
+	/* Versions that will be tested (7): [
+	'6.2.9',  '7.3.10',
+	'8.3.29', '9.1.15',
+	'10.2.3', '11.2.14',
+	'12.0.4'
+	] */
 
 	if ( Object.keys( errorLogs ).length === 0 ) {
 		console.log( '--- Done without errors. Have a nice day! ---' );
@@ -213,11 +214,12 @@ function prepareTestDir( version ) {
 	cleanupTestDir();
 
 	const filesToCopy = [
-		[ 'app', 'app' ],
-		[ 'ckeditor', 'ckeditor' ],
-		[ 'test.tools.ts', 'test.tools.ts' ],
-		[ 'assets/karma.conf.js', 'karma.conf.js' ],
-		[ 'assets/demo-form.component.ts', 'app/demo-form/demo-form.component.ts' ]
+		{ src: 'app', dest: 'app', versions: 'all' },
+		{ src: 'ckeditor', dest: 'ckeditor', versions: 'all' },
+		{ src: 'test.tools.ts', dest: 'test.tools.ts', versions: 'all' },
+		{ src: 'assets/karma.conf.js', dest: 'karma.conf.js', versions: [ 6, 7 ] },
+		{ src: 'assets/karma.conf.js', dest: '../karma.conf.js', versions: [ 8 ] },
+		{ src: 'assets/demo-form.component.ts', dest: 'app/demo-form/demo-form.component.ts', versions: [ 6, 7 ] }
 	];
 
 	execNpmCommand(
@@ -250,7 +252,12 @@ function prepareTestDir( version ) {
 
 	unlinkSync( resolvePath( TESTS_PATH, 'cke4-angular-tester/src/app/app.component.spec.ts' ) );
 
-	copyFiles( filesToCopy, resolvePath( PACKAGE_PATH, 'src' ), resolvePath( TESTS_PATH, 'cke4-angular-tester/src' ) );
+	copyFiles( {
+		files: filesToCopy,
+		src: resolvePath( PACKAGE_PATH, 'src' ),
+		dest: resolvePath( TESTS_PATH, 'cke4-angular-tester/src' ),
+		version: version
+	} );
 }
 
 
@@ -291,16 +298,20 @@ function execNpxCommand( command, cwd = __dirname ) {
 /**
  * Copies files and directories from source to dest.
  *
- * @param {string} files list of files and dirs
- * @param {string} src source path
- * @param {string} dest destination path
+ * @param options
+ * @param {string} options.files list of files and dirs
+ * @param {string} options.src source path
+ * @param {string} options.dest destination path
+ * @param {string} options.version currently tested Angular version
  */
-function copyFiles( files, src, dest ) {
-	files.forEach( file => {
-		const srcPath = resolvePath( src, file[ 0 ] );
-		const destPath = resolvePath( dest, file[ 1 ] );
+function copyFiles( options ) {
+	options.files.forEach( file => {
+		if ( file.versions === 'all' || file.versions.indexOf( semverMajor( options.version ) ) >= 0 ) {
+			const srcPath = resolvePath( options.src, file.src );
+			const destPath = resolvePath( options.dest, file.dest );
 
-		copySync( srcPath, destPath );
+			copySync( srcPath, destPath );
+		}
 	} );
 }
 
