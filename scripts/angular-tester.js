@@ -51,7 +51,8 @@ try {
 	'8.3.29', '9.1.15',
 	'10.2.3', '11.2.14',
 	'12.0.4'
-	] */
+	]
+	'1.7.4' - not lts */
 
 	if ( Object.keys( errorLogs ).length === 0 ) {
 		console.log( '--- Done without errors. Have a nice day! ---' );
@@ -218,7 +219,8 @@ function prepareTestDir( version ) {
 		{ src: 'ckeditor', dest: 'ckeditor', versions: 'all' },
 		{ src: 'test.tools.ts', dest: 'test.tools.ts', versions: 'all' },
 		{ src: 'assets/karma.conf.js', dest: 'karma.conf.js', versions: [ 6, 7 ] },
-		{ src: 'assets/karma.conf.js', dest: '../karma.conf.js', versions: [ 8 ] },
+		{ src: 'assets/karma.conf.js', dest: '../karma.conf.js', versions: [ 8, 9, 10, 11, 12 ] },
+		{ src: 'assets/tsconfig.json', dest: '../tsconfig.json', versions: [ 12 ] },
 		{ src: 'assets/demo-form.component.ts', dest: 'app/demo-form/demo-form.component.ts', versions: [ 6, 7 ] }
 	];
 
