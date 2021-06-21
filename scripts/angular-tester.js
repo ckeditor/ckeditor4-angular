@@ -1,13 +1,13 @@
 /* eslint-env node */
 
-const { execSync } = require( 'child_process' );
-const { mkdirSync, rmdirSync, unlinkSync } = require( 'fs' );
-const { copySync } = require( 'fs-extra' );
+const { mkdirSync, unlinkSync } = require( 'fs' );
 const { resolve: resolvePath } = require( 'path' );
-const satisfiesSemver = require( 'semver/functions/satisfies' );
 const semverMajor = require( 'semver/functions/major' );
 const chalk = require( 'chalk' );
-const Logger = require( './logger' );
+
+const Logger = require( './_helpers/logger' );
+const getVersions = require( './_helpers/getVersions' );
+const { execNpmCommand, execNpxCommand, rmdirSyncRecursive, copyFiles } = require( './_helpers/tools' );
 
 /**
  *
@@ -23,7 +23,7 @@ const Logger = require( './logger' );
  */
 const argv = require( 'minimist' )( process.argv.slice( 2 ) );
 const testedBrowser = argv.browser || 'Chrome';
-const testedNgVersions = getVersionsToTest();
+const testedNgVersions = getVersions( argv.angular );
 const noRebuild = argv.nr || false;
 
 const PACKAGE_PATH = resolvePath( __dirname, '..' );
@@ -79,136 +79,6 @@ function cleanupTestDir() {
 
 	rmdirSyncRecursive( TESTS_PATH );
 	mkdirSync( TESTS_PATH );
-}
-
-/**
- * Removes directory and its children.
- *
- * @param {string} path dir path
- * @returns {undefined}
- */
-function rmdirSyncRecursive( path ) {
-	return rmdirSync( path, {
-		recursive: true
-	} );
-}
-
-
-/**
- * Gets list of Angular versions to test based on `--angular` argument.
- *
- * @returns {string[]} list of versions to be tested
- */
-function getVersionsToTest() {
-	switch ( argv.angular ) {
-		case 'all':
-			return getAllAngularVersions();
-		case undefined:
-			return [ getCurrentAngularVersion() ];
-		default:
-			return [ argv.angular ];
-	}
-}
-
-/**
- * Gets list of all @angular/cli versions that can be tested.
- *
- * @returns {string[]} list of versions to test
- */
-function getAllAngularVersions() {
-	const packageInfo = require( '../package.json' );
-	const availableVersions = getVersions();
-	const semverRange = getAngularVersion( packageInfo );
-	const versionsInRange = getVersionsInRange( semverRange, availableVersions );
-	return getLatestPatches( versionsInRange );
-}
-
-/**
- * Gets list of available @angular/cli versions from npm.
- *
- * @returns {string[]}
- */
-function getVersions() {
-	const commandResult = execNpmCommand( 'view @angular/cli versions --json' );
-	const versions = JSON.parse( commandResult );
-
-	return versions;
-}
-
-/**
- * Gets peered version range from `package.json`.
- *
- * @param {Object} packageInfo contents of `package.json`
- * @returns {string} peered version / version range
- */
-function getAngularVersion( packageInfo ) {
-	const peerDependencies = packageInfo.peerDependencies;
-	const angular = peerDependencies[ '@angular/cli' ];
-
-	return angular;
-}
-
-/**
- * Filters versions based on requested range.
- *
- * @param {string} range version range
- * @param {string[]} versions list of versions
- * @returns {string[]} versions in requested range
- */
-function getVersionsInRange( range, versions ) {
-	return versions.filter( version => {
-		return satisfiesSemver( version, range );
-	} );
-}
-
-/**
- * Gets latest patches for each major version.
- *
- * @param {string[]} versions list of versions
- * @returns {string[]} list of latest patches
- */
-function getLatestPatches( versions ) {
-	const latestPatches = versions.reduce( ( acc, version, index, array ) => {
-		if ( isLatestPatch( index, array ) ) {
-			acc.push( version );
-		}
-
-		return acc;
-	}, [] );
-
-	logger.logInfo( `Versions that will be tested ( ${chalk.cyan( latestPatches.length )} ): ${chalk.cyan( latestPatches )}` );
-
-	return latestPatches;
-}
-
-/**
- * Checks if version is latest patch of given list of versions.
- *
- * @param {number} index current index
- * @param {string[]} array list of versions
- * @returns {boolean} if version is latest patch
- */
-function isLatestPatch( index, array ) {
-	// Skip checking the last array element.
-	if ( array.length == index + 1 ) {
-		return true;
-	}
-
-	if ( semverMajor( array[ index ] ) != semverMajor( array[ index + 1 ] ) ) {
-		return true;
-	} else {
-		return false;
-	}
-}
-
-
-/**
- * Gets currently installed version of Angular.
- *
- * @returns {string} Angular version
- */
-function getCurrentAngularVersion() {
-	return require( '@angular/cli/package.json' ).version;
 }
 
 
@@ -268,61 +138,6 @@ function prepareTestDir( version ) {
 		src: resolvePath( PACKAGE_PATH, 'src' ),
 		dest: resolvePath( TESTS_PATH, 'cke4-angular-tester/src' ),
 		version: version
-	} );
-}
-
-
-/**
- * Executes npm command.
- *
- * @param {string} command command to execute
- * @param {string} cwd dir where to execute command
- * @returns {string|Buffer}
- */
-function execNpmCommand( command, cwd = __dirname ) {
-	const cmd = `npm ${command}`;
-
-	return execSync( cmd, {
-		encoding: 'utf-8',
-		cwd
-	} );
-}
-
-
-/**
- * Executes npx command.
- *
- * @param {string} command command to execute
- * @param {string} cwd dir where to execute command
- * @returns {string|Buffer}
- */
-function execNpxCommand( command, cwd = __dirname ) {
-	const cmd = `npx ${command}`;
-
-	return execSync( cmd, {
-		encoding: 'utf-8',
-		cwd
-	} );
-}
-
-
-/**
- * Copies files and directories from source to dest.
- *
- * @param options
- * @param {string} options.files list of files and dirs
- * @param {string} options.src source path
- * @param {string} options.dest destination path
- * @param {string} options.version currently tested Angular version
- */
-function copyFiles( options ) {
-	options.files.forEach( file => {
-		if ( file.versions === 'all' || file.versions.indexOf( semverMajor( options.version ) ) >= 0 ) {
-			const srcPath = resolvePath( options.src, file.src );
-			const destPath = resolvePath( options.dest, file.dest );
-
-			copySync( srcPath, destPath );
-		}
 	} );
 }
 
