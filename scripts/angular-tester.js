@@ -166,12 +166,12 @@ function prepareTestDir( version ) {
 function testVersion( version ) {
 	try {
 		logger.logHeader( `Testing ${chalk.italic( '@angular/cli@' + version )}` );
-		// process.env.REQUESTED_ANGULAR_VERSION = version;
 		logger.logAction( 'Executing tests...' );
 		execNpmCommand(
 			`run test -- --browsers ${testedBrowser}`,
 			TEST_APP_PATH
 		);
+
 		logger.logWarning( `All tests for ${chalk.italic( '@angular/cli@' + version )} passed. Moving forward.` );
 
 		versionsPassed.push( version );
@@ -180,8 +180,6 @@ function testVersion( version ) {
 
 		versionsFailed.push( version );
 		errorLogs[ version ] = error.stdout;
-
-		// throw error;
 	}
 }
 
