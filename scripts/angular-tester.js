@@ -107,13 +107,13 @@ function prepareTestDir( version ) {
 	logger.logHeader( `Preparing environment for ${chalk.italic( '@angular/cli@' + version )}` );
 
 	const filesToCopy = [
-		{ src: 'app', dest: 'app', versions: 'all' },
-		{ src: 'ckeditor', dest: 'ckeditor', versions: 'all' },
-		{ src: 'test.tools.ts', dest: 'test.tools.ts', versions: 'all' },
-		{ src: 'assets/karma.conf.js', dest: 'karma.conf.js', versions: [ 6, 7 ] },
-		{ src: 'assets/karma.conf.js', dest: '../karma.conf.js', versions: [ 8, 9, 10, 11, 12 ] },
-		{ src: 'assets/tsconfig.json', dest: '../tsconfig.json', versions: [ 12 ] },
-		{ src: 'assets/demo-form.component.ts', dest: 'app/demo-form/demo-form.component.ts', versions: [ 6, 7 ] }
+		{ src: 'src/app', dest: 'app', versions: 'all' },
+		{ src: 'src/ckeditor', dest: 'ckeditor', versions: 'all' },
+		{ src: 'src/test.tools.ts', dest: 'test.tools.ts', versions: 'all' },
+		{ src: 'scripts/assets/karma.conf.js', dest: 'karma.conf.js', versions: [ 6, 7 ] },
+		{ src: 'scripts/assets/karma.conf.js', dest: '../karma.conf.js', versions: [ 8, 9, 10, 11, 12 ] },
+		{ src: 'scripts/assets/tsconfig.json', dest: '../tsconfig.json', versions: [ 12 ] },
+		{ src: 'scripts/assets/demo-form.component.ts', dest: 'app/demo-form/demo-form.component.ts', versions: [ 6, 7 ] }
 	];
 
 	logger.logAction( `Initializing ${chalk.italic( 'package.json' )} file...` );
@@ -151,7 +151,7 @@ function prepareTestDir( version ) {
 	unlinkSync( resolvePath( TEST_APP_PATH, 'src/app/app.component.spec.ts' ) );
 	copyFiles( {
 		files: filesToCopy,
-		src: resolvePath( PACKAGE_PATH, 'src' ),
+		src: PACKAGE_PATH,
 		dest: resolvePath( TEST_APP_PATH, 'src' ),
 		version: version
 	} );
