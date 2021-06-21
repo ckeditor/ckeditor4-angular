@@ -71,6 +71,7 @@ try {
 	process.exit( 1 );
 }
 
+
 /**
  * Removes test directory and its content, then re-creates empty test dir.
  */
@@ -167,6 +168,12 @@ function testVersion( version ) {
 	}
 }
 
+
+/**
+ * Displays versions and corresponding failed tests.
+ *
+ * @param {object} errorLogs key-value pairs of ng versions and failed tests
+ */
 function logErrors( errorLogs ) {
 	logger.logBanner( 'error', 'Logs of failed versions' );
 
