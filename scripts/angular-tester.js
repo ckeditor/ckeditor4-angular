@@ -43,7 +43,8 @@ try {
 
 	testedNgVersions.forEach( version => {
 		if ( noRebuild ) {
-			logger.logWarning( '`no-rebuild` option detected; using existing testing directory.' );
+			version = getPreparedNgVersion()
+			logger.logWarning( '`no-rebuild` option detected; using existing testing directory with @angular/cli ' + version + ' instead.' );
 		} else {
 			cleanupTestDir();
 			prepareTestDir( version );
@@ -69,6 +70,14 @@ try {
 	logger.logHeader( 'Unexpected error occured during testing - see the log above.' );
 
 	process.exit( 1 );
+}
+
+
+/**
+ * Finds the preinstalled @angular/cli version that will be tested.
+ */
+function getPreparedNgVersion() {
+	return require( resolvePath( TESTS_PATH, 'package.json' ) ).dependencies[ '@angular/cli' ];
 }
 
 
