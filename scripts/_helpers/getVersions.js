@@ -19,7 +19,7 @@ function getVersions( command ) {
 	switch ( command ) {
 		case 'all':
 			return getAllAngularVersions();
-		case undefined:
+		case 'current':
 			return [ getCurrentAngularVersion() ];
 		default:
 			return [ command ];
