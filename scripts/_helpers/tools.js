@@ -1,7 +1,12 @@
 const { execSync } = require( 'child_process' );
 const { rmdirSync } = require( 'fs' );
+const { resolve: resolvePath } = require( 'path' );
 const { copySync } = require( 'fs-extra' );
 const semverMajor = require( 'semver/functions/major' );
+const Logger = require( './logger' );
+
+const logger = new Logger();
+
 
 /**
  * Executes npm command.
@@ -12,6 +17,8 @@ const semverMajor = require( 'semver/functions/major' );
  */
 function execNpmCommand( command, cwd = __dirname ) {
 	const cmd = `npm ${command}`;
+
+	logger.logCode( cmd );
 
 	return execSync( cmd, {
 		encoding: 'utf-8',
@@ -29,6 +36,8 @@ function execNpmCommand( command, cwd = __dirname ) {
  */
 function execNpxCommand( command, cwd = __dirname ) {
 	const cmd = `npx ${command}`;
+
+	logger.logCode( cmd );
 
 	return execSync( cmd, {
 		encoding: 'utf-8',
