@@ -48,6 +48,13 @@ try {
 	logger.logInfo( testedNgVersions );
 	logger.logHeader( 'Preparing testing directory' );
 
+	/* Versions with LTS (7): [
+	'6.2.9',  '7.3.10',
+	'8.3.29', '9.1.15',
+	'10.2.3', '11.2.14',
+	'12.0.4'
+	]
+	'1.7.4' - no lts */
 	testedNgVersions.forEach( version => {
 		if ( noRebuild ) {
 			version = getPreparedNgVersion()
@@ -58,14 +65,6 @@ try {
 		}
 		testVersion( version );
 	} );
-
-	/* Versions that will be tested (7): [
-	'6.2.9',  '7.3.10',
-	'8.3.29', '9.1.15',
-	'10.2.3', '11.2.14',
-	'12.0.4'
-	]
-	'1.7.4' - not lts */
 
 	if ( Object.keys( errorLogs ).length === 0 ) {
 		logger.logHeader( 'success', 'Done without errors. Have a nice day!' );

@@ -97,10 +97,6 @@ function getLatestPatches( versions ) {
 		return acc;
 	}, [] );
 
-	// @todo
-	// logger.logInfo( `Versions that will be tested ( ${chalk.cyan( latestPatches.length )} ): ${chalk.cyan( latestPatches )}` );
-	// logger.logInfo( `Versions that will be tested ( ` + latestPatches  );
-
 	return latestPatches;
 }
 
