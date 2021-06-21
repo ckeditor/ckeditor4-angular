@@ -32,8 +32,8 @@ const testedNgVersions = getVersions( argv.angular );
 const noRebuild = argv.nr || false;
 
 const PACKAGE_PATH = resolvePath( __dirname, '..' );
-const TESTS_PATH = resolvePath( PACKAGE_PATH, '..', 'angular-tests' );
-const TEST_APP_PATH = resolvePath( TESTS_PATH, 'cke4-angular-tester' )
+const TESTS_PATH = resolvePath( PACKAGE_PATH, '..', 'cke4-angular-tester' );
+const TEST_APP_PATH = resolvePath( TESTS_PATH, 'cke4-angular-app' )
 
 const versionsPassed = [];
 const versionsFailed = [];
@@ -48,11 +48,11 @@ try {
 	logger.logInfo( testedNgVersions );
 	logger.logHeader( 'Preparing testing directory' );
 
-	/* Versions with LTS (7): [
+	/* Versions with LTS + latest one (7): [
 	'6.2.9',  '7.3.10',
 	'8.3.29', '9.1.15',
 	'10.2.3', '11.2.14',
-	'12.0.4'
+	'12.0.5'
 	]
 	'1.7.4' - no lts */
 	testedNgVersions.forEach( version => {
@@ -130,7 +130,7 @@ function prepareTestDir( version ) {
 
 	logger.logAction( 'Initializing Angular project...' );
 	execNpxCommand(
-		`ng new cke4-angular-tester`,
+		`ng new cke4-angular-app`,
 		TESTS_PATH
 	)
 
