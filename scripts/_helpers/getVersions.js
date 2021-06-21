@@ -19,6 +19,7 @@ function getVersions( command ) {
 	}
 }
 
+
 /**
  * Gets list of all @angular/cli versions that can be tested.
  *
@@ -32,6 +33,7 @@ function getAllAngularVersions() {
 	return getLatestPatches( versionsInRange );
 }
 
+
 /**
  * Gets list of available @angular/cli versions from npm.
  *
@@ -43,6 +45,7 @@ function getNpmVersions() {
 
 	return versions;
 }
+
 
 /**
  * Gets peered version range from `package.json`.
@@ -57,6 +60,7 @@ function getAngularVersion( packageInfo ) {
 	return angular;
 }
 
+
 /**
  * Filters versions based on requested range.
  *
@@ -69,6 +73,7 @@ function getVersionsInRange( range, versions ) {
 		return satisfiesSemver( version, range );
 	} );
 }
+
 
 /**
  * Gets latest patches for each major version.
@@ -90,6 +95,7 @@ function getLatestPatches( versions ) {
 
 	return latestPatches;
 }
+
 
 /**
  * Checks if version is latest patch of given list of versions.

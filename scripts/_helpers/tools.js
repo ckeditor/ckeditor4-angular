@@ -49,10 +49,11 @@ function rmdirSyncRecursive( path ) {
 	} );
 }
 
+
 /**
  * Copies files and directories from source to dest.
  *
- * @param options
+ * @param {object} options
  * @param {string} options.files list of files and dirs
  * @param {string} options.src source path
  * @param {string} options.dest destination path
