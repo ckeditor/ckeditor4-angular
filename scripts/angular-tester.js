@@ -113,12 +113,9 @@ try {
 		logErrors( errorLogs );
 	}
 } catch ( error ) {
-	// console.log( chalk.red( error ) );
 	logger.logWarning( error );
 	logger.logHeader( 'error', 'Unexpected error occured during testing - see the log above.' );
-	// console.log( chalk.red( '------------------------------------------------------------------------' ) );
-	// console.log( chalk.red( '----- Unexpected error occured during testing - see the log above. -----' ) );
-	// console.log( chalk.red( '------------------------------------------------------------------------' ) );
+
 	process.exit( 1 );
 }
 
@@ -126,7 +123,6 @@ try {
  * Removes test directory and its content, then re-creates empty test dir.
  */
 function cleanupTestDir() {
-	// console.log( chalk.magenta( 'Recreating the testing directory...\n' ) );
 	logger.logAction( 'Recreating the testing directory...' );
 
 	rmdirSyncRecursive( TESTS_PATH );
@@ -282,28 +278,24 @@ function prepareTestDir( version ) {
 		{ src: 'assets/demo-form.component.ts', dest: 'app/demo-form/demo-form.component.ts', versions: [ 6, 7 ] }
 	];
 
-	console.log( chalk.magenta( `Initializing ${chalk.italic( 'package.json' )} file...\n` ) );
 	logger.logAction( `Initializing ${chalk.italic( 'package.json' )} file...` );
 	execNpmCommand(
 		`init -y`,
 		TESTS_PATH
 	)
 
-	console.log( chalk.magenta( `Installing ${chalk.italic( '@angular/cli' )} locally...\n` ) );
 	logger.logAction( `Installing ${chalk.italic( '@angular/cli' )} locally...` );
 	execNpmCommand(
 		`i @angular/cli@${version}`,
 		TESTS_PATH
 	);
 
-	console.log( chalk.magenta( 'Initializing Angular project...\n' ) );
 	logger.logAction( 'Initializing Angular project...' );
 	execNpxCommand(
 		`ng new cke4-angular-tester`,
 		TESTS_PATH
 	)
 
-	console.log( chalk.magenta( 'Installing other required packages...\n' ) );
 	logger.logAction( 'Installing other required packages...' );
 	execNpmCommand(
 		`i ckeditor4-integrations-common wait-until-promise karma-firefox-launcher karma-spec-reporter`,
@@ -317,7 +309,6 @@ function prepareTestDir( version ) {
 		);
 	}
 
-	console.log( chalk.magenta( 'Copying integration and tests files...\n' ) );
 	logger.logAction( 'Copying integration and tests files...' );
 	unlinkSync( resolvePath( TESTS_PATH, 'cke4-angular-tester/src/app/app.component.spec.ts' ) );
 	copyFiles( {
@@ -391,10 +382,8 @@ function copyFiles( options ) {
  */
 function testVersion( version ) {
 	try {
-		console.log( chalk.bgBlue.bold( `--- Testing ${chalk.italic( '@angular/cli@' + version )} ---\n` ) );
 		logger.logHeader( `Testing ${chalk.italic( '@angular/cli@' + version )}` );
 		// process.env.REQUESTED_ANGULAR_VERSION = version;
-		console.log( chalk.magenta( 'Executing tests...' ) );
 		logger.logAction( 'Executing tests...' );
 		execNpmCommand(
 			`run test -- --browsers ${testedBrowser}`,
@@ -413,19 +402,13 @@ function testVersion( version ) {
 
 function logErrors( errorLogs ) {
 	logger.logBanner( 'error', 'Logs of failed versions' );
-	// console.log( chalk.red( '---------------------------------------------------------------------------' ) );
-	// console.log( chalk.red( '------------------------- Logs of failed versions -------------------------' ) );
-	// console.log( chalk.red( '---------------------------------------------------------------------------' ) );
-	// console.log();
 
 	for ( const key in errorLogs ) {
 		logger.logInfo( key );
 		logger.logWarning( errorLogs[ key ] );
-		// console.log( chalk.magenta( '--- ' + key + ' ---' ), chalk.yellow( errorLogs[ key ] ) );
 	}
 
 	logger.logBanner( 'error', 'Testing done. Some versions failed. See the logs above.' );
-	// console.log( chalk.red( '----- Testing done. Some versions failed. See the logs above. -----\n' ) );
 	logger.logInfo( 'Successfully tested versions:' );
 	logger.logInfo( chalk.green( versionsPassed + '\n' ) );
 	logger.logInfo( 'Unsuccessfully tested versions:' );
