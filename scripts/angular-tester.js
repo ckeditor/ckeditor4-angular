@@ -28,6 +28,7 @@ const noRebuild = argv.nr || false;
 
 const PACKAGE_PATH = resolvePath( __dirname, '..' );
 const TESTS_PATH = resolvePath( PACKAGE_PATH, '..', 'angular-tests' );
+const TEST_APP_PATH = resolvePath( TESTS_PATH, 'cke4-angular-tester' )
 
 const versionsPassed = [];
 const versionsFailed = [];
@@ -131,22 +132,22 @@ function prepareTestDir( version ) {
 	logger.logAction( 'Installing other required packages...' );
 	execNpmCommand(
 		`i ckeditor4-integrations-common wait-until-promise karma-firefox-launcher karma-spec-reporter`,
-		resolvePath( TESTS_PATH, 'cke4-angular-tester' )
+		TEST_APP_PATH
 	);
 
 	if ( [ 6, 7 ].indexOf( semverMajor( version ) ) >= 0 ) {
 		execNpmCommand(
 			`i zone.js@0.10.3`,
-			resolvePath( TESTS_PATH, 'cke4-angular-tester' )
+			TEST_APP_PATH
 		);
 	}
 
 	logger.logAction( 'Copying integration and tests files...' );
-	unlinkSync( resolvePath( TESTS_PATH, 'cke4-angular-tester/src/app/app.component.spec.ts' ) );
+	unlinkSync( resolvePath( TEST_APP_PATH, 'src/app/app.component.spec.ts' ) );
 	copyFiles( {
 		files: filesToCopy,
 		src: resolvePath( PACKAGE_PATH, 'src' ),
-		dest: resolvePath( TESTS_PATH, 'cke4-angular-tester/src' ),
+		dest: resolvePath( TEST_APP_PATH, 'src' ),
 		version: version
 	} );
 }
@@ -164,7 +165,7 @@ function testVersion( version ) {
 		logger.logAction( 'Executing tests...' );
 		execNpmCommand(
 			`run test -- --browsers ${testedBrowser}`,
-			resolvePath( TESTS_PATH, 'cke4-angular-tester' )
+			TEST_APP_PATH
 		);
 		versionsPassed.push( version );
 	} catch ( error ) {
