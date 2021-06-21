@@ -23,6 +23,10 @@ module.exports = class Logger {
 		console.log( chalk.yellow( message ) + '\n' );
 	}
 
+	logCode( message ) {
+		console.log( chalk.italic.bold( message ) + '\n' );
+	}
+
 	logInfo( message ) {
 		console.log( message );
 	}

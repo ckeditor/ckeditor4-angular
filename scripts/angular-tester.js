@@ -66,7 +66,7 @@ try {
 	}
 } catch ( error ) {
 	logger.logWarning( error );
-	logger.logHeader( 'error', 'Unexpected error occured during testing - see the log above.' );
+	logger.logHeader( 'Unexpected error occured during testing - see the log above.' );
 
 	process.exit( 1 );
 }
