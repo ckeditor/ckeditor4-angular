@@ -51,11 +51,11 @@ module.exports = class Logger {
 	_getColor( type ) {
 		switch ( type ) {
 			case 'success':
-				return 'green';
+				return 'bgGreen';
 			case 'info':
-				return 'blue';
+				return 'bgBlue';
 			case 'error':
-				return 'red';
+				return 'bgRed';
 		}
 	}
 }
