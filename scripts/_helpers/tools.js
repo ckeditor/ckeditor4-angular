@@ -67,9 +67,9 @@ function rmdirSyncRecursive( path ) {
 
 
 /**
- * Copies files and directories from source to dest.
+ * Copies files and directories matching currently tested ng version from source to dest.
  *
- * @param {object} options
+ * @param {Object} options
  * @param {string} options.files list of files and dirs
  * @param {string} options.src source path
  * @param {string} options.dest destination path
