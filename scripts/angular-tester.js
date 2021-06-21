@@ -67,13 +67,13 @@ try {
 	} );
 
 	if ( Object.keys( errorLogs ).length === 0 ) {
-		logger.logHeader( 'success', 'Done without errors. Have a nice day!' );
+		logger.logBanner( 'success', 'Done without errors. Have a nice day!' );
 	} else {
 		logErrors( errorLogs );
 	}
 } catch ( error ) {
 	logger.logWarning( error );
-	logger.logHeader( 'Unexpected error occured during testing - see the log above.' );
+	logger.logBanner( 'error', 'Unexpected error occured during testing - see the log above.' );
 
 	process.exit( 1 );
 }
@@ -172,6 +172,8 @@ function testVersion( version ) {
 			`run test -- --browsers ${testedBrowser}`,
 			TEST_APP_PATH
 		);
+		logger.logWarning( `All tests for ${chalk.italic( '@angular/cli@' + version )} passed. Moving forward.` );
+
 		versionsPassed.push( version );
 	} catch ( error ) {
 		logger.logWarning( 'Errors occured during testing version ' + version + '. See the logs at the bottom after testing is finished.' );
@@ -199,9 +201,9 @@ function logErrors( errorLogs ) {
 
 	logger.logBanner( 'error', 'Testing done. Some versions failed. See the logs above.' );
 	logger.logInfo( 'Successfully tested versions:' );
-	logger.logInfo( chalk.green( versionsPassed + '\n' ) );
+	logger.logInfo( versionsPassed );
 	logger.logInfo( 'Unsuccessfully tested versions:' );
-	logger.logInfo( chalk.red( versionsFailed ) + '\n' );
+	logger.logInfo( versionsFailed );
 
 	process.exit( 1 );
 }
