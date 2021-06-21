@@ -7,6 +7,9 @@
 
 const chalk = require( 'chalk' );
 
+/**
+ * Small logging utility class.
+ */
 module.exports = class Logger {
 	constructor() {}
 
