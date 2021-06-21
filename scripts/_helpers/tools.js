@@ -25,7 +25,7 @@ const logger = new Logger();
 function execNpmCommand( command, cwd = __dirname ) {
 	const cmd = `npm ${command}`;
 
-	logger.logCode( cmd );
+	logger.logCode( `${cwd} > ${cmd}` );
 
 	return execSync( cmd, {
 		encoding: 'utf-8',
@@ -44,7 +44,7 @@ function execNpmCommand( command, cwd = __dirname ) {
 function execNpxCommand( command, cwd = __dirname ) {
 	const cmd = `npx ${command}`;
 
-	logger.logCode( cmd );
+	logger.logCode( `${cwd} > ${cmd}` );
 
 	return execSync( cmd, {
 		encoding: 'utf-8',
