@@ -1,4 +1,9 @@
-/* eslint-env node */
+/**
+ * @license Copyright (c) 2003-2021, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md.
+ */
+
+'use strict';
 
 const { mkdirSync, unlinkSync } = require( 'fs' );
 const { resolve: resolvePath } = require( 'path' );
