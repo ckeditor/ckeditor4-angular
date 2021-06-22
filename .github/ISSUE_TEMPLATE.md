@@ -10,6 +10,16 @@ Replace this comment with your issue type: Bug / Feature request / Other, please
 
 ## Provide detailed reproduction steps (if any)
 
+<!--
+Including a simple sample reproducing the issue is also a good idea. It can drastically
+decrease the time needed to reproduce the issue by our team, which means it can speed up helping you!
+
+You can use one of our samples to create the reproduction sample:
+
+* CodePen: https://codesandbox.io/s/f5y9f?file=/src/app/app.component.html
+* StackBlitz: https://stackblitz.com/edit/ckeditor4-angular-bug-report?file=src%2Fapp%2Fapp.component.html
+-->
+
 1. …
 2. …
 3. …
