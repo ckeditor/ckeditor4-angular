@@ -27,7 +27,7 @@
 	},
 	"private": true,
 	"dependencies": {
-		"ckeditor4-integrations-common": "^0.2.0"
+		"ckeditor4-integrations-common": "^1.0.0"
 	},
 	"devDependencies": {
 		"@angular-devkit/build-angular": "^12.0.4",
