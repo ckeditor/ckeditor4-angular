@@ -48,13 +48,11 @@ try {
 	console.log( testedNgVersions );
 	logger.logHeader( 'Preparing testing directory' );
 
-	/* Versions with LTS + latest one (7): [
+	/* Versions with LTS: [
 	'6.2.9',  '7.3.10',
 	'8.3.29', '9.1.15',
-	'10.2.3', '11.2.14',
-	'12.0.5'
-	]
-	'1.7.4' - no lts */
+	'10.2.3', '11.2.14'
+	] */
 	testedNgVersions.forEach( version => {
 		if ( noRebuild ) {
 			version = getPreparedNgVersion()
