@@ -21,6 +21,8 @@ function getVersions( version ) {
 			return getAllAngularVersions();
 		case 'current':
 			return [ getCurrentAngularVersion() ];
+		case undefined:
+			return [ getLatestAngularVersion() ];
 		default:
 			return [ version ];
 	}
@@ -129,6 +131,19 @@ function isLatestPatch( index, array ) {
  */
 function getCurrentAngularVersion() {
 	return require( '@angular/cli/package.json' ).version;
+}
+
+
+/**
+ * Gets the latest @angular/cli version available on npm.
+ *
+ * @returns {string} the latest available @angular/cli version.
+ */
+function getLatestAngularVersion() {
+	const commandResult = execNpmCommand( 'view @angular/cli dist-tags --json' );
+	const versions = JSON.parse( commandResult );
+
+	return versions.latest;
 }
 
 module.exports = getVersions;
