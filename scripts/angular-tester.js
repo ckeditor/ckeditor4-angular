@@ -21,7 +21,7 @@ const { execNpmCommand, execNpxCommand, rmdirSyncRecursive, copyFiles } = requir
  * Commands:
  *
  * --browser <name>   Specifies environment to test.
- *                    ??? Possible values: 'Chrome', 'Firefox', 'BrowserStack_Safari', 'BrowserStack_Edge', 'BrowserStack_IE11'.
+ *                    Possible values: 'Chrome', 'Firefox', 'BrowserStack_Safari', 'BrowserStack_Edge', 'BrowserStack_IE11'.
  *                    Defaults to: 'Chrome'.
  * --angular <version>  Specifies Angular version to test. Possible values: 'all', 'current' or specific version. Defaults to: 'current'.
  *
