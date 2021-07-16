@@ -45,7 +45,7 @@ try {
 	logger.logBanner( 'info', 'Ultimate CKEditor4-Angular Integration Tester' )
 	logger.logInfo( `Running tests for: ${chalk.green( testedBrowser )}` );
 	logger.logInfo( `Angular versions to be tested ( ${chalk.green( testedNgVersions.length ) } ):` );
-	logger.logInfo( testedNgVersions );
+	console.log( testedNgVersions );
 	logger.logHeader( 'Preparing testing directory' );
 
 	/* Versions with LTS + latest one (7): [
