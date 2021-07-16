@@ -12,17 +12,17 @@ const { execNpmCommand } = require( './tools' );
 /**
  * Gets list of Angular versions to test based on `--angular` argument.
  *
- * @param {string} command
+ * @param {string} version
  * @returns {string[]} list of versions to be tested
  */
-function getVersions( command ) {
-	switch ( command ) {
+function getVersions( version ) {
+	switch ( version ) {
 		case 'all':
 			return getAllAngularVersions();
 		case 'current':
 			return [ getCurrentAngularVersion() ];
 		default:
-			return [ command ];
+			return [ version ];
 	}
 }
 
