@@ -75,10 +75,6 @@
 		"wait-until-promise": "^1.0.0",
 		"zone.js": "^0.11.4"
 	},
-	"peerDependencies": {
-		"ckeditor4": "^4.16.1",
-		"@angular/cli": ">=5"
-	},
 	"browserslist": [
 		"> 0.5%",
 		"last 2 versions",
