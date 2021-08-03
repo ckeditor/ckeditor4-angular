@@ -114,21 +114,9 @@ function prepareTestDir( version ) {
 		{ src: 'scripts/assets/demo-form.component.ts', dest: 'src/app/demo-form/demo-form.component.ts', versions: [ 6, 7 ] }
 	];
 
-	logger.logAction( `Initializing ${chalk.italic( 'package.json' )} file...` );
-	execNpmCommand(
-		`init -y`,
-		TESTS_PATH
-	)
-
-	logger.logAction( `Installing ${chalk.italic( '@angular/cli' )} locally...` );
-	execNpmCommand(
-		`i @angular/cli@${version}`,
-		TESTS_PATH
-	);
-
 	logger.logAction( 'Initializing Angular project...' );
 	execNpxCommand(
-		`ng new cke4-angular-app --skip-git`,
+		`npx ng new cke4-angular-app --skip-git`,
 		TESTS_PATH
 	)
 

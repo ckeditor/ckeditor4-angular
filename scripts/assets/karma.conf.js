@@ -5,9 +5,6 @@ let options = process.env.KARMA_OPTIONS;
 options = options ? JSON.parse(options) : {};
 
 module.exports = function (config) {
-	const browsers =
-		config.browsers.length === 0 ? ["Chrome"] : config.browsers;
-
 	config.set({
 		basePath: "",
 		frameworks: ["jasmine", "@angular-devkit/build-angular"],
@@ -29,7 +26,7 @@ module.exports = function (config) {
 		colors: true,
 		logLevel: config.LOG_INFO,
 		autoWatch: true,
-		browsers,
+		browsers: config.browsers,
 		singleRun: !options.watch,
 
 		concurrency: 2,
