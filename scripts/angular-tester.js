@@ -128,7 +128,7 @@ function prepareTestDir( version ) {
 
 	logger.logAction( 'Initializing Angular project...' );
 	execNpxCommand(
-		`ng new cke4-angular-app`,
+		`ng new cke4-angular-app --skip-git`,
 		TESTS_PATH
 	)
 
