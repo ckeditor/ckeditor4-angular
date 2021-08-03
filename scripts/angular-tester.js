@@ -134,7 +134,7 @@ function prepareTestDir( version ) {
 
 	logger.logAction( 'Installing other required packages...' );
 	execNpmCommand(
-		`i ckeditor4-integrations-common wait-until-promise karma-firefox-launcher karma-spec-reporter`,
+		`i ckeditor4-integrations-common wait-until-promise karma-firefox-launcher karma-spec-reporter karma-browserstack-launcher`,
 		TEST_APP_PATH
 	);
 
