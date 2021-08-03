@@ -7,11 +7,9 @@
 		"start": "ng serve",
 		"build": "ng build",
 		"build-package": "node ./scripts/build-package.js",
-		"test": "node ./scripts/test.js",
-		"test:angular-tester": "node ./scripts/angular-tester.js",
-		"test:all": "npm run test:angular-tester -- --angular all",
+		"test": "ng test",
+		"test:angular": "node ./scripts/angular-tester.js",
 		"lint": "ng lint",
-		"e2e": "ng e2e",
 		"bump": "node ./scripts/bump.js",
 		"publish:dry": "npm publish dist/ --dry-run",
 		"publish": "npm publish dist/",
@@ -28,9 +26,6 @@
 		"url": "https://github.com/ckeditor/ckeditor4-angular.git"
 	},
 	"private": true,
-	"dependencies": {
-		"ckeditor4-integrations-common": "^0.2.0"
-	},
 	"devDependencies": {
 		"@angular-devkit/build-angular": "^12.1.2",
 		"@angular/animations": "^12.1.2",
@@ -58,7 +53,6 @@
 		"karma": "^6.3.4",
 		"karma-browserstack-launcher": "1.4.0",
 		"karma-chrome-launcher": "~3.1.0",
-		"karma-coverage-istanbul-reporter": "~3.0.3",
 		"karma-firefox-launcher": "^2.1.1",
 		"karma-jasmine": "^4.0.1",
 		"karma-jasmine-html-reporter": "^1.7.0",

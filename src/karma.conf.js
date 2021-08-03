@@ -1,32 +1,40 @@
+
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
 let options = process.env.KARMA_OPTIONS;
-options = options ? JSON.parse( options ) : {};
+options = options ? JSON.parse(options) : {};
+
+const {
+	// Set via CLI
+	BROWSER_STACK_USERNAME,
+	BROWSER_STACK_ACCESS_KEY,
+	BUILD_SLUG,
+	// Set by angular-tester script
+	REQUESTED_ANGULAR_VERSION
+} = process.env;
 
 module.exports = function ( config ) {
-	config.set( {
+	const LOG_INFO = config.LOG_INFO;
+	const browsers = config.browsers.length === 0 ? [ 'Chrome' ] : config.browsers;
+
+	config.set({
 		basePath: '',
-		frameworks: [ 'jasmine', '@angular-devkit/build-angular' ],
+		frameworks: ['jasmine', '@angular-devkit/build-angular'],
 		plugins: getPlugins(),
 		client: {
 			clearContext: false, // leave Jasmine Spec Runner output visible in browser
 			captureConsole: false,
 			jasmine: {
-				random: false
-			}
+				random: false,
+			},
 		},
-		coverageIstanbulReporter: {
-			dir: require( 'path' ).join( __dirname, '../coverage' ),
-			reports: [ 'html', 'lcovonly' ],
-			fixWebpackSourcePaths: true
-		},
-		reporters: [ 'spec', 'kjhtml' ],
+		reporters: [ 'spec' ],
 		port: 9876,
 		colors: true,
-		logLevel: config.LOG_INFO,
+		logLevel: LOG_INFO,
 		autoWatch: true,
-		browsers: getBrowsers(),
+		browsers,
 		singleRun: !options.watch,
 
 		concurrency: 2,
@@ -36,58 +44,44 @@ module.exports = function ( config ) {
 		browserNoActivityTimeout: 60000,
 
 		specReporter: {
-			suppressPassed: shouldEnableBrowserStack()
+			suppressPassed: true,
+			suppressErrorSummary: true,
+			maxLogLines: 8,
 		},
 
-		...( options.url && { files: [ options.url ] } ),
+		...(options.url && { files: [options.url] }),
 
 		customLaunchers: {
 			BrowserStack_Edge: {
 				base: 'BrowserStack',
 				os: 'Windows',
 				os_version: '10',
-				browser: 'edge'
+				browser: 'edge',
 			},
 			BrowserStack_IE11: {
 				base: 'BrowserStack',
 				os: 'Windows',
 				os_version: '10',
 				browser: 'ie',
-				browser_version: '11.0'
+				browser_version: '11.0',
 			},
 			BrowserStack_Safari: {
 				base: 'BrowserStack',
 				os: 'OS X',
 				os_version: 'Big Sur',
-				browser: 'safari'
-			}
+				browser: 'safari',
+			},
 		},
 
 		browserStack: {
-			username: process.env.BROWSER_STACK_USERNAME,
-			accessKey: process.env.BROWSER_STACK_ACCESS_KEY,
-			build: getBuildName(),
-			project: 'ckeditor4'
+			username: BROWSER_STACK_USERNAME,
+			accessKey: BROWSER_STACK_ACCESS_KEY,
+			build: BUILD_SLUG || 'ckeditor4-angular local',
+			name: `${ browsers[ 0 ]} - Angular ${ REQUESTED_ANGULAR_VERSION }`,
+			project: 'ckeditor4',
 		},
-	} );
+	});
 };
-
-// Formats name of the build for BrowserStack. It merges a repository name and current timestamp.
-// If env variable `TRAVIS_REPO_SLUG` is not available, the function returns `undefined`.
-//
-// @returns {String|undefined}
-function getBuildName() {
-	const repoSlug = process.env.TRAVIS_REPO_SLUG;
-
-	if ( !repoSlug ) {
-		return;
-	}
-
-	const repositoryName = repoSlug.split( '/' )[ 1 ].replace( /-/g, '_' );
-	const date = new Date().getTime();
-
-	return `${ repositoryName } ${ date }`;
-}
 
 function getPlugins() {
 	const plugins = [
@@ -95,7 +89,6 @@ function getPlugins() {
 		require( 'karma-chrome-launcher' ),
 		require( 'karma-firefox-launcher' ),
 		require( 'karma-jasmine-html-reporter' ),
-		require( 'karma-coverage-istanbul-reporter' ),
 		require( '@angular-devkit/build-angular/plugins/karma' ),
 		require( 'karma-spec-reporter' )
 	];
@@ -109,33 +102,9 @@ function getPlugins() {
 	return plugins;
 }
 
-function getBrowsers() {
-	if ( shouldEnableBrowserStack() ) {
-		return [
-			'Chrome',
-			'BrowserStack_Safari',
-			'Firefox',
-			'BrowserStack_Edge',
-			'BrowserStack_IE11'
-		];
-	}
-
-	return [
-		'Chrome',
-		'Firefox'
-	];
-}
-
 function shouldEnableBrowserStack() {
-	if ( !process.env.BROWSER_STACK_USERNAME ) {
-		return false;
-	}
-
-	if ( !process.env.BROWSER_STACK_ACCESS_KEY ) {
-		return false;
-	}
-
-	// If the repository slugs are different, the pull request comes from the community (forked repository).
-	// For such builds, BrowserStack will be disabled. Read more: https://github.com/ckeditor/ckeditor5-dev/issues/358.
-	return ( process.env.TRAVIS_EVENT_TYPE !== 'pull_request' || process.env.TRAVIS_PULL_REQUEST_SLUG === process.env.TRAVIS_REPO_SLUG );
+	return (
+		process.env.BROWSER_STACK_ACCESS_KEY &&
+		process.env.BROWSER_STACK_ACCESS_KEY
+	);
 }

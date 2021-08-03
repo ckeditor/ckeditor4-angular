@@ -10,9 +10,14 @@ const { resolve: resolvePath } = require( 'path' );
 const semverMajor = require( 'semver/functions/major' );
 const chalk = require( 'chalk' );
 
-const Logger = require( './_helpers/logger' );
-const getVersions = require( './_helpers/getVersions' );
-const { execNpmCommand, execNpxCommand, rmdirSyncRecursive, copyFiles } = require( './_helpers/tools' );
+const Logger = require( './helpers/logger' );
+const getVersions = require( './helpers/getVersions' );
+const {
+	execNpmCommand,
+	execNpxCommand,
+	rmdirSyncRecursive,
+	copyFiles
+} = require( './helpers/tools' );
 
 /**
  *
@@ -108,8 +113,8 @@ function prepareTestDir( version ) {
 		{ src: 'src/app', dest: 'src/app', versions: 'all' },
 		{ src: 'src/ckeditor', dest: 'src/ckeditor', versions: 'all' },
 		{ src: 'src/test.tools.ts', dest: 'src/test.tools.ts', versions: 'all' },
-		{ src: 'scripts/assets/karma.conf.js', dest: 'src/karma.conf.js', versions: [ 6, 7 ] },
-		{ src: 'scripts/assets/karma.conf.js', dest: 'karma.conf.js', versions: [ 8, 9, 10, 11, 12 ] },
+		{ src: 'src/karma.conf.js', dest: 'src/karma.conf.js', versions: [ 6, 7 ] },
+		{ src: 'src/karma.conf.js', dest: 'karma.conf.js', versions: [ 8, 9, 10, 11, 12 ] },
 		{ src: 'scripts/assets/tsconfig.json', dest: 'tsconfig.json', versions: [ 12 ] },
 		{ src: 'scripts/assets/demo-form.component.ts', dest: 'src/app/demo-form/demo-form.component.ts', versions: [ 6, 7 ] }
 	];
@@ -163,8 +168,11 @@ function prepareTestDir( version ) {
  */
 function testVersion( version ) {
 	try {
+		process.env.REQUESTED_ANGULAR_VERSION = version;
+
 		logger.logHeader( `Testing ${chalk.italic( '@angular/cli@' + version )}` );
 		logger.logAction( 'Executing tests...' );
+
 		execNpmCommand(
 			`run test -- --browsers ${testedBrowser}`,
 			TEST_APP_PATH

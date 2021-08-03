@@ -66,4 +66,4 @@ jobs:
                   BROWSER_STACK_USERNAME: ${{ secrets.BROWSER_STACK_USERNAME }}
                   BROWSER_STACK_ACCESS_KEY: ${{ secrets.BROWSER_STACK_ACCESS_KEY }}
               with:
-                  run: npm run test:angular-tester -- --angular ${{ env.ANGULAR_VERSION }} --browser ${{ matrix.browser }}
+                  run: npm run test:angular -- --angular ${{ env.ANGULAR_VERSION }} --browser ${{ matrix.browser }}
