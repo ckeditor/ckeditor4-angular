@@ -94,18 +94,13 @@ describe( 'SimpleUsageComponent', () => {
 		it( 'should be synced with editorData property', () => {
 			return getEditorNamespace( ckeditorComponents[ 0 ].editorUrl )
 				.then( CKEDITOR => {
-					if ( CKEDITOR.env.ie ) {
-						// Ignore on IE11/Edge for now since it throws "Permission denied" error (#72).
-						pending();
-					} else {
-						component.editorData = '<p>foo</p>\n';
+					component.editorData = '<p>foo</p>\n';
 
-						fixture.detectChanges();
+					fixture.detectChanges();
 
-						each( ckeditorComponent => {
-							expect( ckeditorComponent.data ).toEqual( '<p>foo</p>\n' );
-						} );
-					}
+					each( ckeditorComponent => {
+						expect( ckeditorComponent.data ).toEqual( '<p>foo</p>\n' );
+					} );
 				} );
 		} );
 	} );
