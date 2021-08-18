@@ -388,9 +388,10 @@ describe( 'CKEditorComponent', () => {
 
 						expect( spyDragEnd ).toHaveBeenCalledTimes( 1 );
 
-						// There is some issue in Firefox with simulating drag-drop flow. The drop event
-						// is not fired making this assertion fail. Let's skip it for now.
-						if ( !CKEDITOR.env.gecko ) {
+						// There are some issues in Firefox and Safari with simulating drag-drop flow.
+						// The drop event is not firing thus making this assertion to fail.
+						// Let's skip it for now.
+						if ( !CKEDITOR.env.gecko && !CKEDITOR.env.safari ) {
 							fireDragEvent( 'drop', component.instance, dropEvent );
 
 							expect( spyDrop ).toHaveBeenCalledTimes( 1 );
