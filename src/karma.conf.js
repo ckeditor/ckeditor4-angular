@@ -1,47 +1,59 @@
-
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
 let options = process.env.KARMA_OPTIONS;
-options = options ? JSON.parse(options) : {};
+options = options ? JSON.parse( options ) : {};
 
+// Following environment variables must be set if BrowserStack is used.
+// Omit them if locally installed browsers are used.
 const {
 	// Set via CLI
 	BROWSER_STACK_USERNAME,
 	BROWSER_STACK_ACCESS_KEY,
 	BUILD_SLUG,
-	// Set by angular-tester script
-	REQUESTED_ANGULAR_VERSION
+
+	// Set by scripts/angular-tester.js
+	REQUESTED_ANGULAR_VERSION,
 } = process.env;
 
 module.exports = function ( config ) {
 	const LOG_INFO = config.LOG_INFO;
+
+	// Browsers are controlled via CLI, e.g.:
+	//
+	// `npm test -- --browsers Firefox`
+	//
+	// Defaults to locally installed Chrome.
 	const browsers = config.browsers.length === 0 ? [ 'Chrome' ] : config.browsers;
 
 	config.set({
 		basePath: '',
-		frameworks: ['jasmine', '@angular-devkit/build-angular'],
+
+		frameworks: [ 'jasmine', '@angular-devkit/build-angular' ],
+
 		plugins: getPlugins(),
+
 		client: {
-			clearContext: false, // leave Jasmine Spec Runner output visible in browser
+			// leave Jasmine Spec Runner output visible in browser
+			clearContext: false,
 			captureConsole: false,
 			jasmine: {
 				random: false,
 			},
 		},
-		reporters: [ 'spec' ],
-		port: 9876,
-		colors: true,
-		logLevel: LOG_INFO,
-		autoWatch: true,
-		browsers,
-		singleRun: !options.watch,
 
-		concurrency: 2,
-		captureTimeout: 60000,
-		browserDisconnectTimeout: 60000,
-		browserDisconnectTolerance: 3,
-		browserNoActivityTimeout: 60000,
+		reporters: [ 'spec' ],
+
+		port: 9876,
+
+		colors: true,
+
+		logLevel: LOG_INFO,
+
+		browsers,
+
+		// Makes sure to disable watch mode for BrowserStack.
+		singleRun: shouldEnableBrowserStack() ? true : !options.watch,
 
 		specReporter: {
 			suppressPassed: true,
@@ -49,8 +61,14 @@ module.exports = function ( config ) {
 			maxLogLines: 8,
 		},
 
-		...(options.url && { files: [options.url] }),
+		...( options.url && { files: [ options.url ] } ),
 
+		// Makes sure that BrowserStack tests end properly.
+		browserDisconnectTimeout: 3 * 60 * 1000,
+		browserDisconnectTolerance: 1,
+		browserNoActivityTimeout: 3 * 60 * 1000,
+
+		// Configures BrowserStack browsers.
 		customLaunchers: {
 			BrowserStack_Edge: {
 				base: 'BrowserStack',
@@ -73,12 +91,26 @@ module.exports = function ( config ) {
 			},
 		},
 
+		// Configures BrowserStack options.
 		browserStack: {
+
+			// Secret values that can be found on BS dashboard.
 			username: BROWSER_STACK_USERNAME,
 			accessKey: BROWSER_STACK_ACCESS_KEY,
+
+			// Name that will be displayed for a group of tests.
+			// This value should be unique, especially for CI tests. Commit SHA or timestamp should be used.
 			build: BUILD_SLUG || 'ckeditor4-angular local',
-			name: `${ browsers[ 0 ]} - Angular ${ REQUESTED_ANGULAR_VERSION }`,
+
+			// Name that will be displayed for a given test suite.
+			// It should uniquely identify a test suite.
+			name: `${ browsers[ 0 ] } - Angular ${ REQUESTED_ANGULAR_VERSION }`,
+
+			// Bounds tests to a given project on BS.
 			project: 'ckeditor4',
+
+			// Disablees video recording.
+			video: false,
 		},
 	});
 };
@@ -90,13 +122,11 @@ function getPlugins() {
 		require( 'karma-firefox-launcher' ),
 		require( 'karma-jasmine-html-reporter' ),
 		require( '@angular-devkit/build-angular/plugins/karma' ),
-		require( 'karma-spec-reporter' )
+		require( 'karma-spec-reporter' ),
 	];
 
 	if ( shouldEnableBrowserStack() ) {
-		plugins.push(
-			require( 'karma-browserstack-launcher' )
-		);
+		plugins.push(require('karma-browserstack-launcher'));
 	}
 
 	return plugins;
@@ -105,6 +135,6 @@ function getPlugins() {
 function shouldEnableBrowserStack() {
 	return (
 		process.env.BROWSER_STACK_ACCESS_KEY &&
-		process.env.BROWSER_STACK_ACCESS_KEY
+		process.env.BROWSER_STACK_USERNAME
 	);
 }
