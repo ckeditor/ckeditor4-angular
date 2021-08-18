@@ -21,7 +21,7 @@ module.exports = function ( config ) {
 
 	// Browsers are controlled via CLI, e.g.:
 	//
-	// `npm test -- --browsers Firefox`
+	// `npm test -- --browsers Chrome`
 	//
 	// Defaults to locally installed Chrome.
 	const browsers = config.browsers.length === 0 ? [ 'Chrome' ] : config.browsers;
@@ -34,7 +34,7 @@ module.exports = function ( config ) {
 		plugins: getPlugins(),
 
 		client: {
-			// leave Jasmine Spec Runner output visible in browser
+			// Leaves Jasmine Spec Runner output visible in browser.
 			clearContext: false,
 			captureConsole: false,
 			jasmine: {
@@ -108,9 +108,6 @@ module.exports = function ( config ) {
 
 			// Bounds tests to a given project on BS.
 			project: 'ckeditor4',
-
-			// Disablees video recording.
-			video: false,
 		},
 	});
 };
