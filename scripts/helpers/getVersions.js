@@ -36,7 +36,9 @@ function getImportantVersions() {
 	const commandResult = execNpmCommand( 'view @angular/cli dist-tags --json' );
 	const versions = JSON.parse( commandResult );
 
-	return Object.values( versions );
+	return Object.keys( versions )
+		.filter( key => key !== 'next' )
+		.map( key => versions[ key ] );
 }
 
 
