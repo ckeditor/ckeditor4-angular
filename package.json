@@ -69,11 +69,5 @@
 		"typescript": "^4.3.5",
 		"wait-until-promise": "^1.0.0",
 		"zone.js": "^0.11.4"
-	},
-	"browserslist": [
-		"> 0.5%",
-		"last 2 versions",
-		"Firefox ESR",
-		"IE 11"
-	]
+	}
 }

@@ -81,7 +81,6 @@ module.exports = function ( config ) {
 				os: 'Windows',
 				os_version: '10',
 				browser: 'ie',
-				browser_version: '11.0',
 			},
 			BrowserStack_Safari: {
 				base: 'BrowserStack',

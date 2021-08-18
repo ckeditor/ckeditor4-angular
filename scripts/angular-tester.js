@@ -25,9 +25,10 @@ const {
  *
  * Commands:
  *
- * --browser <name>   Specifies environment to test.
- *                    Possible values: 'Chrome', 'Firefox', 'BrowserStack_Safari', 'BrowserStack_Edge', 'BrowserStack_IE11'.
- *                    Defaults to: 'Chrome'.
+ * --browser <name>     Specifies environment to test.
+ *                      Specify browser name, e.g.: 'Chrome', 'Firefox', 'BrowserStack_Safari', 'BrowserStack_Edge', 'BrowserStack_IE11'.
+ *                      Defaults to: 'Chrome'.
+ *
  * --angular <version>  Specifies Angular version to test. Possible values: 'all', 'current' or specific version. Defaults to: 'current'.
  *
  */
@@ -113,6 +114,7 @@ function prepareTestDir( version ) {
 		{ src: 'src/app', dest: 'src/app', versions: 'all' },
 		{ src: 'src/ckeditor', dest: 'src/ckeditor', versions: 'all' },
 		{ src: 'src/test.tools.ts', dest: 'src/test.tools.ts', versions: 'all' },
+		{ src: 'src/polyfills.ts', dest: 'src/polyfills.ts', versions: 'all' },
 		{ src: 'src/karma.conf.js', dest: 'src/karma.conf.js', versions: [ 6, 7 ] },
 		{ src: 'src/karma.conf.js', dest: 'karma.conf.js', versions: [ 8, 9, 10, 11, 12 ] },
 		{ src: 'scripts/assets/tsconfig.json', dest: 'tsconfig.json', versions: [ 12 ] },
