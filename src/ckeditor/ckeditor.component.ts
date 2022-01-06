@@ -3,7 +3,7 @@
  * For licensing, see LICENSE.md.
  */
 
- import {
+import {
 	Component,
 	NgZone,
 	Input,
