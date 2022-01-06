@@ -470,3 +470,70 @@ describe( 'CKEditorComponent', () => {
 		} );
 	} );
 } );
+
+// (#190)
+describe( 'CKEditorComponent detached', () => {
+	let fixture: ComponentFixture<CKEditorComponent>
+
+	beforeEach( () => {
+		return TestBed.configureTestingModule( {
+			declarations: [ CKEditorComponent ]
+		} ).compileComponents();
+	} )
+
+	// beforeEach( () => {
+	// 	fixture = TestBed.createComponent( CKEditorComponent );
+	// 	component = fixture.componentInstance;
+	// 	component.config = config;
+
+	// 	fixture.detectChanges();
+	// } );
+
+	afterEach( () => {
+		if ( fixture ) {
+			fixture.destroy();
+		}
+	} );
+
+	it( 'should set config.delayIfDetached to true by default', async () => {
+		fixture = TestBed.createComponent( CKEditorComponent );
+		const component = fixture.componentInstance;
+
+		fixture.detectChanges();
+
+		await whenEvent( 'ready', component );
+
+		expect( component.instance.config.delayIfDetached ).toBeTrue();
+	} );
+
+	it( 'should allow overriding config.delayIfDetached', async () => {
+		fixture = TestBed.createComponent( CKEditorComponent );
+		const component = fixture.componentInstance;
+		component.config = {
+			delayIfDetached: false
+		};
+
+		fixture.detectChanges();
+
+		await whenEvent( 'ready', component );
+
+		expect( component.instance.config.delayIfDetached ).toBeFalse();
+	} );
+
+	it( 'should invoke user provided config.on.instanceReady', async () => {
+		fixture = TestBed.createComponent( CKEditorComponent );
+		const spy = jasmine.createSpy();
+		const component = fixture.componentInstance;
+		component.config = {
+			on: {
+				instanceReady: spy
+			}
+		};
+
+		fixture.detectChanges();
+
+		await whenEvent( 'ready', component );
+
+		expect( spy ).toHaveBeenCalledTimes( 1 );
+	} );
+} );
