@@ -19,13 +19,13 @@ export class DetachableComponent implements AfterViewInit {
 	ngAfterViewInit(): void {
 		console.log( 'Component loaded, deataching' );
 
-		this.editorElement.nativeElement.remove();
+		this.containerElement.nativeElement.removeChild( this.editorElement.nativeElement );
 	}
 
 	reattachEditor() {
 		console.log( 'Button clicked, reattaching editor' );
 
 		this.isReattached = true;
-		this.containerElement.nativeElement.append( this.editorElement.nativeElement );
+		this.containerElement.nativeElement.appendChild( this.editorElement.nativeElement );
 	}
 }
