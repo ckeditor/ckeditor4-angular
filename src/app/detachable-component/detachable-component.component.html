@@ -5,7 +5,7 @@
 	<h3>Detachable editor:</h3>
 	<div #container>
 		<div #editor>
-			<ckeditor data="<p>Hi, I am CKEditor 4!</p>"></ckeditor>
+			<ckeditor data="<p>Hi, I am CKEditor 4!</p>" [config]="{ extraPlugins: 'divarea' }"></ckeditor>
 		</div>
 	</div>
 
