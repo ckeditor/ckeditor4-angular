@@ -42,7 +42,7 @@ describe( 'DetachableComponent', () => {
 		fixture.destroy();
 	} );
 
-	it( 'should create editor after adding it the DOM without throwing any errors ', async done => {
+	it( 'should create editor after adding it the DOM without throwing any errors ', async () => {
 		fixture = TestBed.createComponent( DetachableComponent );
 		component = fixture.componentInstance;
 
@@ -58,7 +58,7 @@ describe( 'DetachableComponent', () => {
 
 		component.reattachEditor();
 
-		whenEach( ckeditorComponent => whenEvent( 'ready', ckeditorComponent ) ).then( done );
+		return whenEach( ckeditorComponent => whenEvent( 'ready', ckeditorComponent ) );
 	} );
 
 	function whenEach( callback ) {

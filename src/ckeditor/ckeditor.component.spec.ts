@@ -479,15 +479,7 @@ describe( 'CKEditorComponent detached', () => {
 		return TestBed.configureTestingModule( {
 			declarations: [ CKEditorComponent ]
 		} ).compileComponents();
-	} )
-
-	// beforeEach( () => {
-	// 	fixture = TestBed.createComponent( CKEditorComponent );
-	// 	component = fixture.componentInstance;
-	// 	component.config = config;
-
-	// 	fixture.detectChanges();
-	// } );
+	} );
 
 	afterEach( () => {
 		if ( fixture ) {
