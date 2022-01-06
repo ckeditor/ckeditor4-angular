@@ -12,11 +12,13 @@ import { AppComponent } from './app.component';
 import { CKEditorModule } from '../ckeditor/ckeditor.module';
 import { SimpleUsageComponent } from './simple-usage/simple-usage.component';
 import { DemoFormComponent } from './demo-form/demo-form.component';
+import { DetachableComponent } from './detachable-component/detachable-component.component';
 
 const appRoutes: Routes = [
 	{ path: '', redirectTo: '/simple-usage', pathMatch: 'full' },
 	{ path: 'simple-usage', component: SimpleUsageComponent },
-	{ path: 'forms', component: DemoFormComponent }
+	{ path: 'forms', component: DemoFormComponent },
+	{ path: 'detachable', component: DetachableComponent }
 ];
 
 @NgModule( {
@@ -29,7 +31,8 @@ const appRoutes: Routes = [
 	declarations: [
 		AppComponent,
 		DemoFormComponent,
-		SimpleUsageComponent
+		SimpleUsageComponent,
+		DetachableComponent
 	],
 	providers: [],
 	bootstrap: [ AppComponent ]
