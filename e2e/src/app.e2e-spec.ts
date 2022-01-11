@@ -4,7 +4,7 @@
  */
 
 import { AppPage } from './app.po';
-import { protractor, WebElement } from 'protractor';
+import { element, by, protractor, WebElement } from 'protractor';
 
 describe( 'workspace-project App', () => {
 	let page: AppPage,
@@ -57,6 +57,23 @@ describe( 'workspace-project App', () => {
 		} );
 
 		it( `typing should update editor content`, testTyping( 0 ) );
+	} );
+
+	describe( 'detachable-component', () => {
+		beforeEach( () => {
+			page.navigateTo( 'detachable' );
+		} );
+
+		it( 'should allow to attach editor with initial content', async () => {
+			const button = element( by.css( 'button' ) );
+
+			button.click();
+
+			const editable = await page.getEditable();
+
+			expect( page.getHtmlString( editable ) )
+				.toBe( '<p>Hi, I am CKEditor 4!</p>' );
+		} );
 	} );
 
 	function testTyping( elementIndex: number ) {

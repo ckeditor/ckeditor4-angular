@@ -15,6 +15,8 @@ import {
 } from '../test.tools';
 import { CKEditor4 } from './ckeditor';
 import EditorType = CKEditor4.EditorType;
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { By } from '@angular/platform-browser';
 
 declare var CKEDITOR: any;
 
@@ -470,3 +472,123 @@ describe( 'CKEditorComponent', () => {
 		} );
 	} );
 } );
+
+// (#190)
+describe( 'CKEditorComponent detached', () => {
+	@Component( {
+		selector: 'detachable-callback',
+		template: `<div #container>
+			<div #editor>
+				<ckeditor [config]="editorConfig"></ckeditor>
+			</div>
+		</div>`
+	} )
+	class DetachableCallbackComponent implements AfterViewInit {
+		createEditor: Function;
+
+		editorConfig = {
+			delayIfDetached_callback: ( creator ) => {
+				console.log( creator );
+				this.createEditor = creator;
+			}
+		}
+
+		@ViewChild( 'container' ) private containerElement: ElementRef;
+		@ViewChild( 'editor' ) private editorElement: ElementRef;
+
+		ngAfterViewInit(): void {
+			this.containerElement.nativeElement.removeChild( this.editorElement.nativeElement );
+		}
+
+		reattachEditor() {
+			this.containerElement.nativeElement.appendChild( this.editorElement.nativeElement );
+		}
+	}
+
+	let fixture: ComponentFixture<CKEditorComponent|DetachableCallbackComponent>;
+
+	beforeEach( () => {
+		return TestBed.configureTestingModule( {
+			declarations: [ CKEditorComponent, DetachableCallbackComponent ]
+		} ).compileComponents();
+	} );
+
+	afterEach( () => {
+		if ( fixture ) {
+			fixture.destroy();
+		}
+	} );
+
+	it( 'should set config.delayIfDetached to true by default', async () => {
+		fixture = TestBed.createComponent( CKEditorComponent );
+		const component = fixture.componentInstance as CKEditorComponent;
+
+		fixture.detectChanges();
+
+		await whenEvent( 'ready', component );
+
+		expect( component.instance.config.delayIfDetached ).toBeTrue();
+	} );
+
+	it( 'should allow overriding config.delayIfDetached', async () => {
+		fixture = TestBed.createComponent( CKEditorComponent );
+		const component = fixture.componentInstance as CKEditorComponent;
+		component.config = {
+			delayIfDetached: false
+		};
+
+		fixture.detectChanges();
+
+		await whenEvent( 'ready', component );
+
+		expect( component.instance.config.delayIfDetached ).toBeFalse();
+	} );
+
+	it( 'should invoke user provided config.on.instanceReady', async () => {
+		fixture = TestBed.createComponent( CKEditorComponent );
+		const spy = jasmine.createSpy();
+		const component = fixture.componentInstance as CKEditorComponent;
+		component.config = {
+			on: {
+				instanceReady: spy
+			}
+		};
+
+		fixture.detectChanges();
+
+		await whenEvent( 'ready', component );
+
+		expect( spy ).toHaveBeenCalledTimes( 1 );
+	} );
+
+	it( 'should support creating editor using provided config.delayIfDetached_callback', async () => {
+		fixture = TestBed.createComponent( DetachableCallbackComponent );
+		const component = fixture.componentInstance as DetachableCallbackComponent;
+
+		fixture.detectChanges();
+
+		const debugElements = fixture.debugElement.queryAll( By.directive( CKEditorComponent ) );
+		const ckeditorComponents = debugElements.map( debugElement => debugElement.componentInstance );
+
+		fixture.detectChanges();
+
+		await wait( 500 );
+
+		expect( component.createEditor ).toBeInstanceOf( Function );
+
+		component.reattachEditor();
+		component.createEditor();
+
+		return whenEach( ckeditorComponents, ckeditorComponent => whenEvent( 'ready', ckeditorComponent ) );
+	} );
+} );
+
+function wait( time ) {
+	return new Promise( resolve => {
+		setTimeout( resolve, time );
+	} );
+}
+
+function whenEach( ckeditorComponents, callback ) {
+	return Promise.all( ckeditorComponents.map( ckeditorComponent => callback( ckeditorComponent ) ) );
+}

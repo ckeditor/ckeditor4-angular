@@ -299,41 +299,60 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 		const element = document.createElement( this.tagName );
 		this.elementRef.nativeElement.appendChild( element );
 
-		const instance: CKEditor4.Editor = this.type === CKEditor4.EditorType.INLINE
-			? CKEDITOR.inline( element, this.config )
-			: CKEDITOR.replace( element, this.config );
+		const userInstanceReadyCallback = this.config?.on?.instanceReady;
+		const defaultConfig: Partial<CKEditor4.Config> = {
+			delayIfDetached: true
+		};
+		const config: Partial<CKEditor4.Config> = { ...defaultConfig, ...this.config };
 
-		instance.once( 'instanceReady', evt => {
-			this.instance = instance;
+		if ( typeof config.on === 'undefined' ) {
+			config.on = {};
+		}
+
+		config.on.instanceReady = evt => {
+			const editor = evt.editor;
+
+			this.instance = editor;
 
 			// Read only state may change during instance initialization.
 			this.readOnly = this._readOnly !== null ? this._readOnly : this.instance.readOnly;
 
 			this.subscribe( this.instance );
 
-			const undo = instance.undoManager;
+			const undo = editor.undoManager;
 
 			if ( this.data !== null ) {
 				undo && undo.lock();
 
-				instance.setData( this.data, { callback: () => {
+				editor.setData( this.data, { callback: () => {
 					// Locking undoManager prevents 'change' event.
 					// Trigger it manually to updated bound data.
-					if ( this.data !== instance.getData() ) {
-						undo ? instance.fire( 'change' ) : instance.fire( 'dataReady' );
+					if ( this.data !== editor.getData() ) {
+						undo ? editor.fire( 'change' ) : editor.fire( 'dataReady' );
 					}
 					undo && undo.unlock();
 
 					this.ngZone.run( () => {
+						if ( typeof userInstanceReadyCallback === 'function' ) {
+							userInstanceReadyCallback( evt );
+						}
+
 						this.ready.emit( evt );
 					} );
 				} } );
 			} else {
 				this.ngZone.run( () => {
+					if ( typeof userInstanceReadyCallback === 'function' ) {
+						userInstanceReadyCallback( evt );
+					}
+
 					this.ready.emit( evt );
 				} );
 			}
-		} );
+		}
+
+		this.type === CKEditor4.EditorType.INLINE ? CKEDITOR.inline( element, config ) :
+			CKEDITOR.replace( element, config );
 	}
 
 	private subscribe( editor: any ): void {
