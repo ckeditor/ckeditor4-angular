@@ -351,8 +351,11 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 			}
 		}
 
-		this.type === CKEditor4.EditorType.INLINE ? CKEDITOR.inline( element, config ) :
+		if ( this.type === CKEditor4.EditorType.INLINE ) {
+			CKEDITOR.inline( element, config );
+		} else {
 			CKEDITOR.replace( element, config );
+		}
 	}
 
 	private subscribe( editor: any ): void {
