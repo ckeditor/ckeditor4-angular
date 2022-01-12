@@ -1,10 +1,10 @@
 # CKEditor 4 Angular Integration Changelog
 
-## ckeditor4-angular 2.3.1
+## ckeditor4-angular 2.4.0
 
-Other changes:
+New Features:
 
-* Add support for `config.delayIfDetached` config option.
+* [#190](https://github.com/ckeditor/ckeditor4-angular/issues/190): Added support for CKEditor 4 [Delayed Editor Creation](https://ckeditor.com/docs/ckeditor4/latest/features/delayed_creation.html) feature.
 
 ## ckeditor4-angular 2.3.0
 
