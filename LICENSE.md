@@ -29,4 +29,4 @@ The following libraries are included in CKEditor 4 component for Angular under t
 Trademarks
 ----------
 
-**CKEditor** is a trademark of [CKSource](https://cksource.com/) Frederico Knabben. All other brand and product names are trademarks, registered trademarks or service marks of their respective holders.
+**CKEditor** is a trademark of [CKSource](https://cksource.com/) Holding sp. z o.o. All other brand and product names are trademarks, registered trademarks or service marks of their respective holders.
