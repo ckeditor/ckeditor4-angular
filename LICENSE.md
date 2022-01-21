@@ -2,7 +2,7 @@ Software License Agreement
 ==========================
 
 **CKEditor 4 WYSIWYG editor Angular component** – https://github.com/ckeditor/ckeditor4-angular <br>
-Copyright (c) 2003-2021, [CKSource](https://cksource.com/) Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2022, [CKSource](https://cksource.com/) Holding sp. z o.o. All rights reserved.
 
 Licensed under the terms of any of the following licenses at your
 choice:
@@ -29,4 +29,4 @@ The following libraries are included in CKEditor 4 component for Angular under t
 Trademarks
 ----------
 
-**CKEditor** is a trademark of [CKSource](https://cksource.com/) Frederico Knabben. All other brand and product names are trademarks, registered trademarks or service marks of their respective holders.
+**CKEditor** is a trademark of [CKSource](https://cksource.com/) Holding sp. z o.o. All other brand and product names are trademarks, registered trademarks or service marks of their respective holders.
