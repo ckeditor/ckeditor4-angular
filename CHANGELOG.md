@@ -6,6 +6,10 @@ New Features:
 
 * [#190](https://github.com/ckeditor/ckeditor4-angular/issues/190): Added support for CKEditor 4 [Delayed Editor Creation](https://ckeditor.com/docs/ckeditor4/latest/features/delayed_creation.html) feature.
 
+Other Changes:
+
+* Updated year and company name in the license headers.
+
 ## ckeditor4-angular 2.3.0
 
 Other Changes:
