@@ -1,14 +1,17 @@
 # CKEditor 4 Angular Integration Changelog
 
+## ckeditor4-angular 2.4.1
+
+Other Changes:
+
+* Updated year and company name in the license headers.
+* Updated default CDN CKEditor 4 dependency to [4.17.2](https://github.com/ckeditor/ckeditor4/blob/master/CHANGES.md#ckeditor-4172).
+
 ## ckeditor4-angular 2.4.0
 
 New Features:
 
 * [#190](https://github.com/ckeditor/ckeditor4-angular/issues/190): Added support for CKEditor 4 [Delayed Editor Creation](https://ckeditor.com/docs/ckeditor4/latest/features/delayed_creation.html) feature.
-
-Other Changes:
-
-* Updated year and company name in the license headers.
 
 ## ckeditor4-angular 2.3.0
 
