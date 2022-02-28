@@ -39,3 +39,8 @@ local.log
 # System Files
 .DS_Store
 Thumbs.db
+
+# Ignore package-lock.json
+# - we don't intent to force specific 3rd party dependency version via `package-lock.json` file
+# Such information should be specified in the package.json file.
+package-lock.json
