@@ -42,6 +42,12 @@ module.exports = function ( config ) {
 		...( options.url && { files: [ options.url ] } ),
 
 		customLaunchers: {
+			BrowserStack_Chrome: {
+				base: 'BrowserStack',
+				os: 'Windows',
+				os_version: '11',
+				browser: 'chrome'
+			},
 			BrowserStack_Edge: {
 				base: 'BrowserStack',
 				os: 'Windows',
@@ -112,7 +118,7 @@ function getPlugins() {
 function getBrowsers() {
 	if ( shouldEnableBrowserStack() ) {
 		return [
-			'Chrome',
+			'BrowserStack_Chrome',
 			'BrowserStack_Safari',
 			'Firefox',
 			'BrowserStack_Edge',
