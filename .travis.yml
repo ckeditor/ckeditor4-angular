@@ -5,7 +5,6 @@ services:
   - xvfb
 
 addons:
-  chrome: stable
   firefox: latest
 
 branches:
