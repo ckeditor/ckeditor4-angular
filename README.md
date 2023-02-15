@@ -122,7 +122,7 @@ You can also manually build the package with `npm run build-package` which will 
 
 ## License
 
-Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
+Copyright (c) 2003-2023, CKSource Holding sp. z o.o. All rights reserved.
 
 Licensed under the terms of any of the following licenses at your choice:
 
