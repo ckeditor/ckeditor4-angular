@@ -1,0 +1,7 @@
+{
+	"lib": {
+		"entryFile": "./ckeditor.module.ts"
+	},
+	"allowedNonPeerDependencies": ["ckeditor4-integrations-common"],
+	"dest": "../../dist"
+}
