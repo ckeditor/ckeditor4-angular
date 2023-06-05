@@ -1,5 +1,11 @@
 # CKEditor 4 Angular Integration Changelog
 
+## ckeditor4-angular 4.0.0
+
+Breaking Changes:
+
+* [#242](https://github.com/ckeditor/ckeditor4-angular/issues/242): Updated the minimal version of Angular to `^13.4.0` to ensure compatibility with Angular 16+. Thanks to [Moez Mehri](https://github.com/Mooeeezzzz)!
+
 ## ckeditor4-angular 3.3.0
 
 Other Changes:
