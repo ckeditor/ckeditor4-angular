@@ -19,9 +19,9 @@
 		"ckeditor 4"
 	],
 	"peerDependencies": {
-		"@angular/core": ">=5.0.0",
-		"@angular/common": ">=5.0.0",
-		"@angular/forms": ">=5.0.0"
+		"@angular/core": ">=13.4.0",
+		"@angular/common": ">=13.4.0",
+		"@angular/forms": ">=13.4.0"
 	},
 	"author": "CKSource (https://cksource.com/)",
 	"license": "(GPL-2.0-or-later OR LGPL-2.1-or-later OR MPL-1.1-or-later)",
@@ -30,15 +30,6 @@
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/ckeditor/ckeditor4-angular.git"
-	},
-	"ngPackage": {
-		"lib": {
-			"entryFile": "./ckeditor.module.ts"
-		},
-		"whitelistedNonPeerDependencies": [
-			"."
-		],
-		"dest": "../../dist"
 	},
 	"dependencies": {
 		"ckeditor4-integrations-common": "^1.0.0"

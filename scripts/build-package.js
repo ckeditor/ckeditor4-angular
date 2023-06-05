@@ -10,7 +10,7 @@ const fs = require( 'fs-extra' ),
 	path = require( 'path' ),
 
 	// Build package using ng-packagr.
-	output = childProcess.execSync( 'ng-packagr -p src/ckeditor/package.json' );
+	output = childProcess.execSync( 'ng-packagr -p src/ckeditor/ng-package.json' );
 
 console.log( output.toString() );
 
