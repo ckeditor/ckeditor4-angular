@@ -2,7 +2,13 @@
 
 ## ckeditor4-angular 4.0.0
 
-Breaking Changes:
+BREAKING CHANGES:
+
+The v4.0.0 release introduces compatibility with Angular v16+. Please note that this version of Angular no longer supports Internet Explorer 11.
+
+If you want to maintain support for IE11 or haven't upgraded to Angular v16 yet, make sure to use the Angular integration in version 3.3.0.
+
+Other Changes:
 
 * [#242](https://github.com/ckeditor/ckeditor4-angular/issues/242): Updated the minimal version of Angular to `^13.4.0` to ensure compatibility with Angular 16+. Thanks to [Moez Mehri](https://github.com/Mooeeezzzz)!
 
