@@ -15,7 +15,7 @@ If you want to maintain support for IE11 or haven't upgraded to Angular v16 yet,
 Other Changes:
 
 * [#242](https://github.com/ckeditor/ckeditor4-angular/issues/242): Updated the minimal version of Angular to `^13.4.0` to ensure compatibility with Angular 16+. Thanks to [Moez Mehri](https://github.com/Mooeeezzzz)!
-* Updated default CDN CKEditor 4 dependency to [4.22.1](https://github.com/ckeditor/ckeditor4/blob/master/CHANGES.md#ckeditor-4221).
+* Updated default CDN CKEditor 4 dependency to [4.22.1](https://github.com/ckeditor/ckeditor4/blob/master/CHANGES.md#ckeditor-4220--4221).
 
 ## ckeditor4-angular 3.3.0
 
