@@ -4,11 +4,11 @@
 
 If you would like to keep access to future CKEditor 4 security patches, check the [Extended Support Model](https://ckeditor.com/ckeditor-4-support/), which guarantees **security updates and critical bug fixes until December 2026**. Alternatively, [upgrade to CKEditor 5](https://ckeditor.com/docs/ckeditor5/latest/updating/ckeditor4/migration-from-ckeditor-4.html).
 
-## ckeditor4-angular 4.0.0
+## ckeditor4-angular 4.0.0 / 4.0.1
 
 BREAKING CHANGES:
 
-The v4.0.0 release introduces compatibility with Angular v16+. Please note that this version of Angular no longer supports Internet Explorer 11.
+The v4.0.1 release introduces compatibility with Angular v16+. Please note that this version of Angular no longer supports Internet Explorer 11.
 
 If you want to maintain support for IE11 or haven't upgraded to Angular v16 yet, make sure to use the Angular integration in version 3.3.0.
 
@@ -16,6 +16,8 @@ Other Changes:
 
 * [#242](https://github.com/ckeditor/ckeditor4-angular/issues/242): Updated the minimal version of Angular to `^13.4.0` to ensure compatibility with Angular 16+. Thanks to [Moez Mehri](https://github.com/Mooeeezzzz)!
 * Updated default CDN CKEditor 4 dependency to [4.22.1](https://github.com/ckeditor/ckeditor4/blob/master/CHANGES.md#ckeditor-4220--4221).
+
+**Note:** Version 4.0.1 includes a patch for the distribution bundle that fixes missing support for Angular v16+ and should be used instead of v4.0.0 if you target a newer version of Angular.
 
 ## ckeditor4-angular 3.3.0
 
