@@ -226,6 +226,13 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 	@Output() blur = new EventEmitter<CKEditor4.EventInfo>();
 
 	/**
+	 * Fires when the native mode event occurs. It corresponds with the `editor#mode`
+	 * https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_editor.html#event-mode
+	 * event.
+	 */
+	@Output() mode = new EventEmitter<CKEditor4.EventInfo>();
+
+	/**
 	 * A callback executed when the content of the editor changes. Part of the
 	 * `ControlValueAccessor` (https://angular.io/api/forms/ControlValueAccessor) interface.
 	 *
@@ -414,6 +421,12 @@ export class CKEditorComponent implements AfterViewInit, OnDestroy, ControlValue
 				}
 
 				this.blur.emit( evt );
+			} );
+		} );
+
+		editor.on( 'mode', evt => {
+			this.ngZone.run( () => {
+				this.mode.emit( evt );
 			} );
 		} );
 

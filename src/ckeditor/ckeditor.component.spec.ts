@@ -323,6 +323,17 @@ describe( 'CKEditorComponent', () => {
 						expect( spy ).toHaveBeenCalledTimes( 1 );
 					} );
 
+					it( 'mode should emit component mode', () => {
+						fixture.detectChanges();
+
+						const spy = jasmine.createSpy();
+						component.mode.subscribe( spy );
+
+						component.instance.fire( 'mode' );
+
+						expect( spy ).toHaveBeenCalledTimes( 1 );
+					} );
+
 					it( 'paste should emit component paste', () => {
 						fixture.detectChanges();
 
