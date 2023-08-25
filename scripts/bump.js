@@ -29,5 +29,5 @@ function updateCdnLink( path ) {
 	const file = fs.readFileSync( path, 'utf8' );
 	const cdnLinkRegex = /https:\/\/cdn\.ckeditor\.com\/\d\.\d+\.\d+/g;
 
-	fs.writeFileSync( path, file.replace( cdnLinkRegex, `https://cdn.ckeditor.com/${ version }` ), 'utf8' );
+	fs.writeFileSync( path, file.replace( cdnLinkRegex, `https://cdn.ckeditor.com/${ version }-lts` ), 'utf8' );
 }
