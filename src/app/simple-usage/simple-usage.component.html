@@ -4,16 +4,15 @@
 
 <div *ngFor="let editor of editors">
 	<h3>{{ editor }} Editor:</h3>
+	<!-- Remember to add the license key to the CKEditor 4 configuration:
+		https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-licenseKey -->
 	<ckeditor
 		*ngIf="!isRemoved"
 		[(data)]="editorData"
 		[readOnly]="isReadOnly"
 		[hidden]="isHidden"
 		type="{{ editor | lowercase }}"
-		[config]="{
-			extraPlugins: 'divarea',
-			licenseKey: '[YOUR LICENSE KEY HERE]'
-		}"
+		[config]="{ extraPlugins: 'divarea' }"
 
 		(ready)="onReady( $event, editor )"
 		(change)="onChange( $event, editor )"

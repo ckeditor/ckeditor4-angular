@@ -14,14 +14,13 @@
 	</div>
 
 	<label for="description">Description</label>
+	<!-- Remember to add the license key to the CKEditor 4 configuration:
+		https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-licenseKey -->
 	<ckeditor
 		[(ngModel)]="model.description"
 		id="description"
 		name="description"
-		[config]="{
-			extraPlugins: 'divarea',
-			licenseKey: '[YOUR LICENSE KEY HERE]'
-		}">
+		[config]="{ extraPlugins: 'divarea' }">
 	</ckeditor>
 
 	<p *ngIf="description && description.dirty" class="alert">Description is "dirty".</p>

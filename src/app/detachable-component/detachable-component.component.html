@@ -5,10 +5,9 @@
 	<h3>Detachable editor:</h3>
 	<div #container>
 		<div #editor>
-			<ckeditor data="<p>Hi, I am CKEditor 4!</p>" [config]="{
-				extraPlugins: 'divarea',
-				licenseKey: '[YOUR LICENSE KEY HERE]'
-			}"></ckeditor>
+			<!-- Remember to add the license key to the CKEditor 4 configuration:
+			https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-licenseKey -->
+			<ckeditor data="<p>Hi, I am CKEditor 4!</p>" [config]="{ extraPlugins: 'divarea' }"></ckeditor>
 		</div>
 	</div>
 
