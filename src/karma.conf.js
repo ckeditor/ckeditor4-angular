@@ -14,7 +14,10 @@ module.exports = function ( config ) {
 			captureConsole: false,
 			jasmine: {
 				random: false
-			}
+			},
+			args: [
+				process.env.CKEDITOR_LICENSE_KEY
+			]
 		},
 		coverageIstanbulReporter: {
 			dir: require( 'path' ).join( __dirname, '../coverage' ),
@@ -53,13 +56,6 @@ module.exports = function ( config ) {
 				os: 'Windows',
 				os_version: '10',
 				browser: 'edge'
-			},
-			BrowserStack_IE11: {
-				base: 'BrowserStack',
-				os: 'Windows',
-				os_version: '10',
-				browser: 'ie',
-				browser_version: '11.0'
 			},
 			BrowserStack_Safari: {
 				base: 'BrowserStack',
@@ -121,8 +117,7 @@ function getBrowsers() {
 			'BrowserStack_Chrome',
 			'BrowserStack_Safari',
 			'Firefox',
-			'BrowserStack_Edge',
-			'BrowserStack_IE11'
+			'BrowserStack_Edge'
 		];
 	}
 

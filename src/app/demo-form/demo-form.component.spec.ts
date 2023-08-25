@@ -14,6 +14,13 @@ import { CKEditorComponent } from '../../ckeditor/ckeditor.component';
 
 import { whenEvent } from '../../test.tools';
 
+declare var CKEDITOR: any;
+declare var __karma__: {
+	config: {
+		args: [ string ];
+	}
+};
+
 describe( 'DemoFormComponent', () => {
 	let component: DemoFormComponent,
 		fixture: ComponentFixture<DemoFormComponent>,
@@ -34,6 +41,10 @@ describe( 'DemoFormComponent', () => {
 		component = fixture.componentInstance;
 		debugElement = fixture.debugElement.query( By.directive( CKEditorComponent ) );
 		ckeditorComponent = debugElement.componentInstance;
+
+		ckeditorComponent.namespaceLoaded.subscribe( () => {
+			CKEDITOR.config.licenseKey = __karma__.config.args[ 0 ];
+		} );
 
 		ckeditorComponent.config = config;
 
