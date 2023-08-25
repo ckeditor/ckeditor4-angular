@@ -18,7 +18,7 @@
 		"postversion": "git rm -r --cached dist/ && git commit -m \"Clean after release [ci skip]\" && git push origin && git push origin --tags"
 	},
 	"author": "CKSource (https://cksource.com/)",
-	"license": "(GPL-2.0-or-later OR LGPL-2.1-or-later OR MPL-1.1-or-later)",
+	"license": "SEE LICENSE IN LICENSE.md",
 	"homepage": "https://ckeditor.com/",
 	"bugs": "https://github.com/ckeditor/ckeditor4-angular/issues",
 	"repository": {
