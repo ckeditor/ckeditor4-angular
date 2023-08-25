@@ -1,0 +1,58 @@
+{
+  "name": "ckeditor4-angular",
+  "version": "5.0.0",
+  "description": "Official CKEditor 4 component for Angular.",
+  "keywords": [
+    "wysiwyg",
+    "rich text editor",
+    "rte",
+    "editor",
+    "html",
+    "contentEditable",
+    "editing",
+    "angular",
+    "angular5",
+    "ng",
+    "component",
+    "ckeditor",
+    "ckeditor4",
+    "ckeditor 4"
+  ],
+  "peerDependencies": {
+    "@angular/core": ">=13.4.0",
+    "@angular/common": ">=13.4.0",
+    "@angular/forms": ">=13.4.0"
+  },
+  "author": "CKSource (https://cksource.com/)",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "homepage": "https://ckeditor.com/",
+  "bugs": "https://github.com/ckeditor/ckeditor4-angular/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ckeditor/ckeditor4-angular.git"
+  },
+  "dependencies": {
+    "ckeditor4-integrations-common": "^1.0.0",
+    "tslib": "^2.3.0"
+  },
+  "module": "fesm2015/ckeditor4-angular.mjs",
+  "es2020": "fesm2020/ckeditor4-angular.mjs",
+  "esm2020": "esm2020/ckeditor4-angular.mjs",
+  "fesm2020": "fesm2020/ckeditor4-angular.mjs",
+  "fesm2015": "fesm2015/ckeditor4-angular.mjs",
+  "typings": "ckeditor4-angular.d.ts",
+  "exports": {
+    "./package.json": {
+      "default": "./package.json"
+    },
+    ".": {
+      "types": "./ckeditor4-angular.d.ts",
+      "esm2020": "./esm2020/ckeditor4-angular.mjs",
+      "es2020": "./fesm2020/ckeditor4-angular.mjs",
+      "es2015": "./fesm2015/ckeditor4-angular.mjs",
+      "node": "./fesm2015/ckeditor4-angular.mjs",
+      "default": "./fesm2020/ckeditor4-angular.mjs"
+    }
+  },
+  "sideEffects": false
+}
