@@ -74,7 +74,7 @@ See the [CKEditor 4 Angular Integration](https://ckeditor.com/docs/ckeditor4/lat
 
 ## Browser support
 
-The CKEditor 4 Angular component works with all the [supported browsers](https://ckeditor.com/docs/ckeditor4/latest/guide/dev_browsers.html#officially-supported-browsers) except for Internet Explorer 8-10.
+The CKEditor 4 Angular component works with all the [supported browsers](https://ckeditor.com/docs/ckeditor4/latest/guide/dev_browsers.html#officially-supported-browsers) except for Internet Explorer 8-11.
 
 ## Supported Angular versions
 
