@@ -16,6 +16,13 @@ import { whenEvent } from '../../test.tools';
 
 import Spy = jasmine.Spy;
 
+declare var CKEDITOR: any;
+declare var __karma__: {
+	config: {
+		args: [ string ];
+	}
+};
+
 describe( 'SimpleUsageComponent', () => {
 	let component: SimpleUsageComponent,
 		fixture: ComponentFixture<SimpleUsageComponent>,
@@ -39,6 +46,12 @@ describe( 'SimpleUsageComponent', () => {
 
 		debugElements = fixture.debugElement.queryAll( By.directive( CKEditorComponent ) );
 		ckeditorComponents = debugElements.map( debugElement => debugElement.componentInstance );
+
+		ckeditorComponents.forEach( ( ckeditorComponent ) => {
+			ckeditorComponent.namespaceLoaded.subscribe( () => {
+				CKEDITOR.config.licenseKey = __karma__.config.args[ 0 ];
+			} );
+		} );
 
 		fixture.detectChanges();
 

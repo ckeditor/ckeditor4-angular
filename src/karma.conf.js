@@ -14,7 +14,10 @@ module.exports = function ( config ) {
 			captureConsole: false,
 			jasmine: {
 				random: false
-			}
+			},
+			args: [
+				process.env.CKEDITOR_LICENSE_KEY
+			]
 		},
 		coverageIstanbulReporter: {
 			dir: require( 'path' ).join( __dirname, '../coverage' ),

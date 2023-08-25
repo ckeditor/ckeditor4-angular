@@ -19,6 +19,11 @@ import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 declare var CKEDITOR: any;
+declare var __karma__: {
+	config: {
+		args: [ string ];
+	}
+};
 
 describe( 'CKEditorComponent', () => {
 	let component: CKEditorComponent,
@@ -35,6 +40,10 @@ describe( 'CKEditorComponent', () => {
 		fixture = TestBed.createComponent( CKEditorComponent );
 		component = fixture.componentInstance;
 		component.config = config;
+
+		component.namespaceLoaded.subscribe( () => {
+			CKEDITOR.config.licenseKey = __karma__.config.args[ 0 ];
+		} );
 
 		fixture.detectChanges();
 	} );
@@ -479,7 +488,7 @@ describe( 'CKEditorComponent detached', () => {
 		selector: 'detachable-callback',
 		template: `<div #container>
 			<div #editor>
-				<ckeditor [config]="editorConfig"></ckeditor>
+				<ckeditor (namespaceLoaded)="onNamespaceLoaded()" [config]="editorConfig"></ckeditor>
 			</div>
 		</div>`
 	} )
@@ -495,6 +504,10 @@ describe( 'CKEditorComponent detached', () => {
 
 		@ViewChild( 'container' ) private containerElement: ElementRef;
 		@ViewChild( 'editor' ) private editorElement: ElementRef;
+
+		onNamespaceLoaded() {
+			CKEDITOR.config.licenseKey = __karma__.config.args[ 0 ];
+		}
 
 		ngAfterViewInit(): void {
 			this.containerElement.nativeElement.removeChild( this.editorElement.nativeElement );

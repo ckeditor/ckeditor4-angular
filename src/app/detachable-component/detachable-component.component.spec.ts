@@ -9,19 +9,22 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 import { DetachableComponent } from './detachable-component.component';
-import { getEditorNamespace } from 'ckeditor4-integrations-common';
 import { CKEditorModule } from '../../ckeditor/ckeditor.module';
 import { CKEditorComponent } from '../../ckeditor/ckeditor.component';
 import { whenEvent } from '../../test.tools';
 
-import Spy = jasmine.Spy;
+declare var CKEDITOR: any;
+declare var __karma__: {
+	config: {
+		args: [ string ];
+	}
+};
 
 describe( 'DetachableComponent', () => {
 	let component: DetachableComponent,
 		fixture: ComponentFixture<DetachableComponent>,
 		ckeditorComponents: CKEditorComponent[],
-		debugElements: DebugElement[],
-		spy: Spy;
+		debugElements: DebugElement[];
 
 	beforeEach( async( () => {
 		TestBed.configureTestingModule( {
@@ -51,6 +54,12 @@ describe( 'DetachableComponent', () => {
 
 		debugElements = fixture.debugElement.queryAll( By.directive( CKEditorComponent ) );
 		ckeditorComponents = debugElements.map( debugElement => debugElement.componentInstance );
+
+		ckeditorComponents.forEach( ( ckeditorComponent ) => {
+			ckeditorComponent.namespaceLoaded.subscribe( () => {
+				CKEDITOR.config.licenseKey = __karma__.config.args[ 0 ];
+			} );
+		} );
 
 		fixture.detectChanges();
 
