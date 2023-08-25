@@ -10,7 +10,10 @@
 		[readOnly]="isReadOnly"
 		[hidden]="isHidden"
 		type="{{ editor | lowercase }}"
-		[config]="{ extraPlugins: 'divarea' }"
+		[config]="{
+			extraPlugins: 'divarea',
+			licenseKey: '[YOUR LICENSE KEY HERE]'
+		}"
 
 		(ready)="onReady( $event, editor )"
 		(change)="onChange( $event, editor )"

@@ -18,7 +18,10 @@
 		[(ngModel)]="model.description"
 		id="description"
 		name="description"
-		[config]="{ extraPlugins: 'divarea' }">
+		[config]="{
+			extraPlugins: 'divarea',
+			licenseKey: '[YOUR LICENSE KEY HERE]'
+		}">
 	</ckeditor>
 
 	<p *ngIf="description && description.dirty" class="alert">Description is "dirty".</p>
