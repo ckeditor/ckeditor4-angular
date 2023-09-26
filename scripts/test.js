@@ -17,9 +17,13 @@ const env = Object.create( process.env );
 
 env.KARMA_OPTIONS = JSON.stringify( options );
 
-spawn( 'ng', [ 'test' ], {
+const testProcess = spawn( 'ng', [ 'test' ], {
 	stdio: 'inherit', // Pass parent's stdio's to child. Without that option no logs will be visible.
 	env
+} );
+
+testProcess.on( 'close', ( code ) => {
+	process.exitCode = code;
 } );
 
 /**
