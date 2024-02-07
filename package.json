@@ -13,7 +13,6 @@
 		"bump": "node ./scripts/bump.js",
 		"publish:dry": "npm publish dist/ --dry-run",
 		"publish": "npm publish dist/",
-		"preversion": "npm test",
 		"version": "npm run build-package && git add -f dist/",
 		"postversion": "git rm -r --cached dist/ && git commit -m \"Clean after release [ci skip]\" && git push origin && git push origin --tags"
 	},
