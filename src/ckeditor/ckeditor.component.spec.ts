@@ -77,7 +77,7 @@ describe( 'CKEditorComponent', () => {
 					fixture.detectChanges();
 
 					return whenEvent( 'ready', component ).then( () => {
-						expect( component.editorUrl ).toEqual( 'https://cdn.ckeditor.com/4.24.0-lts/standard-all/ckeditor.js' );
+						expect( component.editorUrl ).toEqual( 'https://cdn.ckeditor.com/4.25.0-lts/standard-all/ckeditor.js' );
 					} );
 				} );
 
