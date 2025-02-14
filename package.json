@@ -44,7 +44,7 @@
 		"@angular/router": "^13.4.0",
 		"@types/jasmine": "^4.3.1",
 		"@types/jasminewd2": "^2.0.10",
-		"@types/node": "^18.11.9",
+		"@types/node": "18.11.9",
 		"browserslist": "^4.21.5",
 		"classlist.js": "^1.1.20150312",
 		"codelyzer": "^6.0.2",
